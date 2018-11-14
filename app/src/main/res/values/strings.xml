@@ -11,5 +11,9 @@
     <string name="java_loginactivity_enter_user_name">Please enter Username!!</string>
     <string name="java_loginactivity_enter_password">Please enter Password!!</string>
 
+    <!--Forgot Password-->
+    <string name="forget_password_username_label">Username</string>
+    <string name="forget_password_email_label">Email</string>
+
 
 </resources>
