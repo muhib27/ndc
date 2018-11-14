@@ -3,7 +3,7 @@ package com.classtune.ndc.utils;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-
+import android.telephony.TelephonyManager;
 
 
 public class MyApplication extends Application {
@@ -61,4 +61,20 @@ public class MyApplication extends Application {
 //
 //        return networkCallInterface;
 //    }
+
+
+    public String getUDID() {
+
+        String udid = AppSharedPreference.getUDID();
+        if (udid.equalsIgnoreCase("")) {
+            TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+            udid = tm.getDeviceId();
+
+            AppSharedPreference.setUDID(udid);
+        }
+
+        //showLog("UDID if", "Device ID : " + udid);
+
+        return udid;
+    }
 }

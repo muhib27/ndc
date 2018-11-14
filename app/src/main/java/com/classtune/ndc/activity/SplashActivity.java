@@ -14,6 +14,7 @@ import android.view.WindowManager;
 
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.utils.AppSharedPreference;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,8 +30,13 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void run() {
+                boolean isFirstTime = AppSharedPreference.getUsingFirstTime();
                 Intent intent;
-                intent = new Intent(SplashActivity.this, MainActivity.class);
+                if (isFirstTime) {
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                }
                 startActivity(intent);
                 finish();
             }

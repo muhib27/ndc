@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">NDC</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!--LoginActivity-->
+    <string name="activity_login_txt_sign_in">Sign in to your account</string>
+    <string name="activity_login_txt_sign_in_txt_hint_username">Username</string>
+    <string name="activity_login_btn_sign_in">Sign In</string>
+    <string name="activity_login_txt_forgot_password">Forgot Password?</string>
+    <string name="hint_password">Password</string>
+    <string name="java_loginactivity_enter_user_name">Please enter Username!!</string>
+    <string name="java_loginactivity_enter_password">Please enter Password!!</string>
+
+
 </resources>

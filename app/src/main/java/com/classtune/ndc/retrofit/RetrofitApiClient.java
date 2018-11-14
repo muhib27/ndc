@@ -1,5 +1,6 @@
 package com.classtune.ndc.retrofit;
 
+import com.classtune.ndc.utils.URLHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -31,7 +32,7 @@ public class RetrofitApiClient {
     public static synchronized Retrofit getClient() {
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(URLHelper.URL_BASE)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();

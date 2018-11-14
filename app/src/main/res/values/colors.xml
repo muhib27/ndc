@@ -6,4 +6,12 @@
 
     <color name="black">#000000</color>
     <color name="dnc_color">#457995</color>
+
+    <color name="settings_grey_divider">#D5D9DB</color>
+    <color name="white">#FFFFFF</color>
+    <color name="user_selection_signin">#75a8bd</color>
+    <color name="ash">#9e9d9d</color>
+    <color name="gray_4">#D1D7D9</color>
+
+    <color name="iron">#CCCCCC</color>
 </resources>

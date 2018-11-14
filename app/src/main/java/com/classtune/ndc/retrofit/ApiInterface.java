@@ -1,6 +1,8 @@
 package com.classtune.ndc.retrofit;
 
 
+import com.classtune.ndc.model.LoginResponseModel;
+import com.classtune.ndc.utils.URLHelper;
 import com.google.gson.JsonElement;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -24,6 +27,11 @@ import retrofit2.http.Query;
  */
 
 public interface ApiInterface {
+
+    @FormUrlEncoded
+    @POST(URLHelper.URL_LOGIN)
+//    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
+    Observable<Response<JsonElement>> userLogin(@Field("username") String userId, @Field("password") String password);
 
     //@Headers({"clientAgent : ANDROID", "version : 1"})
     //@POST("api/user/register")
