@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
                                 value.body());
 
-                        if (wrapper.getStatus().getCode() == 200) {
+//                        if (wrapper.getStatus().getCode() == 200) {
                             AppSharedPreference.setUserNameAndPassword(username, password);
 
 //                            Headers headers = value.headers();
@@ -171,10 +171,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             startActivity(intent);
                             finish();
 
-                        } else {
-
-                            Toast.makeText(getApplicationContext(), wrapper.getStatus().getMsg(), Toast.LENGTH_SHORT).show();
-                        }
+//                        } else {
+//
+//                            Toast.makeText(getApplicationContext(), wrapper.getStatus().getMsg(), Toast.LENGTH_SHORT).show();
+//                        }
                     }
 
 
