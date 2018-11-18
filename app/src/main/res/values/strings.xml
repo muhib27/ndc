@@ -47,4 +47,8 @@
     <string name="btn_notice_acknowledge">Acknowledge</string>
 
 
+    <!--ArchievePageFragment-->
+    <string name="fragment_archieved_events_txt_no_data_found">No data found!</string>
+
+
 </resources>

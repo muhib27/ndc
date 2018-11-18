@@ -16,4 +16,7 @@
     <color name="iron">#CCCCCC</color>
     <color name="gray_bg">#DFE1E2</color>
     <color name="gray_1">#777C7E</color>
+
+    <color name="classtune_green_color">#219439</color>
+    <color name="classtune_green_color_light">#74af27</color>
 </resources>
