@@ -14,4 +14,6 @@
     <color name="gray_4">#D1D7D9</color>
 
     <color name="iron">#CCCCCC</color>
+    <color name="gray_bg">#DFE1E2</color>
+    <color name="gray_1">#777C7E</color>
 </resources>

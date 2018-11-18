@@ -13,6 +13,7 @@ public class AppSharedPreference {
     private static final String keyUserName = "username";
     private static final String keyUserPassword = "userpassword";
     private static final String keyUDID = "udid";
+    private static final String keyFCMId = "fcm_id";
 
     private static SharedPreferences getSharedPreferences() {
         return MyApplication.getContext().getSharedPreferences(keyModelTestPrefs, 0);
@@ -63,6 +64,19 @@ public class AppSharedPreference {
         return pref.getString(keyUDID, "");
     }
 
+    public static void setFcm(String fcm_id){
+        final SharedPreferences pref = getSharedPreferences();
+        final SharedPreferences.Editor editor = pref.edit();
+
+        editor.putString(keyFCMId, fcm_id);
+        editor.apply();
+    }
+
+    public static String getFcm() {
+        final SharedPreferences pref = getSharedPreferences();
+        return pref.getString(keyFCMId, "");
+    }
+
     public static String getUserName() {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getString(keyUserName, "");
@@ -71,6 +85,7 @@ public class AppSharedPreference {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getString(keyUserPassword, "");
     }
+    //eSWBaw0MaMM:APA91bFhVluppQU8GIpUuMUEF2gCXuWE4ZXiV6Nv9Wsm9ywYe7m4fDx6aK6DakJgCqvu4Iv7_L91AfNxrfXQICVL-pjSTI1b_00MsA5RNqZ_MOy7QQLJqJLslyEQavUSKn13Rc3tWYxy
 
 
 }
