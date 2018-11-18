@@ -3,6 +3,7 @@ package com.classtune.ndc.viewhelpers;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,19 +11,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.classtune.app.R;
+import com.classtune.ndc.R;
 
-public class CustomTabButton extends LinearLayout {
+public class CustomTabButtonEllipsizeText extends LinearLayout {
 
 	ImageView image;
 	TextView title;
 	
 
-	public CustomTabButton(Context context) {
+	public CustomTabButtonEllipsizeText(Context context) {
 		this(context, null);
 	}
 
-	public CustomTabButton(Context context, AttributeSet attrs) {
+	public CustomTabButtonEllipsizeText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		initStyleButton(attrs, context);
@@ -47,7 +48,11 @@ public class CustomTabButton extends LinearLayout {
 		title = (TextView) getChildAt(1);
 		title.setText(titleText);
 
-		
+		title.setSingleLine(true);
+		title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+		title.setSelected(true);
+		title.setFocusable(true);
+		title.setFocusableInTouchMode(true);
 	}
 
 	public void setButtonSelected(boolean bol, int colorId, int imageId) {

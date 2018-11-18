@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.classtune.ndc.R;
+import com.classtune.app.R;
 
 /**
  * @author Amit

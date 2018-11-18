@@ -14,4 +14,8 @@ public class AppConstant {
     public static final String SELECTED_ITEM_AUTHOR = "author";
 
 
+
+    public static final long BANNER_POPUP_DISMISS_TIME = 5000;
+
+
 }
