@@ -43,6 +43,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.7'
     implementation 'com.squareup.okhttp:okhttp:2.7.2'
     //implementation 'com.google.android.gms:play-services:11.0.4'
+
+//    implementation 'pub.devrel:easypermissions:2.0.0'
+    implementation('pub.devrel:easypermissions:2.0.0') {
+        exclude group: "com.android.support"
+    }
 }
 //apply plugin: 'com.google.gms.google-services'
 

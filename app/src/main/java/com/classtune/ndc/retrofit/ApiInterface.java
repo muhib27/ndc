@@ -31,7 +31,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(URLHelper.URL_LOGIN)
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
-    Observable<Response<JsonElement>> userLogin(@Field("username") String userId, @Field("password") String password);
+    Observable<Response<JsonElement>> userLogin(@Field("username") String userId, @Field("password") String password, @Field("udid") String udid, @Field("gcm_id") String gcm_id);
 
     //@Headers({"clientAgent : ANDROID", "version : 1"})
     //@POST("api/user/register")

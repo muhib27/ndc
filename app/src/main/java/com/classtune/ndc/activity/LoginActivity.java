@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +29,7 @@ import com.classtune.ndc.model.Wrapper;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.GsonParser;
+import com.classtune.ndc.utils.MyApplication;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.google.gson.JsonElement;
 
@@ -39,16 +41,27 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks,EasyPermissions.RationaleCallbacks {
     EditText etUserName;
     EditText etPassword;
     Button btnLogin;
 
+    String fcm_id = "eSWBaw0MaMM:APA91bFhVluppQU8GIpUuMUEF2gCXuWE4ZXiV6Nv9Wsm9ywYe7m4fDx6aK6DakJgCqvu4Iv7_L91AfNxrfXQICVL-pjSTI1b_00MsA5RNqZ_MOy7QQLJqJLslyEQavUSKn13Rc3tWYxy";
+
     private TextView tvForgetPassword;
     public String username = "", password = "";
     ProgressDialog progressDialog;
+    private static final String TAG = "MainActivity";
+    private static final String[] LOCATION_AND_CONTACTS =
+            {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE};
+
+    private static final int RC_PHONE_STATE = 123;
+    private static final int RC_LOCATION_CONTACTS_PERM = 124;
 
 
     @Override
@@ -58,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        AppSharedPreference.setFcm(fcm_id);
 
 
         progressDialog = new ProgressDialog(LoginActivity.this,
@@ -77,11 +92,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private boolean hasPhoneStatePermission() {
+        return EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE);
+    }
+
+    @AfterPermissionGranted(RC_PHONE_STATE)
+    public void readPhoneStateTask() {
+        if (hasPhoneStatePermission()) {
+            // Have permission, do the thing!
+           // Toast.makeText(this, "TODO: Phone State things", Toast.LENGTH_LONG).show();
+            validateFieldAndCallLogIn();
+        } else {
+            // Ask for one permission
+            EasyPermissions.requestPermissions(
+                    this,
+                    getString(R.string.rationale_camera),
+                    RC_PHONE_STATE,
+                    Manifest.permission.READ_PHONE_STATE);
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                validateFieldAndCallLogIn();
+//                validateFieldAndCallLogIn();
+                readPhoneStateTask();
                 break;
 //            case R.id.tv_forget_password:
 //                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
@@ -146,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        params.put("password", password);
 
 
-        RetrofitApiClient.getApiInterface().userLogin(username, password)
+        RetrofitApiClient.getApiInterface().userLogin(username, password, MyApplication.getInstance().getUDID(), AppSharedPreference.getFcm())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -193,6 +228,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
 
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // EasyPermissions handles the request result.
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            String yes = getString(R.string.yes);
+            String no = getString(R.string.no);
+
+            // Do something after user returned from app settings screen, like showing a Toast.
+            Toast.makeText(
+                    this,
+                    getString(R.string.returned_from_app_settings_to_activity,
+                            hasPhoneStatePermission() ? yes : no),
+                    Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        Log.d(TAG, "onPermissionsDenied:" + requestCode + ":" + perms.size());
+
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+    @Override
+    public void onRationaleAccepted(int requestCode) {
+
+    }
+
+    @Override
+    public void onRationaleDenied(int requestCode) {
 
     }
 }
