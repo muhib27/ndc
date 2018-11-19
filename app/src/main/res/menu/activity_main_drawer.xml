@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Import" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_pigeonhole"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Pigeonhole" />
         <item
             android:id="@+id/nav_notice"
             android:icon="@drawable/ic_menu_slideshow"

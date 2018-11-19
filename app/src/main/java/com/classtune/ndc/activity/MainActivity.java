@@ -17,6 +17,7 @@ import android.view.View;
 import com.classtune.ndc.R;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
+import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.DrawerLocker;
 import com.classtune.ndc.utils.NetworkConnection;
@@ -243,7 +244,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_pigeonhole) {
+            gotoPigeonholeFragment();
 
         } else if (id == R.id.nav_notice) {
             gotoNoticeFragment();
@@ -275,6 +277,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, noticeFragment, "noticeFragment").addToBackStack(null);;
+        transaction.commit();
+    }
+    private void gotoPigeonholeFragment() {
+        PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);;
         transaction.commit();
     }
 

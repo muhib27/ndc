@@ -50,5 +50,10 @@
     <!--ArchievePageFragment-->
     <string name="fragment_archieved_events_txt_no_data_found">No data found!</string>
 
+    <!--UIHelper-->
+    <string name="java_uihelper_error">Error</string>
+    <string name="java_uihelper_ok">OK</string>
+    <string name="java_uihelper_settings">Settings</string>
+
 
 </resources>

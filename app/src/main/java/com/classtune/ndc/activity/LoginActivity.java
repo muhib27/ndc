@@ -31,6 +31,7 @@ import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.GsonParser;
 import com.classtune.ndc.utils.MyApplication;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
 import java.util.HashMap;
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText etUserName;
     EditText etPassword;
     Button btnLogin;
+    UIHelper uiHelper;
 
     String fcm_id = "eSWBaw0MaMM:APA91bFhVluppQU8GIpUuMUEF2gCXuWE4ZXiV6Nv9Wsm9ywYe7m4fDx6aK6DakJgCqvu4Iv7_L91AfNxrfXQICVL-pjSTI1b_00MsA5RNqZ_MOy7QQLJqJLslyEQavUSKn13Rc3tWYxy";
 
@@ -74,10 +76,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         AppSharedPreference.setFcm(fcm_id);
 
+        uiHelper = new UIHelper(LoginActivity.this);
+
 
         progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setProgress(0);
+        progressDialog.setMax(100);
         progressDialog.setMessage("Authenticating...");
        // progressDialog.show();
 
@@ -163,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                }
 //            }
 //            else {
+
             callLoginApi(username, password);
            // }
         }
@@ -176,6 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
+        uiHelper.showLoadingDialog("Authenticating...");
 //        HashMap params = new HashMap();
 //        params.put("username", username);
 //        params.put("password", password);
@@ -193,6 +202,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
 
                         Log.e("login", "onResponse: "+value.body());
                         Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
@@ -219,12 +229,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        startActivity(intent);
 //                        finish();
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
                     }
 
                     @Override
                     public void onComplete() {
 //                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
                     }
                 });
 
