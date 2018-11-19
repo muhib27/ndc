@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--<item-->
+        <!--android:icon="@drawable/ndc_logo"-->
         <!--android:id="@+id/action_settings"-->
         <!--android:orderInCategory="100"-->
         <!--android:title="@string/action_settings"-->
         <!--app:showAsAction="never" />-->
+    <item
+        android:title=""
+        android:id="@+id/add"
+        android:icon="@drawable/circular_gray"
+        app:showAsAction="always" />
+
 </menu>

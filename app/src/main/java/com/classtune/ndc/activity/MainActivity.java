@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //mActionBar = getSupportActionBar();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle("");
 
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
