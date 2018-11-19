@@ -2,7 +2,8 @@
     android:id="@+id/layout_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -18,8 +19,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/classtune_selectuser_top">
+                android:adjustViewBounds="true">
 
                 <ImageView
                     android:layout_width="130dp"
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/login_text_bg"
+                    android:background="@drawable/round_shape_background"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="10dp">
@@ -95,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/login_text_bg"
+                    android:background="@drawable/round_shape_background"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="10dp">
@@ -117,24 +117,23 @@
                         android:imeOptions="actionDone"
                         android:includeFontPadding="true"
                         android:inputType="textPassword"
-                        android:padding="5dip"
+                        android:padding="5dp"
                         android:singleLine="true"
                         android:textColorHint="@color/gray_4"
                         android:textSize="@dimen/text_size_18_sp" />
                 </LinearLayout>
 
                 <Button
+                    android:textAllCaps="false"
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@color/user_selection_signin"
-                    android:padding="8dp"
+                    android:background="@drawable/round_shape_login_background"
+                    android:padding="13dp"
                     android:text="@string/activity_login_btn_sign_in"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
