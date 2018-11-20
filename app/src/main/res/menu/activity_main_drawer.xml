@@ -10,7 +10,7 @@
             android:title="Import" />
         <item
             android:id="@+id/nav_pigeonhole"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/pigeonhole_icon"
             android:title="Pigeonhole" />
         <item
             android:id="@+id/nav_notice"

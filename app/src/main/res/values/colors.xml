@@ -6,6 +6,7 @@
 
     <color name="black">#000000</color>
     <color name="dnc_color">#457995</color>
+    <color name="ndc_color">#047a97</color>
 
     <color name="settings_grey_divider">#D5D9DB</color>
     <color name="white">#FFFFFF</color>
@@ -13,10 +14,22 @@
     <color name="ash">#9e9d9d</color>
     <color name="gray_4">#D1D7D9</color>
 
+    <color name="list_background">#E5E5E5</color>
+
     <color name="iron">#CCCCCC</color>
     <color name="gray_bg">#DFE1E2</color>
     <color name="gray_1">#777C7E</color>
 
+
+
     <color name="classtune_green_color">#219439</color>
     <color name="classtune_green_color_light">#74af27</color>
+    <color name="black_off">#C0C0C0</color>
+    <color name="page_header_bg">#047A96</color>
+    <color name="off_black">#C1C1C1</color>
+    <color name="card_cell_view">#B8B8B8</color>
+    <color name="card_cell_header">#1D1B1C</color>
+
+
+
 </resources>

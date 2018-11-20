@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onBackStackChanged() {
                 int backStack = getSupportFragmentManager().getBackStackEntryCount();
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     toggle.setDrawerIndicatorEnabled(false);
                     toggle.setToolbarNavigationClickListener(new View.OnClickListener() {

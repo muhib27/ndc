@@ -29,7 +29,7 @@
 
     <style name="CustomActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <!--  <item name="android:background">@drawable/action_bar_style</item> -->
-        <item name="android:actionBarSize">60dp</item>
+        <item name="android:actionBarSize">55dp</item>
         <item name="android:background">@color/white</item>
         <item name="android:icon">@drawable/ndc_icon</item>
     </style>

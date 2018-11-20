@@ -54,6 +54,7 @@
     <string name="java_uihelper_error">Error</string>
     <string name="java_uihelper_ok">OK</string>
     <string name="java_uihelper_settings">Settings</string>
+    <string name="pigeon_hole_text">Pigeon Hole</string>
 
 
 </resources>
