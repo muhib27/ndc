@@ -8,6 +8,7 @@
     <color name="dnc_color">#457995</color>
     <color name="ndc_color">#047a97</color>
 
+
     <color name="settings_grey_divider">#D5D9DB</color>
     <color name="white">#FFFFFF</color>
     <color name="user_selection_signin">#75a8bd</color>
@@ -29,6 +30,8 @@
     <color name="off_black">#C1C1C1</color>
     <color name="card_cell_view">#B8B8B8</color>
     <color name="card_cell_header">#1D1B1C</color>
+    <color name="green">#14B24B</color>
+    <color name="red">#DE1F26</color>
 
 
 

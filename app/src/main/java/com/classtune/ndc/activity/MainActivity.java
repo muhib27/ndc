@@ -154,22 +154,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            //getSupportFragmentManager().popBackStack();
-            DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
-            NoticeFragment noticeFragment = (NoticeFragment) getSupportFragmentManager().findFragmentByTag("noticeFragment");
-//            SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settingsFragment");
-            if (noticeFragment != null && noticeFragment.isVisible()) {
-                getSupportFragmentManager().popBackStack();
-                toggle.setDrawerIndicatorEnabled(true);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                //gotoDashboardFragment();
-            }
-//            else if((settingsFragment != null && settingsFragment.isVisible())){
-//                Log.v("fdddddddddd", "dffffffffffff");
-//            }
-//            else if ((orderDetailsFragment != null && orderDetailsFragment.isVisible())   || (searchResultFragment != null && searchResultFragment.isVisible())) {
+            getSupportFragmentManager().popBackStack();
+//            DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
+//            NoticeFragment noticeFragment = (NoticeFragment) getSupportFragmentManager().findFragmentByTag("noticeFragment");
+//            if (noticeFragment != null && noticeFragment.isVisible()) {
 //                getSupportFragmentManager().popBackStack();
-//                goesToHomeFragment("");
+//                toggle.setDrawerIndicatorEnabled(true);
+//                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//
+//            }
+
 //            }
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         } else {

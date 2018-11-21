@@ -55,6 +55,18 @@
     <string name="java_uihelper_ok">OK</string>
     <string name="java_uihelper_settings">Settings</string>
     <string name="pigeon_hole_text">Pigeon Hole</string>
+    <string name="assign_date">Assign Date  </string>
+    <string name="due_date">Due Date  </string>
+    <string name="description">Description :</string>
+    <string name="title">Title :</string>
+    <string name="attachment"> Attachment </string>
+
+    <string name="test_description">The holy Eid-e-Miladunnabi (SM),
+        marking the anniversary of birth and demise of Prophet Muhammad (SM),
+        is being observed in the country today with due religious solemnity.
+        On this day in 570, the 12th of Rabiul Awal of the Hijri calendar,
+        Muhammad (SM) was born in Makkah of Saudi Arabia with divine blessings
+        and messages of peace for mankind.</string>
 
 
 </resources>

@@ -23,6 +23,7 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.google.gson.Gson;
@@ -111,7 +112,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (viewType) {
             case ITEM:
                 View viewItem = inflater.inflate(R.layout.pigeonhole_single_row, parent, false);
-                viewHolder = new OrderListItem(viewItem);
+                viewHolder = new PigeonholeListItem(viewItem);
                 break;
 //            case LOADING:
 //                View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
@@ -157,7 +158,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //                loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(topItem.mPosterImg);
 //                break;
             case ITEM:
-                final OrderListItem itemHolder = (OrderListItem) holder;
+                final PigeonholeListItem itemHolder = (PigeonholeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.orderTitle.setText(strList.get(position));
@@ -168,18 +169,18 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 int totalItem = 0;
 
 
-//
-//                itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        //gotoOrderDetailsFragment(orderList.get(position).getId());
-////                        String str = new Gson().toJson(orderList.get(position));
-//                        //bundle.putString("products", str);
-////                        bundle.putString("order_id", orderList.get(position).getId());
-////                        gotoOrderDetailsFragment(bundle);
-//
-//                    }
-//                });
+
+                itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //gotoOrderDetailsFragment(orderList.get(position).getId());
+//                        String str = new Gson().toJson(orderList.get(position));
+                        //bundle.putString("products", str);
+//                        bundle.putString("order_id", orderList.get(position).getId());
+                        gotoInstructorDetailsFragment();
+
+                    }
+                });
                 break;
 
 
@@ -338,7 +339,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 
-    protected class OrderListItem extends RecyclerView.ViewHolder {
+    protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
         private TextView accepted;
         private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
@@ -350,10 +351,11 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView rejected;
         private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
 
-        public OrderListItem(View itemView) {
+        public PigeonholeListItem(View itemView) {
             super(itemView);
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
+            itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
 
 
 
@@ -414,6 +416,14 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
         return returnResult;
+    }
+
+    private void gotoInstructorDetailsFragment() {
+        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
+        transaction.commit();
     }
 
 }
