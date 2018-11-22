@@ -3,7 +3,10 @@ package com.classtune.ndc.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,6 +33,7 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strList = new ArrayList<>();
     PigeonholeAdapter pigeonholeAdapter;
+    FloatingActionButton pigeonholeFab;
 //    https://stackoverflow.com/questions/34641240/toolbar-inside-cardview-to-create-a-popup-menu-overflow-icon/38929226
 
     public PigeonholeFragment() {
@@ -66,6 +70,8 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
             }
         });
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
+        pigeonholeFab = (FloatingActionButton)view.findViewById(R.id.pigeonhole_fab);
+        pigeonholeFab.setOnClickListener(this);
         strList = getStrList();
 
 
@@ -90,9 +96,20 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.pigeonhole_fab:
+                gotoInstructorTaskAssignFragment();
+                break;
+        }
     }
 
+    private void gotoInstructorTaskAssignFragment() {
+        InsTructorTaskAssignFragment insTructorTaskAssignFragment = new InsTructorTaskAssignFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);;
+        transaction.commit();
+    }
     @Override
     public void retryPageLoad() {
 

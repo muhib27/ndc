@@ -58,7 +58,9 @@
     <string name="assign_date">Assign Date  </string>
     <string name="due_date">Due Date  </string>
     <string name="description">Description :</string>
+    <string name="description_et">Description </string>
     <string name="title">Title :</string>
+    <string name="title_et">Title </string>
     <string name="attachment"> Attachment </string>
 
     <string name="test_description">The holy Eid-e-Miladunnabi (SM),
@@ -67,6 +69,13 @@
         On this day in 570, the 12th of Rabiul Awal of the Hijri calendar,
         Muhammad (SM) was born in Makkah of Saudi Arabia with divine blessings
         and messages of peace for mankind.</string>
+
+
+    <!--CustomDateTimePicker-->
+    <string name="java_customdatetimepicker_set_date">Set Date</string>
+    <string name="java_customdatetimepicker_set_time">Set Time</string>
+    <string name="java_customdatetimepicker_set">Set</string>
+    <string name="java_customdatetimepicker_cancel">Cancel</string>
 
 
 </resources>
