@@ -12,11 +12,15 @@
     <color name="settings_grey_divider">#D5D9DB</color>
     <color name="white">#FFFFFF</color>
     <color name="user_selection_signin">#75a8bd</color>
+    <!--<color name="ash">#ccedf5</color>-->
     <color name="ash">#9e9d9d</color>
-    <color name="gray_4">#D1D7D9</color>
+    <color name="deep_ash">#7e7f7f</color>
+    <color name="task_assign_border_color">#DFDFDF</color>
 
-    <color name="list_background">#E5E5E5</color>
+    <color name="gray_4">#ccedf5</color>
 
+    <!--<color name="list_background">#E5E5E5</color>-->
+    <color name="list_background">#e5f8fd</color>
     <color name="iron">#CCCCCC</color>
     <color name="gray_bg">#DFE1E2</color>
     <color name="gray_1">#777C7E</color>
@@ -32,7 +36,7 @@
     <color name="card_cell_header">#1D1B1C</color>
     <color name="green">#14B24B</color>
     <color name="red">#DE1F26</color>
-
+    <color name="browse_color">#CDCBCC</color>
 
 
 </resources>

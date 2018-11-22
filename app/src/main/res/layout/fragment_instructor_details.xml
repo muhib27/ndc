@@ -243,6 +243,7 @@
                         card_view:cardUseCompatPadding="true">
 
                         <LinearLayout
+                            android:id="@+id/submittedLayout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -254,8 +255,11 @@
                                 android:layout_height="wrap_content"
                                 android:background="@color/green"
                                 android:gravity="center"
-                                android:padding="@dimen/size_10dp"
-                                android:text="Total CM"
+                                android:paddingTop="@dimen/size_10dp"
+                                android:paddingBottom="@dimen/size_10dp"
+                                android:paddingLeft="@dimen/size_5dp"
+                                android:paddingRight="@dimen/size_5dp"
+                                android:text="Submitted"
                                 android:textColor="@color/white" />
 
                             <TextView
@@ -284,6 +288,7 @@
                         card_view:cardUseCompatPadding="true">
 
                         <LinearLayout
+                            android:id="@+id/pendingLayout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -296,7 +301,7 @@
                                 android:background="@color/red"
                                 android:gravity="center"
                                 android:padding="@dimen/size_10dp"
-                                android:text="Total CM"
+                                android:text="Pending"
                                 android:textColor="@color/white" />
 
                             <TextView

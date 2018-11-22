@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -7,8 +8,7 @@
     android:background="@color/list_background"
     android:orientation="vertical"
     android:padding="@dimen/size_10dp"
-    tools:context="com.classtune.ndc.fragment.InsTructorTaskAssignFragment">
-
+    tools:context=".fragment.CMTaskSubmitFragment">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,13 +31,34 @@
             <!--card_view:cardBackgroundColor="@android:color/white"-->
             <!--card_view:cardElevation="3dp"-->
             <!--card_view:cardUseCompatPadding="true">-->
-            <EditText
+            <RelativeLayout
+                android:id="@+id/titleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10dp"
-                android:background="@drawable/round_shape_background_task_assign"
-                android:hint="@string/title_et"
-                android:padding="@dimen/size_10dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/title"
+                    android:textSize="@dimen/text_size_17_sp" />
+
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/title"
+                    android:maxLines="2"
+                    android:text="@string/returned_from_app_settings_to_activity"
+                    android:textColor="@color/dnc_color"
+                    android:textSize="@dimen/text_size_19_sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
             <!--</android.support.v7.widget.CardView>-->
             <!--<android.support.v7.widget.CardView-->
             <!--android:background="@color/white"-->
@@ -76,23 +97,6 @@
                     android:textSize="@dimen/text_size_16_sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutDueDate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/size_10dp"
-                android:background="@drawable/round_shape_background_task_assign"
-                android:gravity="center"
-                android:padding="@dimen/size_10dp">
-
-                <TextView
-                    android:id="@+id/due_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/due_date"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_16_sp" />
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,7 +116,6 @@
                 android:background="@color/list_background" />
 
             <Button
-                android:id="@+id/attachFile"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
@@ -128,7 +131,6 @@
                 android:textSize="@dimen/text_size_15_sp" />
 
             <Button
-                android:id="@+id/assignBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
@@ -145,5 +147,7 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
+
 
 </LinearLayout>
