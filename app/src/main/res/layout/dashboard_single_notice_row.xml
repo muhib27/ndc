@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/size_5dp"
+    android:layout_marginBottom="@dimen/size_5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
+        <View
+            android:id="@+id/flag"
+            android:background="@color/black"
+            android:layout_width="5dp"
+            android:layout_height="@dimen/size_20dp"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/size_10dp"
+            android:textSize="@dimen/text_size_17_sp"
+            android:text="@string/activity_login_txt_sign_in"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:id="@+id/time"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_size_14_sp"
+            android:text="5 min"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

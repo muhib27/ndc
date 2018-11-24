@@ -1,13 +1,273 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/size_10dp"
+    android:paddingRight="@dimen/size_10dp"
     tools:context="com.classtune.ndc.fragment.DashBoardFragment">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:fillViewport="true"-->
+        <!--android:background="#f7f7f7"-->
+        <!--android:padding="25dp" >-->
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <!-- TODO: Update blank fragment layout -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/margin_0dp"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size_10dp">
+
+                    <TextView
+                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1.5"
+                        android:gravity="center"
+                        android:text="Notice" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/recent"
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Recent" />
+
+                        <TextView
+                            android:id="@+id/impotant"
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Important" />
+
+                        <TextView
+                            android:id="@+id/common"
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Common" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/notice_recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_10dp"
+                    android:clipToPadding="false" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_below="@+id/card_notice"
+            android:id="@+id/card_pigeonhole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/margin_0dp"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size_10dp">
+
+                    <TextView
+                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1.5"
+                        android:gravity="center"
+                        android:text="Notice" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.5"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Recent" />
+
+                        <TextView
+
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Important" />
+
+                        <TextView
+
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Common" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pigeonhole_recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_10dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_below="@+id/card_pigeonhole"
+            android:id="@+id/card_reading_package"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/margin_0dp"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size_10dp">
+
+                    <TextView
+                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1.5"
+                        android:gravity="center"
+                        android:text="Notice" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3.5"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Recent" />
+
+                        <TextView
+
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Important" />
+
+                        <TextView
+
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/size_5dp"
+                            android:text="Common" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/reading_package_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_10dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:cardCornerRadius="@dimen/margin_0dp"-->
+        <!--card_view:cardBackgroundColor="@android:color/white"-->
+        <!--card_view:cardElevation="3dp"-->
+        <!--card_view:cardUseCompatPadding="true">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/pigeonhole_recycleview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="@dimen/size_10dp"-->
+        <!--android:clipToPadding="false" />-->
+
+        <!--</android.support.v7.widget.CardView>-->
+        <!--</LinearLayout>-->
+
+    </RelativeLayout>
+    <!--</ScrollView>-->
+
+</ScrollView>
