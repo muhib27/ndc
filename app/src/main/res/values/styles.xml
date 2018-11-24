@@ -55,6 +55,13 @@
         <item name="color">@color/dnc_color</item>
     </style>
 
+    <style name="popupMenuStyle" >
+        <item name="android:textColor">@color/ash</item>
+        <item name="android:itemBackground">#ffffff</item>
+        <item name="android:divider">#eaeaea</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
     <!--humberger-->
 
 </resources>

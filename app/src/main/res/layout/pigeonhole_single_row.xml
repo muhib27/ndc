@@ -48,8 +48,9 @@
                     android:layout_weight="1"
                     android:src="@drawable/attachment_icon" />
 
-                <ImageView
-                    android:id="@+id/imageButton"
+                <ImageButton
+                    android:background="@null"
+                    android:id="@+id/dot_menu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
