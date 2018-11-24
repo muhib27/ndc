@@ -8,13 +8,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +37,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -168,6 +175,13 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 String customerName = "";
                 int totalItem = 0;
 
+                itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showPopupMenu(itemHolder.dotMenu,position);
+                    }
+                });
+
 
 
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -186,8 +200,96 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
     }
+    PopupMenu popupMenu;
+    private void showPopupMenu(View view,int position) {
+        // inflate menu
+//        PopupMenu popup = new PopupMenu(view.getContext(),view );
+//        MenuInflater inflater = popup.getMenuInflater();
+//        inflater.inflate(R.menu.pigeonhole_cell_menu, popup.getMenu());
+//        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
+//        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, (MenuBuilder)popup.getMenu(), view);
+//        popup.show();
+        Context wrapper = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+        popupMenu = new PopupMenu(wrapper, view);
+        popupMenu.inflate(R.menu.pigeonhole_cell_menu);
+
+// Force icons to show
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[] { boolean.class };
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+            // Possible exceptions are NoSuchMethodError and NoSuchFieldError
+            //
+            // In either case, an exception indicates something is wrong with the reflection code, or the
+            // structure of the PopupMenu class or its dependencies has changed.
+            //
+            // These exceptions should never happen since we're shipping the AppCompat library in our own apk,
+            // but in the case that they do, we simply can't force icons to display, so log the error and
+            // show the menu normally.
+
+            //Log.w(TAG, "error forcing menu icons to show", e);
+            popupMenu.show();
+            return;
+        }
 
 
+        popupMenu.show();
+
+       popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+           @Override
+           public boolean onMenuItemClick(MenuItem menuItem) {
+               switch (menuItem.getItemId()) {
+                   case R.id.edit:
+                       Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+                       break;
+                   case R.id.delete:
+                       Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                       break;
+               }
+               return false;
+           }
+       });
+    }
+
+//    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+//
+//        private int position;
+//        public MyMenuItemClickListener(int positon) {
+//            this.position=positon;
+//        }
+//
+//        @Override
+//        public boolean onMenuItemClick(MenuItem menuItem) {
+//            switch (menuItem.getItemId()) {
+//
+////            case R.id.Not_interasted_catugury:
+////                String RemoveCategory=mDataSet.get(position).getCategory();
+////                // mDataSet.remove(position);
+////                //notifyItemRemoved(position);
+////                // notifyItemRangeChanged(position,mDataSet.size());
+////
+////                mySharedPreferences.saveStringPrefs(Constants.REMOVE_CTAGURY,RemoveCategory,MainActivity.context);
+////                Toast.makeText(MainActivity.context, "Add to favourite", Toast.LENGTH_SHORT).show();
+////                return true;
+//                case R.id.edit:
+////                mDataSet.remove(position);
+////                notifyItemRemoved(position);
+////                notifyItemRangeChanged(position,mDataSet.size());
+//                Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show();
+//                    return true;
+//                case R.id.delete:
+//                    Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+////                mySharedPreferences.deletePrefs(Constants.REMOVE_CTAGURY,MainActivity.context);
+//                default:
+//            }
+//            return false;
+//        }
+//    }
 
     private void gotoOrderDetailsFragment(Bundle bundle) {
 
@@ -350,12 +452,14 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private LinearLayout itemNameLayout;
         private TextView rejected;
         private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
+        ImageButton dotMenu;
 
         public PigeonholeListItem(View itemView) {
             super(itemView);
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            dotMenu = itemView.findViewById(R.id.dot_menu);
 
 
 

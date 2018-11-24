@@ -65,6 +65,8 @@
     <string name="attachment"> Attachment </string>
     <string name="attach"> Attach</string>
     <string name="assign"> Assign</string>
+    <string name="edit"> Edit</string>
+    <string name="delete"> Delete</string>
 
     <string name="test_description">The holy Eid-e-Miladunnabi (SM),
         marking the anniversary of birth and demise of Prophet Muhammad (SM),
