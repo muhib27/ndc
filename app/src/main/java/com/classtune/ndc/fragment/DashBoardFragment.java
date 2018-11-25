@@ -18,6 +18,8 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.CMListAdapter;
 import com.classtune.ndc.adapter.DashboardAdapter;
+import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
+import com.classtune.ndc.adapter.DashboardEventsAdapter;
 import com.classtune.ndc.adapter.DashboardNoticeAdapter;
 import com.classtune.ndc.adapter.DashboardPigeonholeAdapter;
 import com.classtune.ndc.adapter.DashboardReadingPackageAdapter;
@@ -36,6 +38,8 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
     DashboardNoticeAdapter dashboardNoticeAdapter;
     DashboardPigeonholeAdapter dashboardPigeonholeAdapter;
     DashboardReadingPackageAdapter dashboardReadingPackageAdapter;
+    DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
+    DashboardEventsAdapter dashboardEventsAdapter;
     TextView recent, important, common;
 
     public DashBoardFragment() {
@@ -69,6 +73,8 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
         initNoticeView(view);
         initPigeonholeView(view);
         initReadingPackageView(view);
+        initClassScheduleView(view);
+        initEventsView(view);
     }
 
     private void initNoticeView(View view) {
@@ -115,15 +121,41 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
 //        common = view.findViewById(R.id.common);
 //        recent.setOnClickListener(this);
 
-        strList = getStrList();
+
         dashboardReadingPackageAdapter = new DashboardReadingPackageAdapter(getContext());
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
-        pigeonhole_recycleview.setLayoutManager(linearLayoutManager);
-        pigeonhole_recycleview.setItemAnimator(new DefaultItemAnimator());
-        pigeonhole_recycleview.setAdapter(dashboardReadingPackageAdapter);
+        reading_package_rv.setLayoutManager(linearLayoutManager);
+        reading_package_rv.setItemAnimator(new DefaultItemAnimator());
+        reading_package_rv.setAdapter(dashboardReadingPackageAdapter);
         dashboardReadingPackageAdapter.setData(getRecent());
         dashboardReadingPackageAdapter.notifyDataSetChanged();
+    }
+    private void initClassScheduleView(View view) {
+
+        class_schedule_rv = (RecyclerView) view.findViewById(R.id.class_schedule_rv);
+
+        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext());
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        class_schedule_rv.setLayoutManager(linearLayoutManager);
+        class_schedule_rv.setItemAnimator(new DefaultItemAnimator());
+        class_schedule_rv.setAdapter(dashboardClassScheduleAdapter);
+        dashboardClassScheduleAdapter.setData(getRecent());
+        dashboardClassScheduleAdapter.notifyDataSetChanged();
+    }
+    private void initEventsView(View view) {
+
+        events_rv = (RecyclerView) view.findViewById(R.id.events_rv);
+
+        dashboardEventsAdapter = new DashboardEventsAdapter(getContext());
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        events_rv.setLayoutManager(linearLayoutManager);
+        events_rv.setItemAnimator(new DefaultItemAnimator());
+        events_rv.setAdapter(dashboardEventsAdapter);
+        dashboardEventsAdapter.setData(getRecent());
+        dashboardEventsAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<String> getStrList() {

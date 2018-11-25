@@ -75,6 +75,7 @@
                         android:src="@drawable/username_icon" />
 
                     <EditText
+                        android:textColor="@color/ndc_color"
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -109,6 +110,7 @@
                         android:src="@drawable/pasword_icon" />
 
                     <EditText
+                        android:textColor="@color/ndc_color"
                         android:id="@+id/et_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

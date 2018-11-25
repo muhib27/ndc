@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Muhib on 20/11/18.
  */
 
-public class DashboardReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
 
     // View Types
@@ -63,7 +63,7 @@ public class DashboardReadingPackageAdapter extends RecyclerView.Adapter<Recycle
     String billingAddressOne = "";
     String billingAddressTwo = "";
 //
-    public DashboardReadingPackageAdapter(Context context, PaginationAdapterCallback mCallback) {
+    public DashboardEventsAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
         pigeonholeDataModelList = new ArrayList<>();
@@ -71,12 +71,12 @@ public class DashboardReadingPackageAdapter extends RecyclerView.Adapter<Recycle
 
     }
 
-    public DashboardReadingPackageAdapter(Context context) {
+    public DashboardEventsAdapter(Context context) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
     }
 
-    public DashboardReadingPackageAdapter(Context context, ArrayList<String> strList) {
+    public DashboardEventsAdapter(Context context, ArrayList<String> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
@@ -104,7 +104,7 @@ public class DashboardReadingPackageAdapter extends RecyclerView.Adapter<Recycle
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.dashboard_single_reading_package_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.dashboard_single_events_row, parent, false);
                 viewHolder = new NoticeListItem(viewItem);
                 break;
 
