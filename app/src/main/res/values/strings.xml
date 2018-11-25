@@ -55,7 +55,11 @@
     <string name="java_uihelper_ok">OK</string>
     <string name="java_uihelper_settings">Settings</string>
     <string name="pigeon_hole_text">Pigeon Hole</string>
+    <string name="notice_text">Notice</string>
+    <string name="class_schedule_text">Class Schedule</string>
+    <string name="dashboard_text">Dashboard</string>
     <string name="assign_date">Assign Date  </string>
+    <string name="publish_date">Publish Date  </string>
     <string name="assign_to">Assign to</string>
     <string name="due_date">Due Date  </string>
     <string name="description">Description :</string>
@@ -91,7 +95,6 @@
     <string name="video_type">(mp4)</string>
     <string name="doc_type">(doc,pdf,ppt etc)</string>
     <string name="file_type"> (zip, rar etc)</string>
-
 
 
 </resources>

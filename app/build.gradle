@@ -48,6 +48,7 @@ dependencies {
     implementation('pub.devrel:easypermissions:2.0.0') {
         exclude group: "com.android.support"
     }
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 }
 //apply plugin: 'com.google.gms.google-services'
 

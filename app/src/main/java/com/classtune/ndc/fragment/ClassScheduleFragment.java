@@ -17,8 +17,8 @@ import android.view.ViewGroup;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
 import com.classtune.ndc.adapter.DashboardNoticeAdapter;
-import com.classtune.ndc.adapter.PigeonholeAdapter;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
 import java.util.ArrayList;
@@ -26,15 +26,15 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoticeFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
+public class ClassScheduleFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strList = new ArrayList<>();
-    DashboardNoticeAdapter dashboardNoticeAdapter;
+    DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
 
 
-    public NoticeFragment() {
+    public ClassScheduleFragment() {
         // Required empty public constructor
     }
 
@@ -43,7 +43,7 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notice, container, false);
+        return inflater.inflate(R.layout.fragment_class_schedule, container, false);
     }
 
     @Override
@@ -67,26 +67,26 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        initNoticeView(view);
+        initClassScheduleView(view);
     }
 
-    private void initNoticeView(View view) {
+    private void initClassScheduleView(View view) {
 
-        rv = (RecyclerView) view.findViewById(R.id.notice_recycleview);
+        rv = (RecyclerView) view.findViewById(R.id.class_schedule_rv);
 //        important = view.findViewById(R.id.impotant);
 //        recent = view.findViewById(R.id.recent);
 //        common = view.findViewById(R.id.common);
 //        recent.setOnClickListener(this);
 
         strList = getStrList();
-        dashboardNoticeAdapter = new DashboardNoticeAdapter(getContext(), 1);
+        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext(), 1);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(dashboardNoticeAdapter);
-        dashboardNoticeAdapter.setData(getStrList());
-        dashboardNoticeAdapter.notifyDataSetChanged();
+        rv.setAdapter(dashboardClassScheduleAdapter);
+        dashboardClassScheduleAdapter.setData(getStrList());
+        dashboardClassScheduleAdapter.notifyDataSetChanged();
     }
 
 

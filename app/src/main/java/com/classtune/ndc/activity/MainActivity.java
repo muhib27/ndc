@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.fragment.ClassScheduleFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
@@ -246,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gotoNoticeFragment();
 
         } else if (id == R.id.nav_manage) {
+            gotoClassScheduleFragment();
 
         } else if (id == R.id.nav_share) {
 
@@ -272,6 +274,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, noticeFragment, "noticeFragment").addToBackStack(null);;
+        transaction.commit();
+    }
+    private void gotoClassScheduleFragment() {
+        ClassScheduleFragment classScheduleFragment = new ClassScheduleFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, classScheduleFragment, "classScheduleFragment").addToBackStack(null);;
         transaction.commit();
     }
     private void gotoPigeonholeFragment() {

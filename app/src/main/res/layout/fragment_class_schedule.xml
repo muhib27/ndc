@@ -38,7 +38,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="8"
                 android:paddingLeft="@dimen/size_15dp"
-                android:text="@string/notice_text"
+                android:text="@string/class_schedule_text"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18_sp"
                 android:textStyle="bold" />
@@ -65,7 +65,7 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/notice_recycleview"
+                android:id="@+id/class_schedule_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false" />

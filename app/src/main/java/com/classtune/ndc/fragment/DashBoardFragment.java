@@ -1,9 +1,13 @@
 package com.classtune.ndc.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -26,6 +30,11 @@ import com.classtune.ndc.adapter.DashboardReadingPackageAdapter;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +50,8 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
     DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
     DashboardEventsAdapter dashboardEventsAdapter;
     TextView recent, important, common;
+    PieChartView pieChartView;
+    PieChartData pieChartData;
 
     public DashBoardFragment() {
         // Required empty public constructor
@@ -75,6 +86,24 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
         initReadingPackageView(view);
         initClassScheduleView(view);
         initEventsView(view);
+        initResearchView(view);
+
+    }
+
+    private void initResearchView(View view) {
+        pieChartView = view.findViewById(R.id.chart);
+
+        List pieData = new ArrayList<>();
+        pieData.add(new SliceValue(75, ContextCompat.getColor(getActivity(), R.color.selected_color)));
+        pieData.add(new SliceValue(25, ContextCompat.getColor(getActivity(), R.color.not_selected_color)));
+
+
+        PieChartData pieChartData = new PieChartData(pieData);
+        pieChartData.setHasLabels(true).setValueLabelTextSize(14);
+        pieChartData.setHasCenterCircle(true).setCenterText1("").setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#0097A7"));
+        pieChartView.setPieChartData(pieChartData);
+
+        pieChartView.setOnClickListener(this);
     }
 
     private void initNoticeView(View view) {
@@ -86,7 +115,7 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
         recent.setOnClickListener(this);
 
         strList = getStrList();
-        dashboardNoticeAdapter = new DashboardNoticeAdapter(getContext());
+        dashboardNoticeAdapter = new DashboardNoticeAdapter(getContext(), 0);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
@@ -135,7 +164,7 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
 
         class_schedule_rv = (RecyclerView) view.findViewById(R.id.class_schedule_rv);
 
-        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext());
+        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext(),0);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         class_schedule_rv.setLayoutManager(linearLayoutManager);
@@ -200,6 +229,17 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.common:
                 break;
+            case R.id.chart:
+                gotoResearchListFragment();
+                break;
         }
+    }
+
+    private void gotoResearchListFragment() {
+        ResearchListFragment researchListFragment = new ResearchListFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, researchListFragment, "researchListFragment").addToBackStack(null);;
+        transaction.commit();
     }
 }

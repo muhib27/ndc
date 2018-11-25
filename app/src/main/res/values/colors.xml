@@ -38,5 +38,10 @@
     <color name="red">#DE1F26</color>
     <color name="browse_color">#CDCBCC</color>
 
+    <color name="blue_color">#007894</color>
+    <color name="selected_color">#00BD9F</color>
+    <color name="not_selected_color">#FD506E</color>
+
+
 
 </resources>
