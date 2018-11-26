@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NDC</string>
+    <string name="app_name">NDC 4.0</string>
     <string name="title_activity_login">LoginActivity</string>
 
     <!--LoginActivity-->
@@ -99,6 +99,7 @@
     <string name="video_type">(mp4)</string>
     <string name="doc_type">(doc,pdf,ppt etc)</string>
     <string name="file_type"> (zip, rar etc)</string>
+    <string name="profile_text">Profile</string>
 
 
 </resources>

@@ -22,6 +22,7 @@ import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
+import com.classtune.ndc.fragment.ProfileFragment;
 import com.classtune.ndc.fragment.ResearchListFragment;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.DrawerLocker;
@@ -265,9 +266,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gotoResearchListFragment();
 
         }
-//        else if (id == R.id.nav_share) {
-//
-//        }
+        else if (id == R.id.nav_profile) {
+                gotoProfileFragment();
+        }
         else if (id == R.id.nav_logout) {
             userLogout();
         }
@@ -344,8 +345,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.replace(R.id.main_acitivity_container, researchListFragment, "researchListFragment").addToBackStack(null);;
         transaction.commit();
     }
+    private void gotoProfileFragment() {
+        setUpBackStackCountToZero();
+        ProfileFragment profileFragment = new ProfileFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, profileFragment, "profileFragment").addToBackStack(null);
+        transaction.commit();
+    }
 
-    @Override
+        @Override
     public void setDrawerEnabled(boolean enabled) {
         int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
                 DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
