@@ -1,5 +1,7 @@
 package com.classtune.ndc.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,7 @@ import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
+import com.classtune.ndc.fragment.ResearchListFragment;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.DrawerLocker;
 import com.classtune.ndc.utils.NetworkConnection;
@@ -239,9 +242,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_pigeonhole) {
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else
+            if (id == R.id.nav_pigeonhole) {
             gotoPigeonholeFragment();
 
         } else if (id == R.id.nav_notice) {
@@ -256,15 +260,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gotoEventsFragment();
 
         }
-        else if (id == R.id.nav_share) {
+        else if (id == R.id.nav_research) {
+            gotoResearchListFragment();
 
-        } else if (id == R.id.nav_send) {
-
+        }
+//        else if (id == R.id.nav_share) {
+//
+//        }
+        else if (id == R.id.nav_logout) {
+            userLogout();
         }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void userLogout() {
+        AppSharedPreference.setUsingFirstTime(true);
+        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 
 
@@ -302,6 +318,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, eventsFragment, "eventsFragment").addToBackStack(null);;
+        transaction.commit();
+    }
+    private void gotoResearchListFragment() {
+        ResearchListFragment researchListFragment = new ResearchListFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, researchListFragment, "researchListFragment").addToBackStack(null);;
         transaction.commit();
     }
 

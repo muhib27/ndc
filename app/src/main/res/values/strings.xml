@@ -57,6 +57,7 @@
     <string name="pigeon_hole_text">Pigeon Hole</string>
     <string name="notice_text">Notice</string>
     <string name="events_text">Events</string>
+    <string name="research_text">Research</string>
     <string name="class_schedule_text">Class Schedule</string>
     <string name="dashboard_text">Dashboard</string>
     <string name="assign_date">Assign Date  </string>
