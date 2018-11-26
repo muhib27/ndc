@@ -3,6 +3,7 @@ package com.classtune.ndc.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +33,7 @@ public class EventsFragment extends Fragment implements PaginationAdapterCallbac
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strList = new ArrayList<>();
     DashboardEventsAdapter dashboardEventsAdapter;
+    FloatingActionButton event_fab;
 
 
     public EventsFragment() {
@@ -71,6 +73,8 @@ public class EventsFragment extends Fragment implements PaginationAdapterCallbac
     }
 
     private void initNoticeView(View view) {
+        event_fab = view.findViewById(R.id.event_fab);
+        event_fab.setOnClickListener(this);
 
         rv = (RecyclerView) view.findViewById(R.id.notice_recycleview);
 //        important = view.findViewById(R.id.impotant);
@@ -98,17 +102,17 @@ public class EventsFragment extends Fragment implements PaginationAdapterCallbac
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.pigeonhole_fab:
-                gotoInstructorTaskAssignFragment();
+            case R.id.event_fab:
+                gotoInstructorEventCreateFragment();
                 break;
         }
     }
 
-    private void gotoInstructorTaskAssignFragment() {
-        InsTructorTaskAssignFragment insTructorTaskAssignFragment = new InsTructorTaskAssignFragment();
+    private void gotoInstructorEventCreateFragment() {
+        InsTructorEventCreateFragment insTructorEventCreateFragment = new InsTructorEventCreateFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, insTructorEventCreateFragment, "insTructorEventCreateFragment").addToBackStack(null);;
         transaction.commit();
     }
 

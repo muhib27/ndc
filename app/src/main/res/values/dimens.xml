@@ -27,6 +27,8 @@
     <dimen name="margin_1dp">1dp</dimen>
     <dimen name="text_size_16_sp">16sp</dimen>
     <dimen name="text_size_19_sp">19sp</dimen>
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_30dp">30dp</dimen>
 
 
 </resources>

@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            // Handle the camera action
 //        } else
             if (id == R.id.nav_pigeonhole) {
+
             gotoPigeonholeFragment();
 
         } else if (id == R.id.nav_notice) {
@@ -293,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoNoticeFragment() {
+        setUpBackStackCountToZero();
         NoticeFragment noticeFragment = new NoticeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -300,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
     private void gotoClassScheduleFragment() {
+        setUpBackStackCountToZero();
         ClassScheduleFragment classScheduleFragment = new ClassScheduleFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -307,13 +310,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
     private void gotoPigeonholeFragment() {
+        setUpBackStackCountToZero();
         PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);;
         transaction.commit();
     }
+
+    private void setUpBackStackCountToZero() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if(count>0) {
+            while (count>0) {
+                getSupportFragmentManager().popBackStack();
+                count--;
+            }
+        }
+    }
+
     private void gotoEventsFragment() {
+        setUpBackStackCountToZero();
         EventsFragment eventsFragment = new EventsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -321,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
     private void gotoResearchListFragment() {
+        setUpBackStackCountToZero();
         ResearchListFragment researchListFragment = new ResearchListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -335,4 +352,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerLockMode(lockMode);
         toggle.setDrawerIndicatorEnabled(enabled);
     }
+
+//    private void hideItem()
+//    {
+//        navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        Menu nav_Menu = navigationView.getMenu();
+//        nav_Menu.findItem(R.id.nav_settings).setVisible(false);
+//    }
 }

@@ -63,6 +63,8 @@
     <string name="assign_date">Assign Date  </string>
     <string name="publish_date">Publish Date  </string>
     <string name="assign_to">Assign to</string>
+    <string name="event_date">Event Date</string>
+    <string name="event_time">Event Time</string>
     <string name="due_date">Due Date  </string>
     <string name="description">Description :</string>
     <string name="description_et">Description </string>

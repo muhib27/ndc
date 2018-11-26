@@ -74,17 +74,30 @@
 
 
     </RelativeLayout>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/pigeonhole_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginRight="@dimen/size_20dp"
-        android:layout_marginBottom="@dimen/size_20dp"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/size_30dp"
+        android:layout_marginBottom="@dimen/size_40dp"
+        android:src="@drawable/pencil_icon"
+        app:backgroundTint="@color/ndc_color"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal" />
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/pigeonhole_fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_margin="@dimen/fab_margin"-->
+        <!--android:layout_marginRight="@dimen/size_20dp"-->
+        <!--android:layout_marginBottom="@dimen/size_20dp"-->
+        <!--app:srcCompat="@android:drawable/ic_menu_edit" />-->
 
 
 </RelativeLayout>

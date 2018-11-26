@@ -11,26 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InsTructorTaskAssignFragment extends Fragment implements View.OnClickListener {
+public class InsTructorNoticeCreateFragment extends Fragment implements View.OnClickListener {
     LinearLayout layoutDueDate;
     Button attachFileBtn, assignBtn;
-    TextView dueDate;
 
-    public InsTructorTaskAssignFragment() {
+    public InsTructorNoticeCreateFragment() {
         // Required empty public constructor
     }
 
@@ -39,7 +34,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ins_tructor_task_assign, container, false);
+        return inflater.inflate(R.layout.fragment_ins_tructor_notice_create, container, false);
     }
 
     @Override
@@ -52,19 +47,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
         initView(view);
 
-        layoutDueDate = (LinearLayout)view.findViewById(R.id.layoutDueDate);
-        layoutDueDate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                showDatepicker();
-            }
-        });
     }
 
     private void initView(View view) {
-        dueDate = view.findViewById(R.id.due_date);
         attachFileBtn = view.findViewById(R.id.attachFile);
         assignBtn = view.findViewById(R.id.assignBtn);
 
@@ -73,33 +58,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     }
 
-    private void showDatepicker() {
-        DatePickerFragment picker = new DatePickerFragment();
-        picker.setCallbacks(datePickerCallback);
-        picker.show(getFragmentManager(), "datePicker");
-    }
-    DatePickerFragment.DatePickerOnSetDateListener datePickerCallback = new DatePickerFragment.DatePickerOnSetDateListener() {
 
-        @Override
-        public void onDateSelected(int month, String monthName, int day,
-                                   int year, String dateFormatServer, String dateFormatApp,
-                                   Date date) {
-            // TODO Auto-generated method stub
-            dueDate.setText(dateFormatApp);
-//            choosenDateTextView.setText(dateFormatApp);
-//            dateFormatServerString = dateFormatServer;
-        }
-
-		/*
-		 * @Override public void onDateSelected(String monthName, int day, int
-		 * year) { // TODO Auto-generated method stub Date date; try { date =
-		 * new SimpleDateFormat("MMMM").parse(monthName); Calendar cal =
-		 * Calendar.getInstance(); cal.setTime(date); String dateString = day +
-		 * "-" + cal.get(Calendar.MONTH) + "-" + year;
-		 * choosenDateTextView.setText(dateString); } catch (ParseException e) {
-		 * // TODO Auto-generated catch block Log.e("ERROR", e.toString()); } }
-		 */
-    };
 
     @Override
     public void onClick(View v) {

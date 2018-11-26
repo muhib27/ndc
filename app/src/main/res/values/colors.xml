@@ -7,6 +7,7 @@
     <color name="black">#000000</color>
     <color name="dnc_color">#457995</color>
     <color name="ndc_color">#047a97</color>
+    <color name="floating_button">#007894</color>
 
 
     <color name="settings_grey_divider">#D5D9DB</color>

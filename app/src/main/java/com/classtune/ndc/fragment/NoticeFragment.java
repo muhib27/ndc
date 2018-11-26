@@ -3,6 +3,7 @@ package com.classtune.ndc.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +33,7 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strList = new ArrayList<>();
     DashboardNoticeAdapter dashboardNoticeAdapter;
+    FloatingActionButton floatingActionButton;
 
 
     public NoticeFragment() {
@@ -50,8 +52,8 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            MainActivity.toggle.setDrawerIndicatorEnabled(false);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            MainActivity.toggle.setDrawerIndicatorEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -71,6 +73,8 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     }
 
     private void initNoticeView(View view) {
+        floatingActionButton = (FloatingActionButton)view.findViewById(R.id.notice_fab);
+        floatingActionButton.setOnClickListener(this);
 
         rv = (RecyclerView) view.findViewById(R.id.notice_recycleview);
 //        important = view.findViewById(R.id.impotant);
@@ -98,17 +102,17 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.pigeonhole_fab:
-                gotoInstructorTaskAssignFragment();
+            case R.id.notice_fab:
+                gotoInstructorNoticeCreateFragment();
                 break;
         }
     }
 
-    private void gotoInstructorTaskAssignFragment() {
-        InsTructorTaskAssignFragment insTructorTaskAssignFragment = new InsTructorTaskAssignFragment();
+    private void gotoInstructorNoticeCreateFragment() {
+        InsTructorNoticeCreateFragment insTructorNoticeCreateFragment = new InsTructorNoticeCreateFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, insTructorNoticeCreateFragment, "insTructorNoticeCreateFragment").addToBackStack(null);;
         transaction.commit();
     }
 

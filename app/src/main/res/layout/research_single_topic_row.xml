@@ -48,7 +48,7 @@
 
             <TextView
                 android:layout_marginTop="@dimen/size_10dp"
-                android:maxLines="3"
+                android:maxLines="5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/test_description"
@@ -60,5 +60,3 @@
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
-
-
