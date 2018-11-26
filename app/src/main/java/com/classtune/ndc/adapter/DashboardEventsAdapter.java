@@ -2,6 +2,7 @@ package com.classtune.ndc.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.classtune.ndc.R;
-import com.classtune.ndc.fragment.InstructorDetailsFragment;
+import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
@@ -29,14 +30,16 @@ import java.util.List;
  * Created by Muhib on 20/11/18.
  */
 
-public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     // View Types
     private static final int ITEM = 0;
-    private static final int LOADING = 1;
+    private static final int ITEM_1 = 1;
+    private static final int LOADING = 4;
     private static final int NOTICE = 2;
     private static final int ADD = 5;
+    int viewparameter = 0;
 
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
@@ -49,12 +52,12 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private boolean retryPageLoad = false;
 
     private PaginationAdapterCallback mCallback;
-//    private OrderProcess mOrderProcessCallback;
+    //    private OrderProcess mOrderProcessCallback;
     View myView;
     LayoutInflater layoutInflater;
     LinearLayout layout;
 
-//
+    //
     private String errorMsg;
     //HomeFragment homeFragment;
 
@@ -62,7 +65,8 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     String shippingAddressTwo = "";
     String billingAddressOne = "";
     String billingAddressTwo = "";
-//
+
+    //
     public DashboardEventsAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
@@ -71,9 +75,10 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
-    public DashboardEventsAdapter(Context context) {
+    public DashboardEventsAdapter(Context context, int viewparameter) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
+        this.viewparameter = viewparameter;
     }
 
     public DashboardEventsAdapter(Context context, ArrayList<String> strList) {
@@ -82,8 +87,9 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.strList = strList;
 
     }
-    public void setData(List<String> list){
-        strList =list;
+
+    public void setData(List<String> list) {
+        strList = list;
 
 
     }
@@ -106,6 +112,10 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             case ITEM:
                 View viewItem = inflater.inflate(R.layout.dashboard_single_events_row, parent, false);
                 viewHolder = new NoticeListItem(viewItem);
+                break;
+            case ITEM_1:
+                View viewItem_card = inflater.inflate(R.layout.single_events_row, parent, false);
+                viewHolder = new NoticeListItem(viewItem_card);
                 break;
 
         }
@@ -131,7 +141,6 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 int totalItem = 0;
 
 
-
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -139,7 +148,31 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //                        String str = new Gson().toJson(orderList.get(position));
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoInstructorDetailsFragment();
+                        gotoDetailsFragment();
+
+                    }
+                });
+                break;
+            case ITEM_1:
+                final NoticeListItem itemHolder_ = (NoticeListItem) holder;
+//                int total = strList.size();
+                layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                itemHolder_.orderTitle.setText(strList.get(position));
+//                itemHolder.name.setText("Pizza");
+//                itemHolder.quantity.setText("Total ietm 10");
+                //itemHolder.itemNameLayout.removeAllViews();
+//                String customerName = "";
+//                int totalItem = 0;
+
+
+                itemHolder_.itemLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //gotoOrderDetailsFragment(orderList.get(position).getId());
+//                        String str = new Gson().toJson(orderList.get(position));
+                        //bundle.putString("products", str);
+//                        bundle.putString("order_id", orderList.get(position).getId());
+                        gotoDetailsFragment();
 
                     }
                 });
@@ -148,7 +181,6 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         }
     }
-
 
 
     private void gotoOrderDetailsFragment(Bundle bundle) {
@@ -171,13 +203,16 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
 //
-            {
+        {
 //            if (position == 23 && isLoadingAdded)
 //                return LOADING;
 //            else
 //                return ADD;
 //        } else {
-            return ITEM;
+            if (viewparameter == 0)
+                return ITEM;
+            else
+                return ITEM_1;
         }
 
 //        if (position!= 24 && position%6 == 0 ) {
@@ -193,22 +228,9 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     public boolean isEmpty() {
         return getItemCount() == 0;
     }
-
 
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
@@ -230,10 +252,9 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
 
 
-
-
         }
     }
+
     protected class NoticeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
         private TextView accepted;
@@ -253,12 +274,8 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
 
 
-
-
         }
     }
-
-
 
 
     private String dateTimeParse(String dateTime, String timeToAdd) {
@@ -304,7 +321,7 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 try {
                     lastParse = result.split("-");
                     returnResult = lastParse[0] + " at " + lastParse[1];
-                }catch (Exception e) {
+                } catch (Exception e) {
 
                 }
             }
@@ -313,12 +330,91 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return returnResult;
     }
 
-    private void gotoInstructorDetailsFragment() {
-        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
+    private void gotoDetailsFragment() {
+        NoticeDetailsFragment noticeDetailsFragment = new NoticeDetailsFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, noticeDetailsFragment, "noticeDetailsFragment").addToBackStack(null);
+        ;
         transaction.commit();
+    }
+
+      /*
+        Helpers - Pagination
+   _________________________________________________________________________________________________
+    */
+
+    public void add(PigeonholeDataModel r) {
+        pigeonholeDataModelList.add(r);
+        notifyItemInserted(pigeonholeDataModelList.size() - 1);
+    }
+
+    public void addAllData(List<PigeonholeDataModel> moveResults) {
+        for (PigeonholeDataModel result : moveResults) {
+            add(result);
+        }
+
+    }
+
+    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
+        pigeonholeDataModelList.clear();
+        pigeonholeDataModelList.addAll(moveResults);
+        notifyDataSetChanged();
+    }
+
+    public void clearList() {
+        pigeonholeDataModelList.clear();
+    }
+
+
+    public void remove(PigeonholeDataModel r) {
+        int position = pigeonholeDataModelList.indexOf(r);
+        if (position > -1) {
+            pigeonholeDataModelList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void clear() {
+        isLoadingAdded = false;
+        while (getItemCount() > 0) {
+            remove(getItem(0));
+        }
+    }
+
+
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(new PigeonholeDataModel());
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+
+        int position = pigeonholeDataModelList.size() - 1;
+        PigeonholeDataModel result = getItem(position);
+
+        if (result != null) {
+            pigeonholeDataModelList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public PigeonholeDataModel getItem(int position) {
+        return pigeonholeDataModelList.get(position);
+    }
+
+    /**
+     * Displays Pagination retry footer view along with appropriate errorMsg
+     *
+     * @param show
+     * @param errorMsg to display if page load fails
+     */
+    public void showRetry(boolean show, @Nullable String errorMsg) {
+        retryPageLoad = show;
+        notifyItemChanged(pigeonholeDataModelList.size() - 1);
+
+        if (errorMsg != null) this.errorMsg = errorMsg;
     }
 
 }

@@ -177,7 +177,7 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
 
         events_rv = (RecyclerView) view.findViewById(R.id.events_rv);
 
-        dashboardEventsAdapter = new DashboardEventsAdapter(getContext());
+        dashboardEventsAdapter = new DashboardEventsAdapter(getContext(),0);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         events_rv.setLayoutManager(linearLayoutManager);
