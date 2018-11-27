@@ -172,7 +172,9 @@
                                 android:textSize="@dimen/text_size_15_sp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
-                            <TextView
+                            <EditText
+                                android:background="#00000000"
+                                android:focusable="false"
                                 android:textStyle="bold"
                                 android:textColor="@color/ndc_color"
                                 android:text="Batch/Course No"
