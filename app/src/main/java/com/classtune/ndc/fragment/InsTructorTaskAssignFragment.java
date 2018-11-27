@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.adapter.UserTaskAssignAdapter;
+import com.classtune.ndc.model.CMModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,9 +31,15 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class InsTructorTaskAssignFragment extends Fragment implements View.OnClickListener {
-    LinearLayout layoutDueDate;
+    LinearLayout layoutDueDate, layoutAssignTo, commonTypeLayout;
     Button attachFileBtn, assignBtn;
-    TextView dueDate;
+    TextView dueDate, assignTo;
+    RadioGroup typeGroup, instituteGroup;
+    RadioButton  ndc, afwc, capston;
+    Button common, custom;
+    ListView listView;
+    UserTaskAssignAdapter userTaskAssignAdapter;
+    private List<CMModel> cmModelList;
 
     public InsTructorTaskAssignFragment() {
         // Required empty public constructor
@@ -64,6 +75,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     }
 
     private void initView(View view) {
+        layoutAssignTo = view.findViewById(R.id.layoutAssignTo);
+        layoutAssignTo.setOnClickListener(this);
+        assignTo = view.findViewById(R.id.assign_to);
         dueDate = view.findViewById(R.id.due_date);
         attachFileBtn = view.findViewById(R.id.attachFile);
         assignBtn = view.findViewById(R.id.assignBtn);
@@ -107,7 +121,16 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             case R.id.attachFile:
                 showDialogAttachment();
                 break;
+            case R.id.layoutAssignTo:
+                showDialogAssignTo();
+                break;
             case R.id.assignBtn:
+                break;
+            case R.id.common:
+                enableCommonSelection();
+                break;
+            case R.id.custom:
+                enableCustomSelection();
                 break;
         }
     }
@@ -186,4 +209,134 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         batchDialog.show();
 
     }
+
+    private void showDialogAssignTo() {
+
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View assignToDialogView = factory.inflate(R.layout.dialog_instructor_assign_to, null);
+
+//        typeGroup = assignToDialogView.findViewById(R.id.typeGroup);
+        instituteGroup = assignToDialogView.findViewById(R.id.instituteGroup);
+
+        common = assignToDialogView.findViewById(R.id.common);
+        custom = assignToDialogView.findViewById(R.id.custom);
+
+        common.setOnClickListener(this);
+        custom.setOnClickListener(this);
+
+        ndc = assignToDialogView.findViewById(R.id.ndc);
+        afwc = assignToDialogView.findViewById(R.id.afwc);
+        capston = assignToDialogView.findViewById(R.id.capston);
+
+        listView = assignToDialogView.findViewById(R.id.list);
+
+        commonTypeLayout = assignToDialogView.findViewById(R.id.commonTypeLayout);
+        enableCommonSelection();
+
+//        typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//
+//                if (checkedId == R.id.common) {
+//                    common.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.round_shape_background_assign));
+//                    enableCommonSelection();
+//
+//                    //some code
+//                } else if(checkedId == R.id.custom) {
+//                    //some code
+//                    custom.setChecked(true);
+//                    enableCustomSelection();
+//
+//                }
+//
+//            }
+//        });
+
+
+        batchDialog = new AlertDialog.Builder(getActivity()).create();
+        batchDialog.setView(assignToDialogView);
+        assignToDialogView.findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                batchDialog.dismiss();
+            }
+        });
+
+        batchDialog.show();
+
+    }
+
+    private void enableCommonSelection() {
+        common.setTextColor(common.getContext().getResources().getColor(R.color.white));
+        common.setBackgroundColor(common.getContext().getResources().getColor(R.color.ndc_color));
+        custom.setBackgroundColor(custom.getContext().getResources().getColor(R.color.ash));
+        custom.setTextColor(custom.getContext().getResources().getColor(R.color.ndc_color));
+        commonTypeLayout.setVisibility(View.VISIBLE);
+
+        instituteGroup.setVisibility(View.GONE);
+        listView.setVisibility(View.GONE);
+    }
+//    private void disableCommonSelection() {
+//
+//        instituteGroup.setVisibility(View.GONE);
+//        listView.setVisibility(View.GONE);
+//
+//    }
+//
+
+    private void enableCustomSelection() {
+        cmModelList = new ArrayList<>();
+        getCMData();
+        custom.setTextColor(custom.getContext().getResources().getColor(R.color.white));
+        custom.setBackgroundColor(custom.getContext().getResources().getColor(R.color.ndc_color));
+        common.setBackgroundColor(common.getContext().getResources().getColor(R.color.ash));
+        common.setTextColor(common.getContext().getResources().getColor(R.color.ndc_color));
+        commonTypeLayout.setVisibility(View.GONE);
+
+        instituteGroup.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.VISIBLE);
+
+
+        userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), cmModelList);
+        userTaskAssignAdapter.notifyDataSetChanged();
+        listView.setAdapter(userTaskAssignAdapter);
+    }
+
+    private void getCMData() {
+        CMModel cmModel = new CMModel("11", "nnn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+        cmModel = new CMModel("22", "mmn", "0");
+        cmModelList.add(cmModel);
+    }
+//    private void disableCustomSelection() {
+//        commonTypeLayout.setVisibility(View.GONE);
+//
+//        instituteGroup.setVisibility(View.VISIBLE);
+//        listView.setVisibility(View.VISIBLE);
+//    }
 }

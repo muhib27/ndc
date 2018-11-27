@@ -100,6 +100,12 @@
     <string name="doc_type">(doc,pdf,ppt etc)</string>
     <string name="file_type"> (zip, rar etc)</string>
     <string name="profile_text">Profile</string>
+    <string name="common">Common</string>
+    <string name="custom">Custom</string>
+    <string name="all_ndc">All NDC</string>
+    <string name="all_capston">All Capston</string>
+    <string name="all_afwc">All AFWC</string>
+    <string name="name_text">name</string>
 
 
 </resources>

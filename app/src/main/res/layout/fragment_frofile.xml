@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,194 +8,615 @@
     android:padding="@dimen/size_10dp"
     tools:context="com.classtune.ndc.fragment.ProfileFragment">
 
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/margin_0dp"
-        card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardElevation="3dp"
-        card_view:cardUseCompatPadding="true">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true"
+            app:cardCornerRadius="@dimen/margin_0dp"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/size_10dp">
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/edit"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@null"
-                    android:src="@drawable/edit_icon" />
+                    android:padding="@dimen/size_10dp">
+
+                    <ImageButton
+                        android:id="@+id/edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_icon" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_image"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_marginTop="0dp"
+                            android:src="@drawable/ndc_logo"
+                            app:civ_border_color="#FF000000"
+                            app:civ_border_width="2dp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/size_5dp"
+                    android:text="Air Chief Marshal Esrar"
+                    android:textColor="@color/ndc_color"
+                    android:textSize="@dimen/text_size_22_sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    android:text="esrar@ndc.gov.bd"
+                    android:textColor="@color/ash"
+                    android:textSize="@dimen/text_size_15_sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="96dp"
-                        android:layout_height="96dp"
-                        android:layout_marginTop="0dp"
-                        android:src="@drawable/ndc_logo"
-                        app:civ_border_color="#FF000000"
-                        app:civ_border_width="2dp" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="@dimen/size_5dp"
-                android:text="Air Chief Marshal Esrar"
-                android:textColor="@color/ndc_color"
-                android:textSize="@dimen/text_size_22_sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="@dimen/size_5dp"
-                android:text="esrar@ndc.gov.bd"
-                android:textColor="@color/ash"
-                android:textSize="@dimen/text_size_15_sp"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/size_3dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardElevation="3dp"
-                card_view:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_20dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#035D74">
+                        app:cardCornerRadius="@dimen/size_10dp"
+                        card_view:cardBackgroundColor="@android:color/white"
+                        card_view:cardElevation="3dp"
+                        card_view:cardUseCompatPadding="true">
 
-                        <TextView
-                            android:layout_width="@dimen/margin_0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/size_5dp"
-                            android:text="Service Number"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_15_sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="@dimen/margin_0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/size_5dp"
-                            android:text="Service"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_15_sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:paddingTop="@dimen/size_10dp"
-                        android:paddingBottom="@dimen/size_10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#047A97">
-
-                        <TextView
-                            android:layout_width="@dimen/margin_0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/size_5dp"
-                            android:text="Military"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_19_sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="@dimen/margin_0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/size_5dp"
-                            android:text="Air Force"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_19_sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:src="@drawable/bell_icon"
-                            android:layout_weight="1"
-                            android:layout_width="@dimen/margin_0dp"
-                            android:layout_height="wrap_content" />
                         <LinearLayout
-                            android:padding="@dimen/size_5dp"
-                            android:orientation="vertical"
-                            android:layout_weight="4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#035D74">
+
+                                <TextView
+                                    android:layout_width="@dimen/margin_0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="@dimen/size_5dp"
+                                    android:text="Service Number"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_15_sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="@dimen/margin_0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="@dimen/size_5dp"
+                                    android:text="Service"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_15_sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#047A97"
+                                android:paddingTop="@dimen/size_10dp"
+                                android:paddingBottom="@dimen/size_10dp">
+
+                                <TextView
+                                    android:layout_width="@dimen/margin_0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="@dimen/size_5dp"
+                                    android:text="Military"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_19_sp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white" />
+
+                                <TextView
+                                    android:layout_width="@dimen/margin_0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="@dimen/size_5dp"
+                                    android:text="Air Force"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_19_sp"
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:id="@+id/rankLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/margin_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:src="@drawable/bell_icon" />
+
+                            <LinearLayout
+                                android:layout_width="@dimen/margin_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:orientation="vertical"
+                                android:padding="@dimen/size_5dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rank"
+                                    android:textSize="@dimen/text_size_13_sp" />
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/rank"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#00000000"
+                                    android:focusable="true"
+                                    android:inputType="text"
+                                    android:text="Air Chief Marshal"
+                                    android:textColor="@color/ndc_color"
+                                    android:textSize="@dimen/text_size_19_sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_4dp"
+                            android:background="#F1F1F1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
                             android:layout_width="@dimen/margin_0dp"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
                             <TextView
-                                android:text="Batch/Course No"
-                                android:textSize="@dimen/text_size_15_sp"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                            <EditText
+                                android:layout_height="wrap_content"
+                                android:text="Batch/Course No"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/courseNo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:background="#00000000"
-                                android:focusable="false"
-                                android:textStyle="bold"
+                                android:focusable="true"
+                                android:inputType="text"
+                                android:text="NDC-2018"
                                 android:textColor="@color/ndc_color"
-                                android:text="Batch/Course No"
                                 android:textSize="@dimen/text_size_19_sp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
 
                     </LinearLayout>
+
                     <View
-                        android:background="#F1F1F1"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/margin_2dp"/>
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Date of Commision"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="false"
+                                android:text="01/10/1981"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Nationality"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="false"
+                                android:text="Bangladeshi"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Date of Birth"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="false"
+                                android:text="01/10/1961"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Blood Group"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="false"
+                                android:text="B+"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Marital Status"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/marritalStatus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="true"
+                                android:inputType="text"
+                                android:text="Married"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Mobile Number(Bangladesh)"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/bdContact"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="true"
+                                android:inputType="text"
+                                android:text="0170000000"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:background="#F1F1F1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/bell_icon" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/margin_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Mobile Number(Own Country)"
+                                android:textSize="@dimen/text_size_13_sp" />
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/countryContact"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:focusable="true"
+                                android:inputType="text"
+                                android:text="+931200000000"
+                                android:textColor="@color/ndc_color"
+                                android:textSize="@dimen/text_size_19_sp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_4dp"
+                        android:layout_marginBottom="@dimen/size_10dp"
+                        android:background="#F1F1F1" />
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+                <!--</android.support.v7.widget.CardView>-->
 
+            </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
 
-</ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/save_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/size_10dp"
+        android:layout_marginBottom="@dimen/size_30dp"
+        android:src="@drawable/pencil_icon"
+        android:visibility="gone"
+        app:backgroundTint="@color/ndc_color"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal" />
+</RelativeLayout>

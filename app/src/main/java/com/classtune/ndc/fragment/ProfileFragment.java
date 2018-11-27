@@ -1,13 +1,21 @@
 package com.classtune.ndc.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
@@ -15,7 +23,11 @@ import com.classtune.ndc.activity.MainActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
+    ImageButton edit;
+    EditText courseNo, marritalStatus, bdContact, countryContact, rank;
+    FloatingActionButton save;
+    LinearLayout rankLayout;
 
 
     public ProfileFragment() {
@@ -36,5 +48,65 @@ public class ProfileFragment extends Fragment {
             MainActivity.toggle.setDrawerIndicatorEnabled(true);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+
+        initView(view);
     }
+
+    private void initView(View view) {
+        edit = view.findViewById(R.id.edit);
+        rankLayout = view.findViewById(R.id.rankLayout);
+        rank = view.findViewById(R.id.rank);
+        courseNo = view.findViewById(R.id.courseNo);
+        marritalStatus = view.findViewById(R.id.marritalStatus);
+        bdContact = view.findViewById(R.id.bdContact);
+        countryContact = view.findViewById(R.id.countryContact);
+        save = view.findViewById(R.id.save_fab);
+
+
+        save.setOnClickListener(this);
+
+        edit.setOnClickListener(this);
+
+        disableEditOption();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.edit:
+                enableEditOption();
+                break;
+            case R.id.save_fab:
+                disableEditOption();
+                break;
+        }
+    }
+
+    private void enableEditOption() {
+
+        save.setVisibility(View.VISIBLE);
+        edit.setVisibility(View.GONE);
+        rankLayout.setVisibility(View.VISIBLE);
+
+        rank.setEnabled(true);
+        rank.requestFocus();
+        courseNo.setEnabled(true);
+        marritalStatus.setEnabled(true);
+        bdContact.setEnabled(true);
+        countryContact.setEnabled(true);
+
+    }
+    private void disableEditOption() {
+
+        rankLayout.setVisibility(View.GONE);
+        save.setVisibility(View.GONE);
+        edit.setVisibility(View.VISIBLE);
+
+        courseNo.setEnabled(false);
+        marritalStatus.setEnabled(false);
+        bdContact.setEnabled(false);
+        countryContact.setEnabled(false);
+        rank.setEnabled(false);
+    }
+
 }
