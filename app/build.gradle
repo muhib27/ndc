@@ -51,6 +51,7 @@ dependencies {
         exclude group: "com.android.support"
     }
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    implementation 'com.droidninja:filepicker:2.1.4'
 }
 //apply plugin: 'com.google.gms.google-services'
 
