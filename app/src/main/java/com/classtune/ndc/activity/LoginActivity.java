@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE};
 
     private static final int RC_PHONE_STATE = 123;
-    private static final int RC_LOCATION_CONTACTS_PERM = 124;
+    //private static final int RC_LOCATION_CONTACTS_PERM = 124;
 
 
     @Override

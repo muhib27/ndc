@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.DrawableRequestBuilder;
+//import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
@@ -205,24 +205,24 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-
-    private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
-        return Glide
-                .with(context)
-                .load(posterPath)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
+//
+//    private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
+//        return Glide
+//                .with(context)
+//                .load(posterPath)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
+////                .centerCrop()
+//                .crossFade();
+//    }
+//
+//    private DrawableRequestBuilder<String> loadThumbImage(@NonNull String posterPath) {
+//        return Glide
+//                .with(context)
+//                .load(posterPath)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
 //                .centerCrop()
-                .crossFade();
-    }
-
-    private DrawableRequestBuilder<String> loadThumbImage(@NonNull String posterPath) {
-        return Glide
-                .with(context)
-                .load(posterPath)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
-                .centerCrop()
-                .crossFade();
-    }
+//                .crossFade();
+//    }
 
 
     /*

@@ -92,7 +92,7 @@ public class ClassScheduleFragment extends Fragment implements PaginationAdapter
 
     @Override
     public void onRefresh() {
-
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class ClassScheduleFragment extends Fragment implements PaginationAdapter
 
     private ArrayList<String> getStrList() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("Lorem ipsum dolor sit amet");
+        list.add("Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet");
         list.add("Lorem ipsum dolor sit amet");
         list.add("Lorem ipsum dolor sit amet");
         list.add("Lorem ipsum dolor sit amet");

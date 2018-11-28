@@ -31,7 +31,7 @@
     <color name="classtune_green_color">#219439</color>
     <color name="classtune_green_color_light">#74af27</color>
     <color name="black_off">#C0C0C0</color>
-    <color name="page_header_bg">#047A96</color>
+    <color name="page_header_bg">#676767</color>
     <color name="off_black">#C1C1C1</color>
     <color name="card_cell_view">#B8B8B8</color>
     <color name="card_cell_header">#1D1B1C</color>
@@ -42,6 +42,7 @@
     <color name="blue_color">#007894</color>
     <color name="selected_color">#00BD9F</color>
     <color name="not_selected_color">#FD506E</color>
+    <color name="today_color">#f0536c</color>
 
 
 

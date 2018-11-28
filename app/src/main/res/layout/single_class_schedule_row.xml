@@ -27,6 +27,7 @@
             >
 
             <TextView
+                android:textColor="#676767"
                 android:padding="@dimen/size_10dp"
                 android:layout_gravity="center"
                 android:layout_width="@dimen/margin_0dp"
@@ -37,8 +38,8 @@
             <View
                 android:layout_marginBottom="@dimen/size_10dp"
                 android:layout_marginTop="@dimen/size_10dp"
-                android:background="@color/green"
-                android:layout_width="@dimen/margin_1dp"
+                android:background="@color/today_color"
+                android:layout_width="@dimen/margin_2dp"
                 android:layout_height="match_parent"/>
             <LinearLayout
                 android:layout_gravity="center"
@@ -64,8 +65,8 @@
                     android:layout_gravity="center"
                     android:paddingLeft="@dimen/size_15dp"
                     android:text="9:00 - 11:00"
-                    android:textColor="@color/ash"
-                    android:textSize="@dimen/text_size_15_sp"
+                    android:textColor="#3dbca2"
+                    android:textSize="@dimen/text_size_17_sp"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="match_parent"
