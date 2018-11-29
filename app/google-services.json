@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "285688474922",
+    "firebase_url": "https://ndc-project-a5dea.firebaseio.com",
+    "project_id": "ndc-project-a5dea",
+    "storage_bucket": "ndc-project-a5dea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285688474922:android:4be1dbbe759c8206",
+        "android_client_info": {
+          "package_name": "com.classtune.ndc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "285688474922-2pbrpo868tgnd6feh0tl48lq3p5il0sk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByQPaEGVSClQMzD_akcqsZdW2jHaQX0n4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

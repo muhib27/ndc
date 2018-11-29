@@ -38,6 +38,8 @@ public class MyApplication extends Application {
         mInstance = this;
         context = this;
         MultiDex.install(this);
+        Thread.setDefaultUncaughtExceptionHandler(new LocalFileUncaughtExceptionHandler(this,
+                Thread.getDefaultUncaughtExceptionHandler()));
     }
 
     public void dbInitialize(){

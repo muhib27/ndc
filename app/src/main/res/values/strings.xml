@@ -101,8 +101,10 @@
     <string name="btn_cancel">Cancel</string>
 
     <string name="video"> Video</string>
+    <string name="audio"> Audio</string>
+    <string name="image">Image</string>
     <string name="doc"> Doc</string>
-    <string name="file"> Filen</string>
+    <string name="file"> File</string>
     <string name="url"> URL</string>
     <string name="video_type">(mp4)</string>
     <string name="doc_type">(doc,pdf,ppt etc)</string>

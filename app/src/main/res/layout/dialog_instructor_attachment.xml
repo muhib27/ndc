@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/round_shape_background_task_assign"
     android:orientation="vertical"
-    android:padding="@dimen/size_10dp">
+    android:padding="@dimen/size_5dp">
 
     <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
@@ -41,79 +41,96 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="wrap_content">-->
     <RadioGroup
+        android:id="@+id/attachmentType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <RadioButton
-            android:textSize="@dimen/text_size_14_sp"
+            android:id="@+id/video"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/video" />
+            android:checked="true"
+            android:text="@string/video"
+            android:textSize="@dimen/text_size_14_sp" />
 
         <RadioButton
-            android:textSize="@dimen/text_size_14_sp"
+            android:id="@+id/audio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/doc" />
+            android:checked="false"
+            android:text="@string/audio"
+            android:textSize="@dimen/text_size_14_sp" />
 
         <RadioButton
-            android:textSize="@dimen/text_size_14_sp"
+            android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/file" />
+            android:checked="false"
+            android:text="@string/image"
+            android:textSize="@dimen/text_size_14_sp" />
+
+
+        <RadioButton
+            android:id="@+id/file"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/file"
+            android:textSize="@dimen/text_size_14_sp" />
 
         <!--<RadioButton-->
-            <!--android:textSize="@dimen/text_size_14_sp"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight=".8"-->
-            <!--android:text="@string/url" />-->
+        <!--android:textSize="@dimen/text_size_14_sp"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight=".8"-->
+        <!--android:text="@string/url" />-->
 
     </RadioGroup>
 
-    <LinearLayout
-        android:paddingTop="-5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+    <!--android:paddingTop="-5dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
 
-        <TextView
-            android:layout_width="@dimen/margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/video_type"
-            android:textSize="@dimen/text_size_12_sp" />
+    <!--<TextView-->
+    <!--android:layout_width="@dimen/margin_0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/video_type"-->
+    <!--android:textSize="@dimen/text_size_12_sp" />-->
 
-        <TextView
-            android:layout_width="@dimen/margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/doc_type"
-            android:textSize="@dimen/text_size_12_sp" />
+    <!--<TextView-->
+    <!--android:layout_width="@dimen/margin_0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/doc_type"-->
+    <!--android:textSize="@dimen/text_size_12_sp" />-->
 
-        <TextView
-            android:layout_width="@dimen/margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/file_type"
-            android:textSize="@dimen/text_size_12_sp" />
+    <!--<TextView-->
+    <!--android:layout_width="@dimen/margin_0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/file_type"-->
+    <!--android:textSize="@dimen/text_size_12_sp" />-->
 
-        <!--<TextView-->
-            <!--android:layout_width="@dimen/margin_0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight=".8"-->
-            <!--android:gravity="center"-->
-            <!--android:text=""-->
-            <!--android:textSize="@dimen/text_size_12_sp" />-->
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="@dimen/margin_0dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_weight=".8"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:text=""&ndash;&gt;-->
+    <!--&lt;!&ndash;android:textSize="@dimen/text_size_12_sp" />&ndash;&gt;-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <!--</LinearLayout>-->
 
@@ -133,6 +150,11 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_15_sp" />
+
+    <ListView
+        android:id="@+id/attachmentList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnDone"

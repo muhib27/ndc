@@ -33,6 +33,44 @@ public interface ApiInterface {
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
     Observable<Response<JsonElement>> userLogin(@Field("username") String userId, @Field("password") String password, @Field("udid") String udid, @Field("gcm_id") String gcm_id);
 
+    @FormUrlEncoded
+    @POST(URLHelper.ADD_FCM)
+//    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
+    Observable<Response<JsonElement>> addFcm(@Field("fcm_id") String fcm_id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //@Headers({"clientAgent : ANDROID", "version : 1"})
     //@POST("api/user/register")
     //Call<ServerResponse> getUserValidity(@Body MyUser userLoginCredential);

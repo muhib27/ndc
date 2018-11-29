@@ -27,9 +27,20 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.UserTaskAssignAdapter;
 import com.classtune.ndc.callbacks.IAttachFile;
+import com.classtune.ndc.model.AttachmentModel;
 import com.classtune.ndc.model.CMModel;
+import com.vincent.filepicker.Constant;
+import com.vincent.filepicker.activity.AudioPickActivity;
+import com.vincent.filepicker.activity.ImagePickActivity;
+import com.vincent.filepicker.activity.NormalFilePickActivity;
+import com.vincent.filepicker.activity.VideoPickActivity;
+import com.vincent.filepicker.filter.entity.AudioFile;
+import com.vincent.filepicker.filter.entity.ImageFile;
+import com.vincent.filepicker.filter.entity.NormalFile;
+import com.vincent.filepicker.filter.entity.VideoFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,21 +52,30 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.app.Activity.RESULT_OK;
+import static com.vincent.filepicker.activity.AudioPickActivity.IS_NEED_RECORDER;
+import static com.vincent.filepicker.activity.BaseActivity.IS_NEED_FOLDER_LIST;
+import static com.vincent.filepicker.activity.ImagePickActivity.IS_NEED_CAMERA;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 //, IAttachFile
-public class InsTructorTaskAssignFragment extends Fragment implements View.OnClickListener, EasyPermissions.PermissionCallbacks,EasyPermissions.RationaleCallbacks{
+public class InsTructorTaskAssignFragment extends Fragment implements View.OnClickListener, EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     LinearLayout layoutDueDate, layoutAssignTo, commonTypeLayout;
     Button attachFileBtn, assignBtn;
     TextView dueDate, assignTo;
     RadioGroup typeGroup, instituteGroup;
-    RadioButton  ndc, afwc, capston;
+    RadioButton ndc, afwc, capston;
     Button common, custom;
     ListView listView;
     UserTaskAssignAdapter userTaskAssignAdapter;
     private List<CMModel> cmModelList;
 
+    List<AttachmentModel> attachmentModelList;
+
+
+    AttachmentAdapter attachmentAdapter;
 
     private static final String[] STORAGE_AND_CAMERA =
             {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
@@ -86,8 +106,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
         initView(view);
         listFiles = new ArrayList<>();
+        attachmentModelList = new ArrayList<>();
 
-        layoutDueDate = (LinearLayout)view.findViewById(R.id.layoutDueDate);
+        layoutDueDate = (LinearLayout) view.findViewById(R.id.layoutDueDate);
         layoutDueDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -116,6 +137,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         picker.setCallbacks(datePickerCallback);
         picker.show(getFragmentManager(), "datePicker");
     }
+
     DatePickerFragment.DatePickerOnSetDateListener datePickerCallback = new DatePickerFragment.DatePickerOnSetDateListener() {
 
         @Override
@@ -128,20 +150,20 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //            dateFormatServerString = dateFormatServer;
         }
 
-		/*
-		 * @Override public void onDateSelected(String monthName, int day, int
-		 * year) { // TODO Auto-generated method stub Date date; try { date =
-		 * new SimpleDateFormat("MMMM").parse(monthName); Calendar cal =
-		 * Calendar.getInstance(); cal.setTime(date); String dateString = day +
-		 * "-" + cal.get(Calendar.MONTH) + "-" + year;
-		 * choosenDateTextView.setText(dateString); } catch (ParseException e) {
-		 * // TODO Auto-generated catch block Log.e("ERROR", e.toString()); } }
-		 */
+        /*
+         * @Override public void onDateSelected(String monthName, int day, int
+         * year) { // TODO Auto-generated method stub Date date; try { date =
+         * new SimpleDateFormat("MMMM").parse(monthName); Calendar cal =
+         * Calendar.getInstance(); cal.setTime(date); String dateString = day +
+         * "-" + cal.get(Calendar.MONTH) + "-" + year;
+         * choosenDateTextView.setText(dateString); } catch (ParseException e) {
+         * // TODO Auto-generated catch block Log.e("ERROR", e.toString()); } }
+         */
     };
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.attachFile:
                 //showDialogAttachment();
                 readStorageStateTask();
@@ -157,25 +179,111 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             case R.id.custom:
                 enableCustomSelection();
                 break;
+            case R.id.btnBrowse:
+                browseFile(SELECTED_TYPE);
+                break;
         }
     }
 
+    private void browseFile(String selected) {
+
+        if(selected.equals("video")) {
+            Intent intent1 = new Intent(getActivity(), VideoPickActivity.class);
+            intent1.putExtra(IS_NEED_CAMERA, true);
+            intent1.putExtra(Constant.MAX_NUMBER, 9);
+            intent1.putExtra(IS_NEED_FOLDER_LIST, true);
+            startActivityForResult(intent1, Constant.REQUEST_CODE_PICK_VIDEO);
+        }
+        else if(selected.equals("audio")) {
+
+            Intent intent2 = new Intent(getActivity(), AudioPickActivity.class);
+            intent2.putExtra(IS_NEED_CAMERA, true);
+            intent2.putExtra(Constant.MAX_NUMBER, 9);
+            intent2.putExtra(IS_NEED_FOLDER_LIST, true);
+            startActivityForResult(intent2, Constant.REQUEST_CODE_PICK_AUDIO);
+        }
+        else if(selected.equals("image")) {
+            Intent intent3 = new Intent(getActivity(), ImagePickActivity.class);
+            intent3.putExtra(IS_NEED_RECORDER, true);
+            intent3.putExtra(Constant.MAX_NUMBER, 9);
+            intent3.putExtra(IS_NEED_FOLDER_LIST, true);
+            startActivityForResult(intent3, Constant.REQUEST_CODE_PICK_IMAGE);
+        }
+        else if(selected.equals("file")) {
+
+            Intent intent4 = new Intent(getActivity(), NormalFilePickActivity.class);
+            intent4.putExtra(Constant.MAX_NUMBER, 9);
+            intent4.putExtra(IS_NEED_FOLDER_LIST, true);
+            intent4.putExtra(NormalFilePickActivity.SUFFIX,
+                    new String[]{"xlsx", "zip", "xls", "doc", "dOcX", "ppt", ".pptx", "pdf"});
+            startActivityForResult(intent4, Constant.REQUEST_CODE_PICK_FILE);
+        }
+
+    }
 
 
-
-
-
-//    List<Subject> seletedItems;
-    AlertDialog batchDialog;
-//    DialogBatchAndSubjectAdapter batchAndSubjectAdapter;
+    //    List<Subject> seletedItems;
+    AlertDialog fileAttachDialog, batchDialog;
+    //    DialogBatchAndSubjectAdapter batchAndSubjectAdapter;
     SearchView searchView;
+    Button browseBtn;
+    RadioGroup attachmentType;
+    RadioButton rbVideo, rbAudio, rbImage, rbFile;
+    private String SELECTED_TYPE = "video";
+    TextView mTvResult;
+    ListView attachmentList;
+    AttachmentModel attachmentModel;
 
     private void showDialogAttachment() {
 //        seletedItems = new ArrayList();
 
-
+//        cmModelList = new ArrayList<>();
+////        getCMData();
+        attachmentModelList = new ArrayList<>();
+        builder = new StringBuilder();
         LayoutInflater factory = LayoutInflater.from(getActivity());
-        final View batchDialogView = factory.inflate(R.layout.dialog_instructor_attachment, null);
+        final View fileAttachDialogView = factory.inflate(R.layout.dialog_instructor_attachment, null);
+        browseBtn = fileAttachDialogView.findViewById(R.id.btnBrowse);
+        browseBtn.setOnClickListener(this);
+
+        attachmentList = fileAttachDialogView.findViewById(R.id.attachmentList);
+        attachmentAdapter = new AttachmentAdapter(getActivity(), attachmentModelList);
+        attachmentAdapter.notifyDataSetChanged();
+        attachmentList.setAdapter(attachmentAdapter);
+
+        attachmentType = fileAttachDialogView.findViewById(R.id.attachmentType);
+//        mTvResult = fileAttachDialogView.findViewById(R.id.tv_result);
+
+        rbVideo = fileAttachDialogView.findViewById(R.id.video);
+        rbAudio = fileAttachDialogView.findViewById(R.id.audio);
+        rbImage = fileAttachDialogView.findViewById(R.id.image);
+        rbFile = fileAttachDialogView.findViewById(R.id.file);
+
+
+        attachmentModel = new AttachmentModel();
+
+
+        attachmentType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                if (checkedId == R.id.video) {
+
+                    SELECTED_TYPE = "video";
+                    //some code
+                } else if (checkedId == R.id.audio) {
+                    SELECTED_TYPE = "audio";
+
+                } else if (checkedId == R.id.image) {
+
+                    SELECTED_TYPE = "image";
+                } else if (checkedId == R.id.file) {
+
+                    SELECTED_TYPE = "file";
+                }
+
+            }
+        });
 //        ListView listView = (ListView) batchDialogView.findViewById(R.id.listView);
 //        searchView = batchDialogView.findViewById(R.id.search);
 //        batchAndSubjectAdapter = new DialogBatchAndSubjectAdapter(getActivity(), seletedItems, switchStatus, TeacherHomeWorkAddFragment.this);
@@ -206,13 +314,13 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 //        TextView text = (TextView) batchDialogView.findViewById(R.id.text_dialog);
 //        text.setText(st);
-        batchDialog = new AlertDialog.Builder(getActivity()).create();
-        batchDialog.setView(batchDialogView);
-        batchDialogView.findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
+        fileAttachDialog = new AlertDialog.Builder(getActivity()).create();
+        fileAttachDialog.setView(fileAttachDialogView);
+        fileAttachDialogView.findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //your business logic
-                batchDialog.dismiss();
+                fileAttachDialog.dismiss();
             }
         });
 //        batchDialogView.findViewById(R.id.btnOk).setOnClickListener(new View.OnClickListener() {
@@ -231,7 +339,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //            }
 //        });
 
-        batchDialog.show();
+        fileAttachDialog.show();
 
     }
 
@@ -396,6 +504,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         // EasyPermissions handles the request result.
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+    StringBuilder builder;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -413,14 +522,77 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     Toast.LENGTH_LONG)
                     .show();
         }
+       else if(requestCode == Constant.REQUEST_CODE_PICK_VIDEO ){
+
+            if (resultCode == RESULT_OK) {
+                ArrayList<VideoFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_VIDEO);
+//                StringBuilder builder = new StringBuilder();
+                for (VideoFile file : list) {
+                    String path = file.getPath();
+                    File f = new File(path);
+                    builder.append(f.getName() + "\n");
+                    attachmentModelList.add(new AttachmentModel(f.getName(), path));
+                }
+                attachmentAdapter.notifyDataSetChanged();
+                //mTvResult.setText(builder.toString());
+//                attachmentAdapter = new AttachmentAdapter(getActivity(), attachmentModelList);
+//                //attachmentAdapter.setData(attachmentModelList);
+//                attachmentAdapter.notifyDataSetChanged();
+            }
+        }
+        else if(requestCode == Constant.REQUEST_CODE_PICK_AUDIO ){
+
+            if (resultCode == RESULT_OK) {
+                ArrayList<AudioFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_AUDIO);
+//                StringBuilder builder = new StringBuilder();
+                for (AudioFile file : list) {
+                    String path = file.getPath();
+                    File f = new File(path);
+                    builder.append(f.getName() + "\n");
+
+                    attachmentModelList.add(new AttachmentModel(f.getName(), path));
+                }
+                attachmentAdapter.notifyDataSetChanged();
+            }
+        }
+        else if(requestCode == Constant.REQUEST_CODE_PICK_IMAGE ){
+
+            if (resultCode == RESULT_OK) {
+                ArrayList<ImageFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_IMAGE);
+//                StringBuilder builder = new StringBuilder();
+                for (ImageFile file : list) {
+                    String path = file.getPath();
+                    File f = new File(path);
+                    builder.append(f.getName() + "\n");
+                    attachmentModelList.add(new AttachmentModel(f.getName(), path));
+                }
+                attachmentAdapter.notifyDataSetChanged();
+            }
+        }
+        else if(requestCode == Constant.REQUEST_CODE_PICK_FILE ){
+
+            if (resultCode == RESULT_OK) {
+                ArrayList<NormalFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_FILE);
+//                StringBuilder builder = new StringBuilder();
+                for (NormalFile file : list) {
+                    String path = file.getPath();
+                    File f = new File(path);
+                    builder.append(f.getName() + "\n");
+                    attachmentModelList.add(new AttachmentModel(f.getName(), path));
+                }
+                attachmentAdapter.notifyDataSetChanged();
+            }
+        }
     }
+
     @AfterPermissionGranted(RC_STORAGE_CAMERA_PERM)
     public void readStorageStateTask() {
         if (hasStorageAndCameraPermission()) {
             // Have permission, do the thing!
             // Toast.makeText(this, "TODO: Phone State things", Toast.LENGTH_LONG).show();
             //validateFieldAndCallLogIn();
-            showChooser();
+            //showChooser();
+            showDialogAttachment();
         } else {
             // Ask for one permission
             EasyPermissions.requestPermissions(
@@ -437,7 +609,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     private void showChooser() {
         instance = this;
-       // showFileDialog();
+        // showFileDialog();
     }
 //    private void showFileDialog() {
 //        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();

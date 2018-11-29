@@ -32,7 +32,7 @@ public class RetrofitApiClient {
     public static synchronized Retrofit getClient() {
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(URLHelper.URL_BASE)
+                    .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
