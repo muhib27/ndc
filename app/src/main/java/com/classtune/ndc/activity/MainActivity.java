@@ -15,8 +15,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
+import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.fragment.ClassScheduleFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment;
@@ -24,15 +31,31 @@ import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.ProfileFragment;
 import com.classtune.ndc.fragment.ResearchListFragment;
+import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.DrawerLocker;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.URLHelper;
+import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
+import com.vincent.filepicker.activity.ImagePickActivity;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
     NavigationView navigationView;
     public static ActionBarDrawerToggle toggle;
     public static DrawerLayout drawer;
     Toolbar toolbar;
+    UIHelper uiHelper;
+    CircleImageView userImage;
+    TextView userName, userEmail;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +71,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        drawer.addDrawerListener(toggle);
 //        toggle.syncState();
+        uiHelper = new UIHelper(MainActivity.this);
 //
+        user = AppSharedPreference.getUserBasicInfo();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView =  navigationView.getHeaderView(0);
+
+//        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        userImage = hView.findViewById(R.id.userImage);
+        userName = hView.findViewById(R.id.userName);
+        userEmail = hView.findViewById(R.id.userEmail);
+
+        userName.setText(user.getName());
+        userEmail.setText(user.getEmail());
+
+        loadImage();
+
         gotoDashboardFragment();
 
 
         // load();
+    }
+
+    private void loadImage() {
+        Glide
+                .with(this)
+                .load(URLHelper.BASE_URL + user.getImage())
+                .apply(new RequestOptions()
+                        .placeholder(R.mipmap.ic_launcher_round)
+                        .fitCenter())
+                .into(userImage);
+
+//        return Glide
+//                .with(getApplicationContext())
+//                .load(user.getImage())
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
+//                .centerCrop()
+//                .crossFade();
     }
 
 //    @Override
@@ -153,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
@@ -207,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 } else {
 //            SELECTED_PAGE = "Today";
-            super.onBackPressed();
+                    super.onBackPressed();
                 }
                 return true;
 //            case R.id.settins:
@@ -246,31 +300,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action
 //        } else
-            if (id == R.id.nav_pigeonhole) {
+        if (id == R.id.nav_pigeonhole) {
 
             gotoPigeonholeFragment();
 
         } else if (id == R.id.nav_notice) {
             gotoNoticeFragment();
 
-        }
-        else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_manage) {
             gotoClassScheduleFragment();
 
-        }
-        else if (id == R.id.nav_events) {
+        } else if (id == R.id.nav_events) {
             gotoEventsFragment();
 
-        }
-        else if (id == R.id.nav_research) {
+        } else if (id == R.id.nav_research) {
             gotoResearchListFragment();
 
-        }
-        else if (id == R.id.nav_profile) {
-                gotoProfileFragment();
-        }
-        else if (id == R.id.nav_logout) {
-            userLogout();
+        } else if (id == R.id.nav_profile) {
+            gotoProfileFragment();
+        } else if (id == R.id.nav_logout) {
+            callLogOutApi();
         }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -279,10 +328,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void userLogout() {
+        User user = new User("", "", "", "");
+        AppSharedPreference.setUserBasicInfo(user);
         AppSharedPreference.setUsingFirstTime(true);
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
+    }
+
+    private void callLogOutApi() {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        uiHelper.showLoadingDialog("Authenticating...");
+
+
+
+        RetrofitApiClient.getApiInterface().getLogout(AppSharedPreference.getApiKey(), AppSharedPreference.getFcm())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+
+                        if(value.code()==200)
+                            userLogout();
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
     }
 
 
@@ -299,30 +398,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NoticeFragment noticeFragment = new NoticeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, noticeFragment, "noticeFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, noticeFragment, "noticeFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
+
     private void gotoClassScheduleFragment() {
         setUpBackStackCountToZero();
         ClassScheduleFragment classScheduleFragment = new ClassScheduleFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, classScheduleFragment, "classScheduleFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, classScheduleFragment, "classScheduleFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
+
     private void gotoPigeonholeFragment() {
         setUpBackStackCountToZero();
         PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
 
     private void setUpBackStackCountToZero() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        if(count>0) {
-            while (count>0) {
+        if (count > 0) {
+            while (count > 0) {
                 getSupportFragmentManager().popBackStack();
                 count--;
             }
@@ -334,17 +438,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EventsFragment eventsFragment = new EventsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, eventsFragment, "eventsFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, eventsFragment, "eventsFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
+
     private void gotoResearchListFragment() {
         setUpBackStackCountToZero();
         ResearchListFragment researchListFragment = new ResearchListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, researchListFragment, "researchListFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, researchListFragment, "researchListFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
+
     private void gotoProfileFragment() {
         setUpBackStackCountToZero();
         ProfileFragment profileFragment = new ProfileFragment();
@@ -354,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-        @Override
+    @Override
     public void setDrawerEnabled(boolean enabled) {
         int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
                 DrawerLayout.LOCK_MODE_LOCKED_CLOSED;

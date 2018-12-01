@@ -1,6 +1,8 @@
 package com.classtune.ndc.retrofit;
 
 
+import com.classtune.ndc.apiresponse.LoginApiModel;
+import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.model.LoginResponseModel;
 import com.classtune.ndc.utils.URLHelper;
 import com.google.gson.JsonElement;
@@ -31,14 +33,28 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(URLHelper.URL_LOGIN)
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
-    Observable<Response<JsonElement>> userLogin(@Field("username") String userId, @Field("password") String password, @Field("udid") String udid, @Field("gcm_id") String gcm_id);
+    Observable<Response<LoginApiModel>> userLogin(@Field("email") String userId, @Field("password") String password, @Field("fcm_id") String gcm_id);
 
     @FormUrlEncoded
     @POST(URLHelper.ADD_FCM)
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
     Observable<Response<JsonElement>> addFcm(@Field("fcm_id") String fcm_id);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_MENU)
+    Observable<Response<MenuApiResponse>> getMenu(@Field("api_key") String api_key);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_LOGOUT)
+    Observable<Response<JsonElement>> getLogout(@Field("api_key") String api_key, @Field("fcm_id") String fcm_id);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PIGEONHOLE_TASK_LIST)
+    Observable<Response<JsonElement>> getPigeonholeTaskList(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PIGEONHOLE_TASK_ADD)
+    Observable<Response<JsonElement>> getTaskAssign(@Field("api_key") String api_key);
 
 
 

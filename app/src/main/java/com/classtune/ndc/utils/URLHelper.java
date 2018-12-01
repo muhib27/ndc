@@ -9,8 +9,14 @@ public class URLHelper {
 	public static final String SUB_URL = "masterapi/";
 //	public final static String URL_BASE = "http://apimaster.classtune.com/api/";
 	public final static String ADD_FCM = "users/add_fcm";
+	public final static String URL_LOGIN = "users/login";
+	public final static String GET_MENU = "users/get_menu";
+	public final static String GET_LOGOUT = "users/logout";
 
-	public final static String URL_LOGIN = "user/auth";
+
+	//pigeonHole
+    public final static String GET_PIGEONHOLE_TASK_LIST = "tasks/task_list";
+	public final static String GET_PIGEONHOLE_TASK_ADD= "tasks/add";
 	
 	public final static String URL_GCM_REGISTER = "freeuser/addgcm";
 

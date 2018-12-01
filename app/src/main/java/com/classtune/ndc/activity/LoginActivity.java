@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.LoginApiModel;
+import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
+import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.model.LoginResponseModel;
 import com.classtune.ndc.model.Wrapper;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
@@ -190,31 +193,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        params.put("password", password);
 
 
-        RetrofitApiClient.getApiInterface().userLogin(username, password, MyApplication.getInstance().getUDID(), AppSharedPreference.getFcm())
+        RetrofitApiClient.getApiInterface().userLogin(username, password, AppSharedPreference.getFcm())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<JsonElement>>() {
+                .subscribe(new Observer<Response<LoginApiModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<JsonElement> value) {
-                        uiHelper.dismissLoadingDialog();
+                    public void onNext(Response<LoginApiModel> value) {
+                       // uiHelper.dismissLoadingDialog();
+                        LoginApiModel loginApiModel = value.body();
 
-                        Log.e("login", "onResponse: "+value.body());
-                        Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
-                                value.body());
 
-//                        if (wrapper.getStatus().getCode() == 200) {
-                            AppSharedPreference.setUserNameAndPassword(username, password);
+//                        Log.e("login", "onResponse: "+value.body());
+//                        Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
+//                                value.body());
 
-//                            Headers headers = value.headers();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                        if (loginApiModel.getCode() == 200) {
+                            AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+                            callMenuApi();
+                        }
+
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                            finish();
 
 //                        } else {
 //
@@ -228,10 +234,70 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                        startActivity(intent);
 //                        finish();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+//                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
+
+
+    private void callMenuApi() {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        uiHelper.showLoadingDialog("Authenticating...");
+
+
+
+        RetrofitApiClient.getApiInterface().getMenu(AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<MenuApiResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<MenuApiResponse> value) {
+                        uiHelper.dismissLoadingDialog();
+                        MenuApiResponse menuApiResponse = value.body();
+
+//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+
+                        if(menuApiResponse.getCode()==200) {
+                            AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
+
+//                            User user1 = AppSharedPreference.getUserBasicInfo();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         uiHelper.dismissLoadingDialog();
                     }
 
@@ -244,6 +310,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

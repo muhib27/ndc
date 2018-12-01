@@ -32,6 +32,11 @@ import com.classtune.ndc.adapter.UserTaskAssignAdapter;
 import com.classtune.ndc.callbacks.IAttachFile;
 import com.classtune.ndc.model.AttachmentModel;
 import com.classtune.ndc.model.CMModel;
+import com.classtune.ndc.retrofit.RetrofitApiClient;
+import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.activity.AudioPickActivity;
 import com.vincent.filepicker.activity.ImagePickActivity;
@@ -48,9 +53,14 @@ import java.util.Date;
 import java.util.List;
 
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.vincent.filepicker.activity.AudioPickActivity.IS_NEED_RECORDER;
@@ -71,6 +81,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     ListView listView;
     UserTaskAssignAdapter userTaskAssignAdapter;
     private List<CMModel> cmModelList;
+
+    UIHelper uiHelper;
 
     List<AttachmentModel> attachmentModelList;
 
@@ -104,6 +116,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        uiHelper = new UIHelper(getActivity());
         initView(view);
         listFiles = new ArrayList<>();
         attachmentModelList = new ArrayList<>();
@@ -611,6 +624,68 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         instance = this;
         // showFileDialog();
     }
+
+
+    private void callTaskListApi() {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        uiHelper.showLoadingDialog("Authenticating...");
+
+
+
+        RetrofitApiClient.getApiInterface().getPigeonholeTaskList(AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+//                        MenuApiResponse menuApiResponse = value.body();
+
+//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+
+                        if(value.code()==200) {
+                            Log.v("PigeonholeFragment", value.message());
+                            //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
+
+//                            User user1 = AppSharedPreference.getUserBasicInfo();
+
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
+
+
+
 //    private void showFileDialog() {
 //        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 //        alertDialog.setTitle(getString(R.string.app_name));

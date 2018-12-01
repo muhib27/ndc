@@ -14,6 +14,12 @@ public class AppConstant {
     public static final String SELECTED_ITEM_AUTHOR = "author";
 
 
+    public static final String USER_NAME = "name";
+    public static final String USER_EMAIL= "email";
+    public static final String USER_ID = "id";
+    public static final String USER_IMAGE = "image";
+
+
 
     public static final long BANNER_POPUP_DISMISS_TIME = 5000;
 

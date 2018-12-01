@@ -2,6 +2,8 @@ package com.classtune.ndc.utils;
 
 import android.content.SharedPreferences;
 
+import com.classtune.ndc.apiresponse.menu_api.User;
+
 /**
  * Created by RR on 13-Nov-18.
  */
@@ -12,6 +14,7 @@ public class AppSharedPreference {
     private static final String keyIsFirstTime = "isFirstTime";
     private static final String keyUserName = "username";
     private static final String keyUserPassword = "userpassword";
+    private static final String keyApiKey = "api_key";
     private static final String keyUDID = "udid";
     private static final String keyFCMId = "fcm_id";
 
@@ -43,14 +46,38 @@ public class AppSharedPreference {
         return pref.getBoolean(key, false);
     }
 
-    public static void setUserNameAndPassword(String userId, String password) {
+    public static void setUserNameAndPassword(String userId, String password, String api_key) {
         final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
 
         editor.putString(keyUserName, userId);
         editor.putString(keyUserPassword, password);
+        editor.putString(keyApiKey, api_key);
         editor.apply();
     }
+    public static void setUserBasicInfo(User user) {
+        final SharedPreferences pref = getSharedPreferences();
+        final SharedPreferences.Editor editor = pref.edit();
+
+        if(user.getId()!=null)
+        editor.putString(AppConstant.USER_NAME, user.getName());
+        editor.putString(AppConstant.USER_EMAIL, user.getEmail());
+        editor.putString(AppConstant.USER_ID, user.getId());
+        editor.putString(AppConstant.USER_IMAGE, user.getImage());
+        editor.apply();
+    }
+
+    public static User getUserBasicInfo() {
+        final SharedPreferences pref = getSharedPreferences();
+        User user = new User();
+
+        user.setName(pref.getString(AppConstant.USER_NAME, ""));
+        user.setEmail(pref.getString(AppConstant.USER_EMAIL, ""));
+        user.setId(pref.getString(AppConstant.USER_ID, ""));
+        user.setImage(pref.getString(AppConstant.USER_IMAGE, ""));
+        return user;
+    }
+
     public static void setUDID(String udid){
         final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
@@ -84,6 +111,10 @@ public class AppSharedPreference {
     public static String getUserPassword() {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getString(keyUserPassword, "");
+    }
+    public static String getApiKey() {
+        final SharedPreferences pref = getSharedPreferences();
+        return pref.getString(keyApiKey, "");
     }
     //eSWBaw0MaMM:APA91bFhVluppQU8GIpUuMUEF2gCXuWE4ZXiV6Nv9Wsm9ywYe7m4fDx6aK6DakJgCqvu4Iv7_L91AfNxrfXQICVL-pjSTI1b_00MsA5RNqZ_MOy7QQLJqJLslyEQavUSKn13Rc3tWYxy
 

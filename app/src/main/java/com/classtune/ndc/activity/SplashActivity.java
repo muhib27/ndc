@@ -97,12 +97,16 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-            String token = FirebaseInstanceId.getInstance().getToken();
 //            gcm = GoogleCloudMessaging.getInstance(this);
-//            regid = AppSharedPreference.getFcm();
+            regid = AppSharedPreference.getFcm();
 
             if (!TextUtils.isEmpty(regid)) {
-                AppSharedPreference.setFcm(regid);
+                //AppSharedPreference.setFcm(regid);
+                sendRegistrationIdToBackend(regid);
+            }
+            else {
+                String token = FirebaseInstanceId.getInstance().getToken();
+                AppSharedPreference.setFcm(token);
                 sendRegistrationIdToBackend(regid);
             }
 
@@ -152,10 +156,10 @@ public class SplashActivity extends AppCompatActivity {
                         //uiHelper.dismissLoadingDialog();
 
                         Log.e("login", "onResponse: "+value.body());
-                        Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
-                                value.body());
+//                        Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
+//                                value.body());
 
-                        if (wrapper.getStatus().getCode() == 200) {
+                        if (value.code() == 200) {
                             navigateToNextPage();
                         }
                        // AppSharedPreference.setUserNameAndPassword(username, password);
