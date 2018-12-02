@@ -42,6 +42,8 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
     int SPLASH_TIME_OUT = 3000;
+    boolean flag = false;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -66,6 +68,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     String regid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +83,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 String token = intent.getStringExtra("token");
 
-                if(token != null)
-                {
+                if (token != null) {
                     Log.e("firebase", String.valueOf(token));
                     regid = token;
                     AppSharedPreference.setFcm(regid);
@@ -96,19 +98,17 @@ public class SplashActivity extends AppCompatActivity {
                 new IntentFilter("tokenReceiver"));
 
 
-
 //            gcm = GoogleCloudMessaging.getInstance(this);
-            regid = AppSharedPreference.getFcm();
+        regid = AppSharedPreference.getFcm();
 
-            if (!TextUtils.isEmpty(regid)) {
-                //AppSharedPreference.setFcm(regid);
-                sendRegistrationIdToBackend(regid);
-            }
-            else {
-                String token = FirebaseInstanceId.getInstance().getToken();
-                AppSharedPreference.setFcm(token);
-                sendRegistrationIdToBackend(regid);
-            }
+        if (!TextUtils.isEmpty(regid)) {
+            //AppSharedPreference.setFcm(regid);
+            sendRegistrationIdToBackend(regid);
+        } else {
+            String token = FirebaseInstanceId.getInstance().getToken();
+            AppSharedPreference.setFcm(token);
+            sendRegistrationIdToBackend(regid);
+        }
 
 
     }
@@ -155,22 +155,22 @@ public class SplashActivity extends AppCompatActivity {
                     public void onNext(Response<JsonElement> value) {
                         //uiHelper.dismissLoadingDialog();
 
-                        Log.e("login", "onResponse: "+value.body());
+                        Log.e("login", "onResponse: " + value.body());
 //                        Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
 //                                value.body());
 
                         if (value.code() == 200) {
                             navigateToNextPage();
                         }
-                       // AppSharedPreference.setUserNameAndPassword(username, password);
-
+                        // AppSharedPreference.setUserNameAndPassword(username, password);
+                        flag = true;
 
                     }
 
 
                     @Override
                     public void onError(Throwable e) {
-
+                        flag = true;
 
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -178,7 +178,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-
+                        flag = true;
                     }
                 });
 
@@ -202,9 +202,9 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        if (flag)
+            super.onBackPressed();
     }
-
 
 
     private void navigateToNextPage() {
@@ -222,6 +222,7 @@ public class SplashActivity extends AppCompatActivity {
 //                if (!mIsBackButtonPressed) {
                 boolean isFirstTime = AppSharedPreference.getUsingFirstTime();
                 Intent intent;
+                flag = true;
                 if (isFirstTime) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
                 } else {

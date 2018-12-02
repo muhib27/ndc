@@ -3,23 +3,19 @@ package com.classtune.ndc.retrofit;
 
 import com.classtune.ndc.apiresponse.LoginApiModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
-import com.classtune.ndc.model.LoginResponseModel;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
 import com.classtune.ndc.utils.URLHelper;
+import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
-import java.util.List;
-import java.util.Map;
-
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 //import io.reactivex.Observable;
 
@@ -50,11 +46,19 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PIGEONHOLE_TASK_LIST)
-    Observable<Response<JsonElement>> getPigeonholeTaskList(@Field("api_key") String api_key);
+    Observable<Response<PHTaskListResponse>> getPigeonholeTaskList(@Field("api_key") String api_key);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PIGEONHOLE_TASK_ADD)
     Observable<Response<JsonElement>> getTaskAssign(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PIGEONHOLE_GET_COURSES)
+    Observable<Response<PigeonholeGetCourseApiResponse>> getPigeonholeCourses(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PIGEONHOLE_DETAILS + "/{id}")
+    Observable<Response<PHTaskViewResponse>> getSinglePHDetails(@Field("api_key") String api_key, @Path("id") int id);
 
 
 

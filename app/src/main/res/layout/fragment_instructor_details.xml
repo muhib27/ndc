@@ -131,6 +131,7 @@
                     card_view:cardUseCompatPadding="true">
 
                     <TextView
+                        android:id="@+id/description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -29,6 +30,8 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.UserTaskAssignAdapter;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeTaskAdd;
 import com.classtune.ndc.callbacks.IAttachFile;
 import com.classtune.ndc.model.AttachmentModel;
 import com.classtune.ndc.model.CMModel;
@@ -75,6 +78,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     LinearLayout layoutDueDate, layoutAssignTo, commonTypeLayout;
     Button attachFileBtn, assignBtn;
     TextView dueDate, assignTo;
+    EditText title, description;
     RadioGroup typeGroup, instituteGroup;
     RadioButton ndc, afwc, capston;
     Button common, custom;
@@ -85,9 +89,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     UIHelper uiHelper;
 
     List<AttachmentModel> attachmentModelList;
+    PigeonholeTaskAdd pigeonholeTaskAdd;
 
 
-    AttachmentAdapter attachmentAdapter;
+    AttachmentAdapter attachmentAdapter, attachmentAdapterMain;
 
     private static final String[] STORAGE_AND_CAMERA =
             {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
@@ -95,6 +100,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     private static final int RC_STORAGE_CAMERA_PERM = 124;
     private ArrayList<String> listFiles;
     public static InsTructorTaskAssignFragment instance;
+    ListView attachmentListMain;
 
     public InsTructorTaskAssignFragment() {
         // Required empty public constructor
@@ -120,6 +126,11 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         initView(view);
         listFiles = new ArrayList<>();
         attachmentModelList = new ArrayList<>();
+        attachmentListMain = view.findViewById(R.id.attachmentListMain);
+
+        attachmentAdapter = new AttachmentAdapter(getActivity(), attachmentModelList);
+        attachmentAdapter.notifyDataSetChanged();
+        attachmentListMain.setAdapter(attachmentAdapter);
 
         layoutDueDate = (LinearLayout) view.findViewById(R.id.layoutDueDate);
         layoutDueDate.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +148,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         layoutAssignTo.setOnClickListener(this);
         assignTo = view.findViewById(R.id.assign_to);
         dueDate = view.findViewById(R.id.due_date);
+        title = view.findViewById(R.id.title);
+        description = view.findViewById(R.id.description);
         attachFileBtn = view.findViewById(R.id.attachFile);
         assignBtn = view.findViewById(R.id.assignBtn);
 
@@ -185,6 +198,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 showDialogAssignTo();
                 break;
             case R.id.assignBtn:
+                initTaskAssignApi();
                 break;
             case R.id.common:
                 enableCommonSelection();
@@ -198,31 +212,42 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         }
     }
 
+    private void initTaskAssignApi() {
+
+        pigeonholeTaskAdd = new PigeonholeTaskAdd();
+        if (!title.getText().toString().trim().isEmpty() )
+            pigeonholeTaskAdd.setTitle(title.getText().toString());
+        if (!description.getText().toString().trim().isEmpty() )
+            pigeonholeTaskAdd.setDescription(description.getText().toString());
+        if (!dueDate.getText().toString().trim().isEmpty() )
+            pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
+
+        callTaskAddApi();
+
+    }
+
     private void browseFile(String selected) {
 
-        if(selected.equals("video")) {
+        if (selected.equals("video")) {
             Intent intent1 = new Intent(getActivity(), VideoPickActivity.class);
             intent1.putExtra(IS_NEED_CAMERA, true);
             intent1.putExtra(Constant.MAX_NUMBER, 9);
             intent1.putExtra(IS_NEED_FOLDER_LIST, true);
             startActivityForResult(intent1, Constant.REQUEST_CODE_PICK_VIDEO);
-        }
-        else if(selected.equals("audio")) {
+        } else if (selected.equals("audio")) {
 
             Intent intent2 = new Intent(getActivity(), AudioPickActivity.class);
             intent2.putExtra(IS_NEED_CAMERA, true);
             intent2.putExtra(Constant.MAX_NUMBER, 9);
             intent2.putExtra(IS_NEED_FOLDER_LIST, true);
             startActivityForResult(intent2, Constant.REQUEST_CODE_PICK_AUDIO);
-        }
-        else if(selected.equals("image")) {
+        } else if (selected.equals("image")) {
             Intent intent3 = new Intent(getActivity(), ImagePickActivity.class);
             intent3.putExtra(IS_NEED_RECORDER, true);
             intent3.putExtra(Constant.MAX_NUMBER, 9);
             intent3.putExtra(IS_NEED_FOLDER_LIST, true);
             startActivityForResult(intent3, Constant.REQUEST_CODE_PICK_IMAGE);
-        }
-        else if(selected.equals("file")) {
+        } else if (selected.equals("file")) {
 
             Intent intent4 = new Intent(getActivity(), NormalFilePickActivity.class);
             intent4.putExtra(Constant.MAX_NUMBER, 9);
@@ -517,6 +542,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         // EasyPermissions handles the request result.
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+
     StringBuilder builder;
 
     @Override
@@ -534,8 +560,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                             hasStorageAndCameraPermission() ? yes : no),
                     Toast.LENGTH_LONG)
                     .show();
-        }
-       else if(requestCode == Constant.REQUEST_CODE_PICK_VIDEO ){
+        } else if (requestCode == Constant.REQUEST_CODE_PICK_VIDEO) {
 
             if (resultCode == RESULT_OK) {
                 ArrayList<VideoFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_VIDEO);
@@ -552,8 +577,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //                //attachmentAdapter.setData(attachmentModelList);
 //                attachmentAdapter.notifyDataSetChanged();
             }
-        }
-        else if(requestCode == Constant.REQUEST_CODE_PICK_AUDIO ){
+        } else if (requestCode == Constant.REQUEST_CODE_PICK_AUDIO) {
 
             if (resultCode == RESULT_OK) {
                 ArrayList<AudioFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_AUDIO);
@@ -567,8 +591,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 }
                 attachmentAdapter.notifyDataSetChanged();
             }
-        }
-        else if(requestCode == Constant.REQUEST_CODE_PICK_IMAGE ){
+        } else if (requestCode == Constant.REQUEST_CODE_PICK_IMAGE) {
 
             if (resultCode == RESULT_OK) {
                 ArrayList<ImageFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_IMAGE);
@@ -581,8 +604,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 }
                 attachmentAdapter.notifyDataSetChanged();
             }
-        }
-        else if(requestCode == Constant.REQUEST_CODE_PICK_FILE ){
+        } else if (requestCode == Constant.REQUEST_CODE_PICK_FILE) {
 
             if (resultCode == RESULT_OK) {
                 ArrayList<NormalFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_FILE);
@@ -626,7 +648,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     }
 
 
-    private void callTaskListApi() {
+    private void callTaskAddApi() {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -635,8 +657,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //        uiHelper.showLoadingDialog("Authenticating...");
 
 
-
-        RetrofitApiClient.getApiInterface().getPigeonholeTaskList(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getTaskAssign(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -653,7 +674,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
-                        if(value.code()==200) {
+                        if (value.code() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
 
@@ -684,6 +705,63 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     }
 
+
+    private void callPigeonholeGetCourseApi() {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        uiHelper.showLoadingDialog("Authenticating...");
+
+
+        RetrofitApiClient.getApiInterface().getPigeonholeCourses(AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<PigeonholeGetCourseApiResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<PigeonholeGetCourseApiResponse> value) {
+                        uiHelper.dismissLoadingDialog();
+                        PigeonholeGetCourseApiResponse pigeonholeGetCourseApiResponse = value.body();
+
+//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+
+                        if (pigeonholeGetCourseApiResponse.getCode() == 200) {
+                            Log.v("PigeonholeFragment", value.message());
+                            //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
+
+//                            User user1 = AppSharedPreference.getUserBasicInfo();
+
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
 
 
 //    private void showFileDialog() {

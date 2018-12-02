@@ -32,6 +32,7 @@
             <!--card_view:cardElevation="3dp"-->
             <!--card_view:cardUseCompatPadding="true">-->
             <EditText
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10dp"
@@ -48,6 +49,7 @@
             <!--card_view:cardElevation="3dp"-->
             <!--card_view:cardUseCompatPadding="true">-->
             <EditText
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10dp"
@@ -126,6 +128,10 @@
                 android:textAllCaps="false"
                 android:textColor="@color/ndc_color"
                 android:textSize="@dimen/text_size_15_sp" />
+            <ListView
+                android:id="@+id/attachmentListMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/assignBtn"

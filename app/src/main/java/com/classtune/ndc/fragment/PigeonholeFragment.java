@@ -1,7 +1,6 @@
 package com.classtune.ndc.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,19 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.classtune.ndc.R;
-import com.classtune.ndc.activity.LoginActivity;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.PigeonholeAdapter;
-import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -42,7 +41,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PigeonholeFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
+public class PigeonholeFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -88,12 +87,12 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
             }
         });
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
-        pigeonholeFab = (FloatingActionButton)view.findViewById(R.id.pigeonhole_fab);
+        pigeonholeFab = (FloatingActionButton) view.findViewById(R.id.pigeonhole_fab);
         pigeonholeFab.setOnClickListener(this);
         strList = getStrList();
 
 
-        pigeonholeAdapter = new PigeonholeAdapter(getContext(), strList);
+        pigeonholeAdapter = new PigeonholeAdapter(getContext());
 
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -121,30 +120,29 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 //        uiHelper.showLoadingDialog("Authenticating...");
 
 
-
         RetrofitApiClient.getApiInterface().getPigeonholeTaskList(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<JsonElement>>() {
+                .subscribe(new Observer<Response<PHTaskListResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<JsonElement> value) {
+                    public void onNext(Response<PHTaskListResponse> value) {
                         uiHelper.dismissLoadingDialog();
+                        PHTaskListResponse phTaskListResponse = value.body();
 //                        MenuApiResponse menuApiResponse = value.body();
 
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
-                        if(value.code()==200) {
+                        if (phTaskListResponse.getCode() == 200) {
                             Log.v("PigeonholeFragment", value.message());
-                          //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
-
-//                            User user1 = AppSharedPreference.getUserBasicInfo();
-
+                            List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
+                            pigeonholeAdapter.addAllData(phTaskList);
+                            Log.v("tt", phTaskList.toString());
                         }
 
                     }
@@ -170,14 +168,15 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 
     }
 
+
     @Override
     public void onRefresh() {
-
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.pigeonhole_fab:
                 gotoInstructorTaskAssignFragment();
                 break;
@@ -188,9 +187,11 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
         InsTructorTaskAssignFragment insTructorTaskAssignFragment = new InsTructorTaskAssignFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
+
     @Override
     public void retryPageLoad() {
         mSwipeRefreshLayout.setRefreshing(false);

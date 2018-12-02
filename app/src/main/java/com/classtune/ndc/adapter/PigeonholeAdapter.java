@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
@@ -44,12 +46,11 @@ import java.util.Calendar;
 import java.util.List;
 
 
-
 /**
  * Created by Muhib on 20/11/18.
  */
 
-public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     // View Types
@@ -61,20 +62,20 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<PHTask> pigeonholeDataModelList;
+    private List<PHTask> phTasks = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
 
     private PaginationAdapterCallback mCallback;
-//    private OrderProcess mOrderProcessCallback;
+    //    private OrderProcess mOrderProcessCallback;
     View myView;
     LayoutInflater layoutInflater;
     LinearLayout layout;
 
-//
+    //
     private String errorMsg;
     //HomeFragment homeFragment;
 
@@ -82,7 +83,8 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     String shippingAddressTwo = "";
     String billingAddressOne = "";
     String billingAddressTwo = "";
-//
+
+    //
     public PigeonholeAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
@@ -96,14 +98,15 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         pigeonholeDataModelList = new ArrayList<>();
     }
 
-    public PigeonholeAdapter(Context context, ArrayList<String> strList) {
+    public PigeonholeAdapter(Context context, ArrayList<PHTask> strList) {
         this.context = context;
         this.mCallback = mCallback;
-        this.strList = strList;
+        this.phTasks = strList;
 
     }
 
-    public List<PigeonholeDataModel> getMovies() {
+
+    public List<PHTask> getMovies() {
         return pigeonholeDataModelList;
     }
 
@@ -121,10 +124,10 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 View viewItem = inflater.inflate(R.layout.pigeonhole_single_row, parent, false);
                 viewHolder = new PigeonholeListItem(viewItem);
                 break;
-//            case LOADING:
-//                View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
-//                viewHolder = new LoadingVH(viewLoading);
-//                break;
+            case LOADING:
+                View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+                viewHolder = new LoadingVH(viewLoading);
+                break;
 //            case HERO:
 //                View viewHero = inflater.inflate(R.layout.item_hero, parent, false);
 //                viewHolder = new HeroVH(viewHero);
@@ -166,9 +169,19 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //                break;
             case ITEM:
                 final PigeonholeListItem itemHolder = (PigeonholeListItem) holder;
-                int total = strList.size();
+                int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder.orderTitle.setText(strList.get(position));
+                itemHolder.title.setText(pigeonholeDataModelList.get(position).getTitle());
+              //  itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
+                itemHolder.assign_date.setText(Html.fromHtml("Assign Date: " + "<font color = #3F86A0>" + dateTimeParse(pigeonholeDataModelList.get(position).getCreatedAt()) + "</font>"));
+                if(!pigeonholeDataModelList.get(position).getDueDate().isEmpty())
+                itemHolder.due_date.setText(Html.fromHtml("Due Date: " + "<font color=#3F86A0>" + dateTimeParse(pigeonholeDataModelList.get(position).getDueDate()) + "</font>"));
+                else
+                    itemHolder.due_date.setText("");
+                if(pigeonholeDataModelList.get(position).getAttachmentId()!=null)
+                    itemHolder.attachment.setVisibility(View.VISIBLE);
+                else
+                    itemHolder.attachment.setVisibility(View.INVISIBLE);
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -178,10 +191,9 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        showPopupMenu(itemHolder.dotMenu,position);
+                        showPopupMenu(itemHolder.dotMenu, position);
                     }
                 });
-
 
 
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -196,12 +208,33 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 });
                 break;
+            case LOADING:
+                LoadingVH loadingVH = (LoadingVH) holder;
+
+                if (retryPageLoad) {
+                    loadingVH.mErrorLayout.setVisibility(View.VISIBLE);
+                    loadingVH.mProgressBar.setVisibility(View.GONE);
+
+                    loadingVH.mErrorTxt.setText(
+                            errorMsg != null ?
+                                    errorMsg :
+                                    context.getString(R.string.error_msg_unknown));
+
+                } else {
+                    loadingVH.mErrorLayout.setVisibility(View.GONE);
+                    loadingVH.mProgressBar.setVisibility(View.VISIBLE);
+                }
+                break;
 
 
         }
     }
+
+//    myTextView.setText(Html.fromHtml(stringB + "<font color=red>" + stringA + "</font>);
+
     PopupMenu popupMenu;
-    private void showPopupMenu(View view,int position) {
+
+    private void showPopupMenu(View view, int position) {
         // inflate menu
 //        PopupMenu popup = new PopupMenu(view.getContext(),view );
 //        MenuInflater inflater = popup.getMenuInflater();
@@ -220,7 +253,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
             fMenuHelper.setAccessible(true);
             menuHelper = fMenuHelper.get(popupMenu);
-            argTypes = new Class[] { boolean.class };
+            argTypes = new Class[]{boolean.class};
             menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
         } catch (Exception e) {
             // Possible exceptions are NoSuchMethodError and NoSuchFieldError
@@ -240,20 +273,20 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         popupMenu.show();
 
-       popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-           @Override
-           public boolean onMenuItemClick(MenuItem menuItem) {
-               switch (menuItem.getItemId()) {
-                   case R.id.edit:
-                       Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
-                       break;
-                   case R.id.delete:
-                       Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                       break;
-               }
-               return false;
-           }
-       });
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.edit:
+                        Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.delete:
+                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
 //    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
@@ -304,7 +337,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
+        return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
         //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
     }
 
@@ -329,10 +362,9 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //            return ADD;
 //        }
 //        else {
-        return (position == strList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        return (position == pigeonholeDataModelList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
 //        }
     }
-
 
 
 //    private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
@@ -359,19 +391,19 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
+    public void add(PHTask r) {
         pigeonholeDataModelList.add(r);
         notifyItemInserted(pigeonholeDataModelList.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<PHTask> pigeonholeDataModels) {
+        for (PHTask result : pigeonholeDataModels) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
+    public void addAllNewData(List<PHTask> moveResults) {
         pigeonholeDataModelList.clear();
         pigeonholeDataModelList.addAll(moveResults);
         notifyDataSetChanged();
@@ -382,7 +414,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    public void remove(PigeonholeDataModel r) {
+    public void remove(PHTask r) {
         int position = pigeonholeDataModelList.indexOf(r);
         if (position > -1) {
             pigeonholeDataModelList.remove(position);
@@ -404,14 +436,14 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new PHTask());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        PHTask result = getItem(position);
 
         if (result != null) {
             pigeonholeDataModelList.remove(position);
@@ -419,7 +451,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
+    public PHTask getItem(int position) {
         return pigeonholeDataModelList.get(position);
     }
 
@@ -437,54 +469,51 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-
-
-
-
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
-        private TextView orderTitle;
-        private TextView accepted;
-        private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
-        private ImageView itemImage;
-        private ProgressBar mProgress;
+        private TextView title;
+        private TextView description;
+        private ImageView attachment;
+
         private TextView menuOption;
         private LinearLayout itemLayout;
-        private LinearLayout itemNameLayout;
-        private TextView rejected;
-        private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
+
+        private TextView assign_date, due_date;
         ImageButton dotMenu;
 
         public PigeonholeListItem(View itemView) {
             super(itemView);
 
-            orderTitle = (TextView) itemView.findViewById(R.id.title);
+            title = (TextView) itemView.findViewById(R.id.title);
+            description = (TextView) itemView.findViewById(R.id.description);
+            assign_date = (TextView) itemView.findViewById(R.id.assign_date);
+            due_date = (TextView) itemView.findViewById(R.id.due_date);
+            attachment = itemView.findViewById(R.id.attachment);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
             dotMenu = itemView.findViewById(R.id.dot_menu);
 
 
-
-
         }
     }
 
 
-
-
-    private String dateTimeParse(String dateTime, String timeToAdd) {
-        String[] timeToAddParts = timeToAdd.split(" ");
+    private String dateTimeParse(String dateTime) {
+//        String[] timeToAddParts = timeToAdd.split(" ");
         String parsedString = "";
-        if (dateTime.contains("T")) {
-            String[] parts = dateTime.split("T");
+        if (dateTime.contains(" ")) {
+            String[] parts = dateTime.split(" ");
             if (!parts[0].isEmpty() && parts[0] != null)
-                parsedString = parsedString + dateReverse(parts[0], parts[1], Integer.valueOf(timeToAddParts[0]));
+                parsedString = parsedString + dateReverse(parts[0]);
 //            if(!parts[1].isEmpty() && parts[1]!=null)
 //                parsedString = parsedString + "  "+ parts[1].substring(0, parts[1].lastIndexOf(":"));
         }
+        else if(!dateTime.isEmpty() && dateTime!=null)
+            parsedString = dateReverse(dateTime);
+
 
         return parsedString;
     }
 
-    public static String dateReverse(String duedate, String times, int timeToAdd) {
+    public static String dateReverse(String duedate, String times) {
 
         SimpleDateFormat format1 = new SimpleDateFormat("dd MMM, yyyy-HH:mm");
         //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -502,7 +531,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
             c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeparts[0]));
             c.set(Calendar.MINUTE, Integer.parseInt(timeparts[1]));
-            c.add(Calendar.MINUTE, timeToAdd);
+//            c.add(Calendar.MINUTE, timeToAdd);
             String tt = c.getTime().toString();
 
 
@@ -513,7 +542,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 try {
                     lastParse = result.split("-");
                     returnResult = lastParse[0] + " at " + lastParse[1];
-                }catch (Exception e) {
+                } catch (Exception e) {
 
                 }
             }
@@ -521,13 +550,84 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         return returnResult;
     }
+    public static String dateReverse(String duedate) {
+
+        SimpleDateFormat format1 = new SimpleDateFormat("dd MMM, yyyy");
+        //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+//        format1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String result = "";
+        String returnResult = "";
+        String dateText = duedate;
+
+
+        if (dateText != null && dateText.contains("-")) {
+            String[] parts = dateText.split("-");
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.parseInt(parts[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
+
+//            c.add(Calendar.MINUTE, timeToAdd);
+            String tt = c.getTime().toString();
+
+
+            // result = ( new SimpleDateFormat( "dd-MM-yyyy' 'HH:mm" ) ).format( c.getTime()).toString();;
+            result = format1.format(c.getTime());
+            String[] lastParse;
+//            if (result.contains("-")) {
+//                try {
+//                    lastParse = result.split("-");
+//                    returnResult = lastParse[0] + " at " + lastParse[1];
+//                } catch (Exception e) {
+//
+//                }
+//            }
+
+        }
+        return result;
+    }
+
 
     private void gotoInstructorDetailsFragment() {
         InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);
+        ;
         transaction.commit();
+    }
+
+
+    protected class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ProgressBar mProgressBar;
+        private ImageButton mRetryBtn;
+        private TextView mErrorTxt;
+        private LinearLayout mErrorLayout;
+
+        public LoadingVH(View itemView) {
+            super(itemView);
+
+            mProgressBar = (ProgressBar) itemView.findViewById(R.id.loadmore_progress);
+            mRetryBtn = (ImageButton) itemView.findViewById(R.id.loadmore_retry);
+            mErrorTxt = (TextView) itemView.findViewById(R.id.loadmore_errortxt);
+            mErrorLayout = (LinearLayout) itemView.findViewById(R.id.loadmore_errorlayout);
+
+            mRetryBtn.setOnClickListener(this);
+            mErrorLayout.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.loadmore_retry:
+                case R.id.loadmore_errorlayout:
+
+                    showRetry(false, null);
+                    mCallback.retryPageLoad();
+
+                    break;
+            }
+        }
     }
 
 }

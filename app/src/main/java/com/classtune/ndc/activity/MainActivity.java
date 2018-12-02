@@ -330,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void userLogout() {
         User user = new User("", "", "", "");
         AppSharedPreference.setUserBasicInfo(user);
+        AppSharedPreference.setUserNameAndPassword("", "", "");
         AppSharedPreference.setUsingFirstTime(true);
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);

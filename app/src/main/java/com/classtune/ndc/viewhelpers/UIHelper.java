@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UIHelper {
@@ -192,6 +193,99 @@ public class UIHelper {
                 }, mHour, mMinute, false);
         timePickerDialog.show();
         return time;
+    }
+
+
+
+    public String dateTimeParse(String dateTime) {
+//        String[] timeToAddParts = timeToAdd.split(" ");
+        String parsedString = "";
+        if (dateTime.contains(" ")) {
+            String[] parts = dateTime.split(" ");
+            if (!parts[0].isEmpty() && parts[0] != null)
+                parsedString = parsedString + dateReverse(parts[0]);
+//            if(!parts[1].isEmpty() && parts[1]!=null)
+//                parsedString = parsedString + "  "+ parts[1].substring(0, parts[1].lastIndexOf(":"));
+        }
+        else if(!dateTime.isEmpty() && dateTime!=null)
+            parsedString = dateReverse(dateTime);
+
+
+        return parsedString;
+    }
+
+    public static String dateReverse(String duedate, String times) {
+
+        SimpleDateFormat format1 = new SimpleDateFormat("dd MMM, yyyy-HH:mm");
+        //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+//        format1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String result = "";
+        String returnResult = "";
+        String dateText = duedate;
+        String[] timeparts = times.split(":");
+
+        if (dateText != null && dateText.contains("-")) {
+            String[] parts = dateText.split("-");
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.parseInt(parts[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
+            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeparts[0]));
+            c.set(Calendar.MINUTE, Integer.parseInt(timeparts[1]));
+//            c.add(Calendar.MINUTE, timeToAdd);
+            String tt = c.getTime().toString();
+
+
+            // result = ( new SimpleDateFormat( "dd-MM-yyyy' 'HH:mm" ) ).format( c.getTime()).toString();;
+            result = format1.format(c.getTime());
+            String[] lastParse;
+            if (result.contains("-")) {
+                try {
+                    lastParse = result.split("-");
+                    returnResult = lastParse[0] + " at " + lastParse[1];
+                } catch (Exception e) {
+
+                }
+            }
+
+        }
+        return returnResult;
+    }
+    public static String dateReverse(String duedate) {
+
+        SimpleDateFormat format1 = new SimpleDateFormat("dd MMM, yyyy");
+        //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+//        format1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String result = "";
+        String returnResult = "";
+        String dateText = duedate;
+
+
+        if (dateText != null && dateText.contains("-")) {
+            String[] parts = dateText.split("-");
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.parseInt(parts[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
+
+//            c.add(Calendar.MINUTE, timeToAdd);
+            String tt = c.getTime().toString();
+
+
+            // result = ( new SimpleDateFormat( "dd-MM-yyyy' 'HH:mm" ) ).format( c.getTime()).toString();;
+            result = format1.format(c.getTime());
+            String[] lastParse;
+//            if (result.contains("-")) {
+//                try {
+//                    lastParse = result.split("-");
+//                    returnResult = lastParse[0] + " at " + lastParse[1];
+//                } catch (Exception e) {
+//
+//                }
+//            }
+
+        }
+        return result;
     }
     
 }
