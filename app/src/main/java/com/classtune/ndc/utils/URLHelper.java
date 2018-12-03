@@ -5,7 +5,8 @@ package com.classtune.ndc.utils;
 
 public class URLHelper {
 
-	public static final String BASE_URL = "http://192.168.2.38/";
+	public static final String BASE_URL = "http://teamworkbd.com/";
+	//public static final String BASE_URL = "http://192.168.2.38/";
 	public static final String SUB_URL = "masterapi/";
 //	public final static String URL_BASE = "http://apimaster.classtune.com/api/";
 	public final static String ADD_FCM = "users/add_fcm";

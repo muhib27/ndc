@@ -433,30 +433,26 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                 if (checkedId == R.id.ndc) {
 
-//                    userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), ndcStList,  "ndc");
-//                    userTaskAssignAdapter.notifyDataSetChanged();
-//                    listView.setAdapter(userTaskAssignAdapter);
-//                    userTaskAssignAdapter.setData(ndcStList);
-//                    userTaskAssignAdapter.notifyDataSetChanged();
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity());
+                    userTaskAssignAdapter.notifyDataSetChanged();
+                    listView.setAdapter(userTaskAssignAdapter);
+
                     userTaskAssignAdapter.clear();
                     userTaskAssignAdapter.addAllData(ndcStList);
                     //some code
                 } else if(checkedId == R.id.afwc) {
                     //some code
-//                    userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), afwcStList, "afwc");
-//                    userTaskAssignAdapter.notifyDataSetChanged();
-//                    listView.setAdapter(userTaskAssignAdapter);
-//                    userTaskAssignAdapter.setData(afwcStList);
-//                    userTaskAssignAdapter.notifyDataSetChanged();
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity());
+                    userTaskAssignAdapter.notifyDataSetChanged();
+                    listView.setAdapter(userTaskAssignAdapter);
                     userTaskAssignAdapter.clear();
                     userTaskAssignAdapter.addAllData(afwcStList);
 
                 }
                 else if(checkedId == R.id.capston) {
-                    //some code
-//                                       userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), capstonStList, "capston");
-//                    userTaskAssignAdapter.notifyDataSetChanged();
-//                    listView.setAdapter(userTaskAssignAdapter);
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity());
+                    userTaskAssignAdapter.notifyDataSetChanged();
+                    listView.setAdapter(userTaskAssignAdapter);
                     userTaskAssignAdapter.clear();
                     userTaskAssignAdapter.addAllData(capstonStList);
 

@@ -128,6 +128,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     PigeonholeListItem itemHolder;
+    int selectedPosition = -1;
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 //        OrderListModel result = orderList.get(position); // Movie
@@ -139,28 +140,31 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 itemHolder = (PigeonholeListItem) holder;
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
                 if(selectedList.contains(pigeonholeDataModelList.get(position).getId()))
                     itemHolder.selectCM.setChecked(true);
-                else
-                    itemHolder.selectCM.setChecked(false);
+//                else
+//                    itemHolder.selectCM.setChecked(false);
 
 
 
                 itemHolder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                      //  int pos = (Integer)compoundButton.getTag();
-
+                        selectedPosition = itemHolder.getAdapterPosition();
                         itemHolder.selectCM.setChecked(b);
-
                         if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
                             selectedList.add(pigeonholeDataModelList.get(position).getId());
-                            compoundButton.setChecked(true);
+                            if(selectedPosition == position)
+                                itemHolder.selectCM.setChecked(true);
+                            else
+                                itemHolder.selectCM.setChecked(false);
+
                         }
                         else {
                             selectedList.remove(pigeonholeDataModelList.get(position).getId());
-                            compoundButton.setChecked(false);
+                            //compoundButton.setChecked(false);
                         }
                     }
                 });
