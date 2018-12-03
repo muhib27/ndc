@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
@@ -23,6 +25,9 @@ import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.viewhelpers.UIHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,6 +42,9 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
     LinearLayout submittedLayout, pendingLayout;
     UIHelper uiHelper;
     TextView title, assignDate, dueDate, description, cmNumber, submitNumber, pendingNumber;
+    LinearLayout attachment_container;
+    List<ImageView> list = new ArrayList<ImageView>();
+    ImageView attachmentImage;
 
 
     public InstructorDetailsFragment() {
@@ -79,6 +87,8 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
         submittedLayout.setOnClickListener(this);
         pendingLayout = view.findViewById(R.id.pendingLayout);
         pendingLayout.setOnClickListener(this);
+
+        attachment_container = view.findViewById(R.id.attachment_container);
     }
 
     @Override
@@ -179,6 +189,38 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
             submitNumber.setText(phTaskViewData.getPhSingleTask().getSubmittedTotal());
         if (phTaskViewData.getPhSingleTask().getTotal() != null && phTaskViewData.getPhSingleTask().getSubmittedTotal() != null)
             pendingNumber.setText("" + (Integer.parseInt(phTaskViewData.getPhSingleTask().getTotal()) - Integer.parseInt(phTaskViewData.getPhSingleTask().getSubmittedTotal())));
+
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view;
+
+        for (int i = 0; i < phTaskViewData.getPhSingleTask().getAttachments().size(); i++){
+            // Add the text layout to the parent layout
+            view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
+
+            // In order to get the view we have to use the new view with text_layout in it
+            attachmentImage = view.findViewById(R.id.attachmentImage);
+            attachmentImage.setTag("Row " + i);
+            attachmentImage.setId(i+1);
+            list.add(attachmentImage);
+            for(final ImageView imageView : list){
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+//            textView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(getApplicationContext(), textView.getTag().toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+
+            // Add the text view to the parent layout
+            attachment_container.addView(attachmentImage);
+        }
     }
 
 

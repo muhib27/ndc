@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.model.CMModel;
 
 import java.util.ArrayList;
@@ -21,27 +22,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
+
 /**
  * Created by RR on 14-Nov-17.
  */
 
 public class UserTaskAssignAdapter extends BaseAdapter {
     private Context context;
-    private List<CMModel> studentList;
+    private List<Student> studentList;
     private boolean isClickable = false;
     private boolean isUpdate = false;
     private boolean isAllPresent = false;
     private Set<String> listStudentStatusNew;
     private List<String> mList;
     private List<String> dTempList;
+    String currentCourse="";
+    public List<String> selectedList= new ArrayList<>();
 
-    public UserTaskAssignAdapter(Context context, List<CMModel> studentList) {
+    public UserTaskAssignAdapter(Context context, List<Student> studentList, String currentCourse) {
         this.context = context;
         this.studentList = studentList;
 
         this.listStudentStatusNew = new HashSet<>();
         this.mList = new ArrayList<>();
         this.dTempList = new ArrayList<>();
+        this.currentCourse = currentCourse;
     }
 
     public UserTaskAssignAdapter() {
@@ -82,6 +88,10 @@ public class UserTaskAssignAdapter extends BaseAdapter {
         return isAllPresent;
     }
 
+    public void setData(List<Student> studentList){
+        this.studentList = studentList;
+    }
+
     public void setAllPresent(boolean allPresent) {
         isAllPresent = allPresent;
     }
@@ -102,13 +112,8 @@ public class UserTaskAssignAdapter extends BaseAdapter {
 
             holder.cmName = (TextView) rowView.findViewById(R.id.cmName);
             holder.selectCM = (CheckBox) rowView.findViewById(R.id.selectCM);
+            holder.layout = rowView.findViewById(R.id.layout_check);
 
-            holder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    studentList.get(index).setDefaulter("1");
-                }
-            });
 
             rowView.setTag(holder);
         } else {
@@ -117,25 +122,72 @@ public class UserTaskAssignAdapter extends BaseAdapter {
 
 
         holder.selectCM.setTag(index);
-        if (studentList.get(index).getCm_name().isEmpty() || studentList.get(index).getCm_name() == null)
+        if (studentList.get(index).getName().isEmpty() || studentList.get(index).getName() == null)
             holder.cmName.setText("-");
         else
-            holder.cmName.setText(studentList.get(index).getCm_name());
+            holder.cmName.setText(studentList.get(index).getName());
 
-        if (studentList.get(index).getDefaulter().equals("1") || studentList.get(index).isSelected()) {
+        if (selectedList.contains(studentList.get(index).getId())) {
 //            if(dTempList.contains(studentList.get(index).getStudent_id()))
 //            dTempList.add(studentList.get(index).getStudent_id());
             holder.selectCM.setChecked(true);
-            studentList.get(index).setSelected(true);
-        }
-        else {
-            studentList.get(index).setSelected(false);
+            //studentList.get(index).setSelected(true);
+        } else {
+            //studentList.get(index).setSelected(false);
             holder.selectCM.setChecked(false);
         }
 
+        holder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
+//                if(!studentList.get(index).isSelected())
+//                    studentList.get(index).setSelected(true);
+//                else
+//                    studentList.get(index).setSelected(false);
+                if(!selectedList.contains(studentList.get(index).getId())) {
+                    compoundButton.setChecked(true);
+                    selectedList.add(studentList.get(index).getId());
+                }
+                else {
+                    selectedList.remove(studentList.get(index).getId());
+                    compoundButton.setChecked(false);
+                }
+            }
+        });
 
+//        holder.layout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(!studentList.get(index).isSelected())
+//                    studentList.get(index).setSelected(true);
+//                else
+//                    studentList.get(index).setSelected(false);
+//                if(!selectedList.contains(studentList.get(index).getId())) {
+//                    holder.selectCM.setChecked(true);
+//                    selectedList.add(studentList.get(index).getId());
+//                }
+//                else {
+//                    selectedList.remove(studentList.get(index).getId());
+//                    holder.selectCM.setChecked(false);
+//                }
+//            }
+//        });
+
+//        holder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                // studentList.get(index).setDefaulter("1");
+//
+//
+////                    if(!courseList.contains(currentCourse))
+////                        courseList.add(currentCourse);
+////                    else
+//
+//            }
+//        });
         holder.selectCM.setChecked(studentList.get(index).isSelected());
+
         return rowView;
     }
 
@@ -145,7 +197,7 @@ public class UserTaskAssignAdapter extends BaseAdapter {
         private TextView studentRoll;
         private TextView studentStatus;
         private CheckBox selectCM;
-        private LinearLayout defaulterLayout;
+        private LinearLayout layout;
         private RelativeLayout checkboxLayout;
     }
 

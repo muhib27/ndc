@@ -12,6 +12,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +32,20 @@ import android.widget.Toast;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
+import com.classtune.ndc.adapter.TaskAssignAdapter;
 import com.classtune.ndc.adapter.UserTaskAssignAdapter;
+import com.classtune.ndc.apiresponse.Course;
+import com.classtune.ndc.apiresponse.pigeonhole_api.GetCourseData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeTaskAdd;
+import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.callbacks.IAttachFile;
 import com.classtune.ndc.model.AttachmentModel;
 import com.classtune.ndc.model.CMModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 import com.vincent.filepicker.Constant;
@@ -82,9 +90,15 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     RadioGroup typeGroup, instituteGroup;
     RadioButton ndc, afwc, capston;
     Button common, custom;
-    ListView listView;
-    UserTaskAssignAdapter userTaskAssignAdapter;
+    RecyclerView listView;
+    TaskAssignAdapter userTaskAssignAdapter;
     private List<CMModel> cmModelList;
+    List<Student> ndcStList;
+    List<Student> afwcStList;
+    List<Student> capstonStList;
+
+    public List<String> courseList;
+    public static List<String> selectedList;
 
     UIHelper uiHelper;
 
@@ -122,6 +136,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        ndcStList = new ArrayList<>();
+        afwcStList = new ArrayList<>();
+        capstonStList = new ArrayList<>();
         uiHelper = new UIHelper(getActivity());
         initView(view);
         listFiles = new ArrayList<>();
@@ -195,7 +212,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 readStorageStateTask();
                 break;
             case R.id.layoutAssignTo:
-                showDialogAssignTo();
+                callPigeonholeGetCourseApi();
+
                 break;
             case R.id.assignBtn:
                 initTaskAssignApi();
@@ -383,6 +401,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     private void showDialogAssignTo() {
 
+        selectedList = new ArrayList<>();
+        courseList = new ArrayList<>();
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View assignToDialogView = factory.inflate(R.layout.dialog_instructor_assign_to, null);
 
@@ -401,27 +421,49 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
         listView = assignToDialogView.findViewById(R.id.list);
 
+
+
+
         commonTypeLayout = assignToDialogView.findViewById(R.id.commonTypeLayout);
         enableCommonSelection();
 
-//        typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//
-//                if (checkedId == R.id.common) {
-//                    common.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.round_shape_background_assign));
-//                    enableCommonSelection();
-//
-//                    //some code
-//                } else if(checkedId == R.id.custom) {
-//                    //some code
-//                    custom.setChecked(true);
-//                    enableCustomSelection();
-//
-//                }
-//
-//            }
-//        });
+        instituteGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                if (checkedId == R.id.ndc) {
+
+//                    userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), ndcStList,  "ndc");
+//                    userTaskAssignAdapter.notifyDataSetChanged();
+//                    listView.setAdapter(userTaskAssignAdapter);
+//                    userTaskAssignAdapter.setData(ndcStList);
+//                    userTaskAssignAdapter.notifyDataSetChanged();
+                    userTaskAssignAdapter.clear();
+                    userTaskAssignAdapter.addAllData(ndcStList);
+                    //some code
+                } else if(checkedId == R.id.afwc) {
+                    //some code
+//                    userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), afwcStList, "afwc");
+//                    userTaskAssignAdapter.notifyDataSetChanged();
+//                    listView.setAdapter(userTaskAssignAdapter);
+//                    userTaskAssignAdapter.setData(afwcStList);
+//                    userTaskAssignAdapter.notifyDataSetChanged();
+                    userTaskAssignAdapter.clear();
+                    userTaskAssignAdapter.addAllData(afwcStList);
+
+                }
+                else if(checkedId == R.id.capston) {
+                    //some code
+//                                       userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), capstonStList, "capston");
+//                    userTaskAssignAdapter.notifyDataSetChanged();
+//                    listView.setAdapter(userTaskAssignAdapter);
+                    userTaskAssignAdapter.clear();
+                    userTaskAssignAdapter.addAllData(capstonStList);
+
+                }
+
+            }
+        });
 
 
         batchDialog = new AlertDialog.Builder(getActivity()).create();
@@ -435,6 +477,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         });
 
         batchDialog.show();
+        batchDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, 800);
 
     }
 
@@ -456,6 +499,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //    }
 //
 
+    LinearLayoutManager linearLayoutManager;
     private void enableCustomSelection() {
         cmModelList = new ArrayList<>();
         getCMData();
@@ -464,14 +508,26 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         common.setBackgroundColor(common.getContext().getResources().getColor(R.color.ash));
         common.setTextColor(common.getContext().getResources().getColor(R.color.ndc_color));
         commonTypeLayout.setVisibility(View.GONE);
+        ndc.setChecked(true);
 
         instituteGroup.setVisibility(View.VISIBLE);
         listView.setVisibility(View.VISIBLE);
 
 
-        userTaskAssignAdapter = new UserTaskAssignAdapter(getActivity(), cmModelList);
-        userTaskAssignAdapter.notifyDataSetChanged();
+        userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), ndcStList, "ndc");
+//        userTaskAssignAdapter.notifyDataSetChanged();
+//        listView.setAdapter(userTaskAssignAdapter);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rv.getContext(),
+//                linearLayoutManager.getOrientation());
+//        rv.addItemDecoration(dividerItemDecoration);
+        listView.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        listView.setLayoutManager(linearLayoutManager);
+        listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(userTaskAssignAdapter);
+
+        userTaskAssignAdapter.addAllData(ndcStList);
     }
 
     private void getCMData() {
@@ -734,6 +790,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                         if (pigeonholeGetCourseApiResponse.getCode() == 200) {
                             Log.v("PigeonholeFragment", value.message());
+                            parseCourseData(pigeonholeGetCourseApiResponse.getCourseData().getCourses());
+                            showDialogAssignTo();
                             //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
 
 //                            User user1 = AppSharedPreference.getUserBasicInfo();
@@ -761,6 +819,21 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 });
 
 
+    }
+
+    private void parseCourseData(List<Course> courses) {
+        for(int i=0; i<courses.size(); i++){
+            if(courses.get(i).getName().equalsIgnoreCase("ndc")) {
+
+                ndcStList = courses.get(i).getStudents();
+//                for(int k=0; k<20; k++)
+//                ndcStList.add(courses.get(i).getStudents().get(0));
+            }
+            else if(courses.get(i).getName().equalsIgnoreCase("afwc"))
+                afwcStList = courses.get(i).getStudents();
+            else if(courses.get(i).getName().equalsIgnoreCase("capston"))
+                capstonStList = courses.get(i).getStudents();
+        }
     }
 
 

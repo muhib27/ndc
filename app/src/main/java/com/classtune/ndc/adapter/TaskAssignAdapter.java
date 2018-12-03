@@ -1,23 +1,20 @@
 package com.classtune.ndc.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,18 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
+import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
-import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -45,12 +35,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
+
+//import com.bumptech.glide.DrawableRequestBuilder;
+
 
 /**
  * Created by Muhib on 20/11/18.
  */
 
-public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     // View Types
@@ -62,8 +56,8 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PHTask> pigeonholeDataModelList;
-    private List<PHTask> phTasks = new ArrayList<>();
+    private List<Student> pigeonholeDataModelList;
+    private List<Student> phTasks = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -84,35 +78,28 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     String billingAddressOne = "";
     String billingAddressTwo = "";
 
-    //
-    public PigeonholeAdapter(Context context, PaginationAdapterCallback mCallback) {
-        this.context = context;
-        this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
-        //this.mOrderProcessCallback = orderProcessCallback;
 
-    }
 
-    public PigeonholeAdapter(Context context) {
+    public TaskAssignAdapter(Context context) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
     }
 
-    public PigeonholeAdapter(Context context, ArrayList<PHTask> strList) {
+    public TaskAssignAdapter(Context context, List<Student> strList, String s) {
         this.context = context;
         this.mCallback = mCallback;
-        this.phTasks = strList;
+        pigeonholeDataModelList = new ArrayList<>();
 
     }
 
 
-    public List<PHTask> getMovies() {
+    public List<Student> getMovies() {
         return pigeonholeDataModelList;
     }
 
-//    public void setMovies(List<PigeonholeDataModel> orderList) {
-//        this.orderList = orderList;
-//    }
+    public void setData(List<Student> pigeonholeDataModelList) {
+        this.pigeonholeDataModelList = pigeonholeDataModelList;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -121,7 +108,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.pigeonhole_single_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.task_user_selection_row, parent, false);
                 viewHolder = new PigeonholeListItem(viewItem);
                 break;
             case LOADING:
@@ -140,71 +127,41 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return viewHolder;
     }
 
+    PigeonholeListItem itemHolder;
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 //        OrderListModel result = orderList.get(position); // Movie
         String phoneString = "";
         final Bundle bundle = new Bundle();
         switch (getItemViewType(position)) {
-//            case HERO:
-//                final HeroVH topItem = (HeroVH) holder;
-//                topItem.cardView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        int next=0;
-//                        if(position>4)
-//                            next = 5;
-//                        else
-//                            next = 1;
-//                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(orderList.subList(position, position+next));
-//                        String str = new Gson().toJson(childList);
-//                        bundle.putString("childList", str);
-//                        gotoSingleNewsFragment(bundle);
-//                    }
-//                });
-//
-//                topItem.mMovieTitle.setText(result.getTitle().getRendered());
-//                topItem.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
-//                loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(topItem.mPosterImg);
-//                break;
+
             case ITEM:
-                final PigeonholeListItem itemHolder = (PigeonholeListItem) holder;
+                itemHolder = (PigeonholeListItem) holder;
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder.title.setText(pigeonholeDataModelList.get(position).getTitle());
-              //  itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
-                itemHolder.assign_date.setText(Html.fromHtml("Assign Date: " + "<font color = #3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getCreatedAt()) + "<strong></font>"));
-                if(!pigeonholeDataModelList.get(position).getDueDate().isEmpty())
-                itemHolder.due_date.setText(Html.fromHtml("Due Date: " + "<font color=#3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getDueDate()) + "<strong></font>"));
+                itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
+                if(selectedList.contains(pigeonholeDataModelList.get(position).getId()))
+                    itemHolder.selectCM.setChecked(true);
                 else
-                    itemHolder.due_date.setText("");
-                if(pigeonholeDataModelList.get(position).getAttachmentId()!=null)
-                    itemHolder.attachment.setVisibility(View.VISIBLE);
-                else
-                    itemHolder.attachment.setVisibility(View.INVISIBLE);
-//                itemHolder.name.setText("Pizza");
-//                itemHolder.quantity.setText("Total ietm 10");
-                //itemHolder.itemNameLayout.removeAllViews();
-                String customerName = "";
-                int totalItem = 0;
+                    itemHolder.selectCM.setChecked(false);
 
-                itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
+
+
+                itemHolder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onClick(View view) {
-                        showPopupMenu(itemHolder.dotMenu, position);
-                    }
-                });
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                      //  int pos = (Integer)compoundButton.getTag();
 
+                        itemHolder.selectCM.setChecked(b);
 
-                itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //gotoOrderDetailsFragment(orderList.get(position).getId());
-//                        String str = new Gson().toJson(orderList.get(position));
-                        //bundle.putString("products", str);
-//                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoInstructorDetailsFragment();
-
+                        if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
+                            selectedList.add(pigeonholeDataModelList.get(position).getId());
+                            compoundButton.setChecked(true);
+                        }
+                        else {
+                            selectedList.remove(pigeonholeDataModelList.get(position).getId());
+                            compoundButton.setChecked(false);
+                        }
                     }
                 });
                 break;
@@ -232,62 +189,6 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 //    myTextView.setText(Html.fromHtml(stringB + "<font color=red>" + stringA + "</font>);
 
-    PopupMenu popupMenu;
-
-    private void showPopupMenu(View view, int position) {
-        // inflate menu
-//        PopupMenu popup = new PopupMenu(view.getContext(),view );
-//        MenuInflater inflater = popup.getMenuInflater();
-//        inflater.inflate(R.menu.pigeonhole_cell_menu, popup.getMenu());
-//        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
-//        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, (MenuBuilder)popup.getMenu(), view);
-//        popup.show();
-        Context wrapper = new ContextThemeWrapper(context, R.style.popupMenuStyle);
-        popupMenu = new PopupMenu(wrapper, view);
-        popupMenu.inflate(R.menu.pigeonhole_cell_menu);
-
-// Force icons to show
-        Object menuHelper;
-        Class[] argTypes;
-        try {
-            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-            fMenuHelper.setAccessible(true);
-            menuHelper = fMenuHelper.get(popupMenu);
-            argTypes = new Class[]{boolean.class};
-            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
-        } catch (Exception e) {
-            // Possible exceptions are NoSuchMethodError and NoSuchFieldError
-            //
-            // In either case, an exception indicates something is wrong with the reflection code, or the
-            // structure of the PopupMenu class or its dependencies has changed.
-            //
-            // These exceptions should never happen since we're shipping the AppCompat library in our own apk,
-            // but in the case that they do, we simply can't force icons to display, so log the error and
-            // show the menu normally.
-
-            //Log.w(TAG, "error forcing menu icons to show", e);
-            popupMenu.show();
-            return;
-        }
-
-
-        popupMenu.show();
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.edit:
-                        Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.delete:
-                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return false;
-            }
-        });
-    }
 
 //    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 //
@@ -391,19 +292,20 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
    _________________________________________________________________________________________________
     */
 
-    public void add(PHTask r) {
+    public void add(Student r) {
         pigeonholeDataModelList.add(r);
         notifyItemInserted(pigeonholeDataModelList.size() - 1);
     }
 
-    public void addAllData(List<PHTask> pigeonholeDataModels) {
-        for (PHTask result : pigeonholeDataModels) {
+    public void addAllData(List<Student> pigeonholeDataModels) {
+        for (Student result : pigeonholeDataModels) {
             add(result);
         }
 
+
     }
 
-    public void addAllNewData(List<PHTask> moveResults) {
+    public void addAllNewData(List<Student> moveResults) {
         pigeonholeDataModelList.clear();
         pigeonholeDataModelList.addAll(moveResults);
         notifyDataSetChanged();
@@ -414,7 +316,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    public void remove(PHTask r) {
+    public void remove(Student r) {
         int position = pigeonholeDataModelList.indexOf(r);
         if (position > -1) {
             pigeonholeDataModelList.remove(position);
@@ -436,14 +338,14 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PHTask());
+        add(new Student());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = pigeonholeDataModelList.size() - 1;
-        PHTask result = getItem(position);
+        Student result = getItem(position);
 
         if (result != null) {
             pigeonholeDataModelList.remove(position);
@@ -451,7 +353,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public PHTask getItem(int position) {
+    public Student getItem(int position) {
         return pigeonholeDataModelList.get(position);
     }
 
@@ -471,7 +373,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView title;
-        private TextView description;
+        public CheckBox selectCM;
         private ImageView attachment;
 
         private TextView menuOption;
@@ -483,13 +385,9 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public PigeonholeListItem(View itemView) {
             super(itemView);
 
-            title = (TextView) itemView.findViewById(R.id.title);
-            description = (TextView) itemView.findViewById(R.id.description);
-            assign_date = (TextView) itemView.findViewById(R.id.assign_date);
-            due_date = (TextView) itemView.findViewById(R.id.due_date);
-            attachment = itemView.findViewById(R.id.attachment);
-            itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
-            dotMenu = itemView.findViewById(R.id.dot_menu);
+            title = (TextView) itemView.findViewById(R.id.cmName);
+            selectCM = itemView.findViewById(R.id.selectCM);
+
 
 
         }

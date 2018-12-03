@@ -1,10 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/round_shape_background_task_assign"
-    android:orientation="vertical"
     android:padding="@dimen/size_10dp">
 
     <!--<LinearLayout-->
@@ -37,10 +36,11 @@
     <!--android:orientation="vertical">-->
 
     <LinearLayout
-        android:padding="@dimen/size_10dp"
+        android:id="@+id/assignType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
         <!--<RadioGroup-->
         <!--android:id="@+id/typeGroup"-->
         <!--android:layout_width="match_parent"-->
@@ -49,26 +49,26 @@
         <!--android:orientation="horizontal">-->
 
         <Button
-            android:textAllCaps="false"
-            android:layout_margin="@dimen/size_10dp"
-            android:textColor="@color/white"
             android:id="@+id/common"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10dp"
             android:layout_weight="1"
             android:checked="true"
             android:text="@string/common"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_14_sp" />
 
         <Button
-            android:textAllCaps="false"
-            android:layout_margin="@dimen/size_10dp"
-            android:textColor="@color/ndc_color"
             android:id="@+id/custom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10dp"
             android:layout_weight="1"
             android:text="@string/custom"
+            android:textAllCaps="false"
+            android:textColor="@color/ndc_color"
             android:textSize="@dimen/text_size_14_sp" />
     </LinearLayout>
 
@@ -78,6 +78,7 @@
         android:id="@+id/commonTypeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/assignType"
         android:orientation="vertical">
 
         <CheckBox
@@ -104,6 +105,7 @@
         android:id="@+id/instituteGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/commonTypeLayout"
         android:orientation="horizontal">
 
         <RadioButton
@@ -134,28 +136,38 @@
 
     </RadioGroup>
 
-    <ListView
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/instituteGroup"
+        android:layout_above="@+id/ll"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/btnDone"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/size_10dp"
-        android:layout_marginBottom="@dimen/size_10dp"
-        android:background="@drawable/round_shape_background_done"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:text="@string/btn_done"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_15_sp" />
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/list"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:layout_marginBottom="@dimen/size_10dp"
+            android:background="@drawable/round_shape_background_done"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/btn_done"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_15_sp" />
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
