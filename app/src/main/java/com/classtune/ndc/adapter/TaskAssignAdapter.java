@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.afwcCount;
+import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.capstonCount;
+import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.ndcCount;
 import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
 
 //import com.bumptech.glide.DrawableRequestBuilder;
@@ -47,6 +50,7 @@ import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedLi
 public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
+    private String current;
     // View Types
     private static final int ITEM = 0;
     private static final int LOADING = 1;
@@ -80,9 +84,10 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 
-    public TaskAssignAdapter(Context context) {
+    public TaskAssignAdapter(Context context , String s) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
+        current = s;
     }
 
     public TaskAssignAdapter(Context context, List<Student> strList, String s) {
@@ -156,6 +161,12 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         itemHolder.selectCM.setChecked(b);
                         if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
                             selectedList.add(pigeonholeDataModelList.get(position).getId());
+                            if(current.equals("ndc"))
+                                ndcCount++;
+                            else if(current.equals("afwc"))
+                                afwcCount++;
+                            else if(current.equals("capston"))
+                                capstonCount++;
                             if(selectedPosition == position)
                                 itemHolder.selectCM.setChecked(true);
                             else
@@ -164,6 +175,12 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
                         else {
                             selectedList.remove(pigeonholeDataModelList.get(position).getId());
+                            if(current.equals("ndc"))
+                                ndcCount--;
+                            else if(current.equals("afwc"))
+                                afwcCount--;
+                            else if(current.equals("capston"))
+                                capstonCount--;
                             //compoundButton.setChecked(false);
                         }
                     }

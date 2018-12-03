@@ -240,7 +240,16 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         if (!dueDate.getText().toString().trim().isEmpty() )
             pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
 
-        callTaskAddApi();
+        if(ndcCount>0)
+            courseList.add("ndc");
+        if(afwcCount>0)
+            courseList.add("afwc");
+        if(capstonCount>0)
+            courseList.add("capston");
+
+        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
+
+     //   callTaskAddApi();
 
     }
 
@@ -399,8 +408,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     }
 
+    public static int ndcCount, afwcCount, capstonCount;
     private void showDialogAssignTo() {
 
+        ndcCount = 0;
+        afwcCount = 0;
+        capstonCount = 0;
         selectedList = new ArrayList<>();
         courseList = new ArrayList<>();
         LayoutInflater factory = LayoutInflater.from(getActivity());
@@ -433,7 +446,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                 if (checkedId == R.id.ndc) {
 
-                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity());
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc");
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
 
@@ -442,7 +455,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     //some code
                 } else if(checkedId == R.id.afwc) {
                     //some code
-                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity());
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc");
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     userTaskAssignAdapter.clear();
@@ -450,7 +463,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                 }
                 else if(checkedId == R.id.capston) {
-                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity());
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston");
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     userTaskAssignAdapter.clear();
@@ -510,7 +523,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         listView.setVisibility(View.VISIBLE);
 
 
-        userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), ndcStList, "ndc");
+        userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc");
 //        userTaskAssignAdapter.notifyDataSetChanged();
 //        listView.setAdapter(userTaskAssignAdapter);
 
