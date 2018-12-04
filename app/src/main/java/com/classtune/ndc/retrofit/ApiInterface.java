@@ -10,11 +10,18 @@ import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
+import java.util.List;
+
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 //import io.reactivex.Observable;
@@ -48,9 +55,11 @@ public interface ApiInterface {
     @POST(URLHelper.GET_PIGEONHOLE_TASK_LIST)
     Observable<Response<PHTaskListResponse>> getPigeonholeTaskList(@Field("api_key") String api_key);
 
-    @FormUrlEncoded
+
     @POST(URLHelper.GET_PIGEONHOLE_TASK_ADD)
-    Observable<Response<JsonElement>> getTaskAssign(@Field("api_key") String api_key);
+      Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+
+    //  Observable<Response<JsonElement>> getTaskAssign(@Part("api_key") RequestBody api_key,@Part List<MultipartBody.Part> file, @Part("users[]") List<String> selectedList, @Part("course[]") List<String> courseList, @Part("title") RequestBody title, @Part("description") RequestBody description, @Part("due_date") RequestBody due_date);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PIGEONHOLE_GET_COURSES)

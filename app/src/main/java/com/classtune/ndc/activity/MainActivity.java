@@ -179,7 +179,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "fds", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "fds", Toast.LENGTH_LONG).show();
+                DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
+                if(dashBoardFragment.isVisible())
+                    return;
+                else
+                    gotoDashboardFragment();
             }
         });
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -311,7 +316,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action
 //        } else
-        if (id == R.id.nav_pigeonhole) {
+        if (id == R.id.nav_home) {
+
+            gotoDashboardFragment();
+
+        } else if (id == R.id.nav_pigeonhole) {
 
             gotoPigeonholeFragment();
 
@@ -398,6 +407,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void gotoDashboardFragment() {
+        setUpBackStackCountToZero();
         DashBoardFragment dashBoardFragment = new DashBoardFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

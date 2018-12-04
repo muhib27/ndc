@@ -117,7 +117,7 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
-//        uiHelper.showLoadingDialog("Authenticating...");
+        uiHelper.showLoadingDialog("Please wait...");
 
 
         RetrofitApiClient.getApiInterface().getPigeonholeTaskList(AppSharedPreference.getApiKey())

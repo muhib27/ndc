@@ -9,6 +9,10 @@
             <!--android:icon="@drawable/ic_menu_camera"-->
             <!--android:title="Import" />-->
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/pigeonhole_icon"
+            android:title="Home" />
+        <item
             android:id="@+id/nav_pigeonhole"
             android:icon="@drawable/pigeonhole_icon"
             android:title="Pigeonhole" />

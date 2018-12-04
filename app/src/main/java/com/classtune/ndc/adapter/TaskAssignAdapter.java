@@ -149,8 +149,8 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
                 if(selectedList.contains(pigeonholeDataModelList.get(position).getId()))
                     itemHolder.selectCM.setChecked(true);
-//                else
-//                    itemHolder.selectCM.setChecked(false);
+                else
+                    itemHolder.selectCM.setChecked(false);
 
 
 

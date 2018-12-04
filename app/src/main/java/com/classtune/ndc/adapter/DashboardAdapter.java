@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
+import com.classtune.ndc.model.DemoClass;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
@@ -46,8 +47,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<DemoClass> pigeonholeDataModelList;
+    private List<DemoClass> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -82,20 +83,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.strList = strList;
     }
 
-    public DashboardAdapter(Context context, ArrayList<String> strList) {
+    public DashboardAdapter(Context context, ArrayList<DemoClass> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
 
     }
-    public void setData(List<String> list){
-        strList =list;
+    public void setData(List<DemoClass> list){
+        pigeonholeDataModelList =list;
 
 
     }
 
 
-    public List<PigeonholeDataModel> getMovies() {
+    public List<DemoClass> getMovies() {
         return pigeonholeDataModelList;
     }
 
@@ -110,21 +111,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.pigeonhole_single_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.dashboard_single_row, parent, false);
                 viewHolder = new PigeonholeListItem(viewItem);
                 break;
 //            case LOADING:
 //                View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
 //                viewHolder = new LoadingVH(viewLoading);
 //                break;
-            case NOTICE:
-                View viewHero = inflater.inflate(R.layout.notice_single_row, parent, false);
-                viewHolder = new NoticeListItem(viewHero);
-                break;
-//            case ADD:
-//                View viewAdd = inflater.inflate(R.layout.layout, parent, false);
-//                viewHolder = new HeroAdd(viewAdd);
-//                break;
+
         }
         return viewHolder;
     }
@@ -160,7 +154,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 final PigeonholeListItem itemHolder = (PigeonholeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder.orderTitle.setText(strList.get(position));
+                itemHolder.orderTitle.setText(pigeonholeDataModelList.get(position).getTitle());
+                itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
+
+                if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("pigeonhole")){
+                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.pigeonhole_color));
+                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.pigeonhole_color));
+                    itemHolder.itemImage.setBackgroundResource(R.drawable.pigenhole_icon);
+
+                }
+                else if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("research")){
+                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.research_color));
+                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.research_color));
+                    itemHolder.itemImage.setBackgroundResource(R.drawable.research_icon);
+
+                }
+                else if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("class schedule")){
+                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.class_schedule_color));
+                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.class_schedule_color));
+                    itemHolder.itemImage.setBackgroundResource(R.drawable.class_schedule_icon);
+
+                }
+
+
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -201,20 +217,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
-        //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
+       // return strList == null ? 0 : strList.size();
+        return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position >4 && position<10 ) {
-            return NOTICE;
-        } else  {
-//            if (position == 23 && isLoadingAdded)
-//                return LOADING;
-//            else
-//                return ADD;
-//        } else {
+
             return ITEM;
         }
 
@@ -228,7 +237,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //        else {
 //        return (position == strList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
 //        }
-    }
 
 
 
@@ -256,19 +264,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
+    public void add(DemoClass r) {
         pigeonholeDataModelList.add(r);
         notifyItemInserted(pigeonholeDataModelList.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<DemoClass> moveResults) {
+        for (DemoClass result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
+    public void addAllNewData(List<DemoClass> moveResults) {
         pigeonholeDataModelList.clear();
         pigeonholeDataModelList.addAll(moveResults);
         notifyDataSetChanged();
@@ -279,7 +287,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
 
-    public void remove(PigeonholeDataModel r) {
+    public void remove(DemoClass r) {
         int position = pigeonholeDataModelList.indexOf(r);
         if (position > -1) {
             pigeonholeDataModelList.remove(position);
@@ -301,14 +309,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new DemoClass());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        DemoClass result = getItem(position);
 
         if (result != null) {
             pigeonholeDataModelList.remove(position);
@@ -316,7 +324,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
+    public DemoClass getItem(int position) {
         return pigeonholeDataModelList.get(position);
     }
 
@@ -340,12 +348,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
-        private TextView accepted;
+        private TextView description;
         private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
         private TextView menuOption;
-        private LinearLayout itemLayout;
+        private LinearLayout itemLayout,cellHeader;
         private LinearLayout itemNameLayout;
         private TextView rejected;
         private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
@@ -355,6 +363,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            cellHeader = (LinearLayout) itemView.findViewById(R.id.cell_header);
+            itemImage = itemView.findViewById(R.id.itemImage);
+            description = itemView.findViewById(R.id.description);
 
 
 
@@ -441,11 +452,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void gotoInstructorDetailsFragment() {
-        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
-        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
-        transaction.commit();
+//        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
+//        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
+//        transaction.commit();
     }
 
 }

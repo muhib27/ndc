@@ -8,7 +8,7 @@ public class PHTaskListResponse {
 
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private int code;
     @SerializedName("msg")
     @Expose
     private String msg;
@@ -16,11 +16,11 @@ public class PHTaskListResponse {
     @Expose
     private PHTaskData phTaskData;
 
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

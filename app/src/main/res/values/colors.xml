@@ -14,6 +14,8 @@
     <color name="white">#FFFFFF</color>
     <color name="user_selection_signin">#75a8bd</color>
     <!--<color name="ash">#ccedf5</color>-->
+
+    <color name="ash_1">#ececec</color>
     <color name="ash">#9e9d9d</color>
     <color name="deep_ash">#7e7f7f</color>
     <color name="task_assign_border_color">#DFDFDF</color>
@@ -46,7 +48,11 @@
 
     <color name="placeholder_grey">#AAADC4</color>
     <color name="placeholder_grey_20">#33AAADC4</color>
-
+    <color name="pigeonhole_color">#00bcd4</color>
+    <color name="research_color">#ad1457</color>
+    <color name="class_schedule_color">#607d8b</color>
+    <color name="event_color">#9c27b0</color>
+    <color name="notice_color">#cddc39</color>
 
 
 </resources>

@@ -27,6 +27,7 @@ import com.classtune.ndc.adapter.DashboardEventsAdapter;
 import com.classtune.ndc.adapter.DashboardNoticeAdapter;
 import com.classtune.ndc.adapter.DashboardPigeonholeAdapter;
 import com.classtune.ndc.adapter.DashboardReadingPackageAdapter;
+import com.classtune.ndc.model.DemoClass;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -43,13 +44,9 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
     RecyclerView rv, pigeonhole_recycleview, reading_package_rv, class_schedule_rv, events_rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<String> strList = new ArrayList<>();
-    DashboardNoticeAdapter dashboardNoticeAdapter;
-    DashboardPigeonholeAdapter dashboardPigeonholeAdapter;
-    DashboardReadingPackageAdapter dashboardReadingPackageAdapter;
-    DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
-    DashboardEventsAdapter dashboardEventsAdapter;
-    TextView recent, important, common;
+    ArrayList<DemoClass> strList = new ArrayList<>();
+
+    DashboardAdapter dashboardAdapter;
     PieChartView pieChartView;
     PieChartData pieChartData;
 
@@ -62,7 +59,7 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dash_board, container, false);
+        return inflater.inflate(R.layout.fragment_dash_board_new, container, false);
     }
 
     @Override
@@ -81,120 +78,56 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
     }
 
     private void initView(View view) {
-        initNoticeView(view);
-        initPigeonholeView(view);
-        initReadingPackageView(view);
-        initClassScheduleView(view);
-        initEventsView(view);
-        initResearchView(view);
+        initAdapterView(view);
+//        initPigeonholeView(view);
+//        initReadingPackageView(view);
+//        initClassScheduleView(view);
+//        initEventsView(view);
+//        initResearchView(view);
 
     }
 
-    private void initResearchView(View view) {
-        pieChartView = view.findViewById(R.id.chart);
-
-        List pieData = new ArrayList<>();
-        pieData.add(new SliceValue(75, ContextCompat.getColor(getActivity(), R.color.selected_color)));
-        pieData.add(new SliceValue(25, ContextCompat.getColor(getActivity(), R.color.not_selected_color)));
 
 
-        PieChartData pieChartData = new PieChartData(pieData);
-        pieChartData.setHasLabels(true).setValueLabelTextSize(14);
-        pieChartData.setHasCenterCircle(true).setCenterText1("").setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#0097A7"));
-        pieChartView.setPieChartData(pieChartData);
-
-        pieChartView.setOnClickListener(this);
-    }
-
-    private void initNoticeView(View view) {
+    private void initAdapterView(View view) {
 
         rv = (RecyclerView) view.findViewById(R.id.notice_recycleview);
-        important = view.findViewById(R.id.impotant);
-        recent = view.findViewById(R.id.recent);
-        common = view.findViewById(R.id.common);
-        recent.setOnClickListener(this);
 
         strList = getStrList();
-        dashboardNoticeAdapter = new DashboardNoticeAdapter(getContext(), 0);
+        dashboardAdapter = new DashboardAdapter(getContext());
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(dashboardNoticeAdapter);
-        dashboardNoticeAdapter.setData(getStrList());
-        dashboardNoticeAdapter.notifyDataSetChanged();
-    }
-    private void initPigeonholeView(View view) {
-
-        pigeonhole_recycleview = (RecyclerView) view.findViewById(R.id.pigeonhole_recycleview);
-//        important = view.findViewById(R.id.impotant);
-//        recent = view.findViewById(R.id.recent);
-//        common = view.findViewById(R.id.common);
-//        recent.setOnClickListener(this);
-
-        strList = getStrList();
-        dashboardPigeonholeAdapter = new DashboardPigeonholeAdapter(getContext());
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
-        pigeonhole_recycleview.setLayoutManager(linearLayoutManager);
-        pigeonhole_recycleview.setItemAnimator(new DefaultItemAnimator());
-        pigeonhole_recycleview.setAdapter(dashboardPigeonholeAdapter);
-        dashboardPigeonholeAdapter.setData(getRecent());
-        dashboardPigeonholeAdapter.notifyDataSetChanged();
-    }
-    private void initReadingPackageView(View view) {
-
-        reading_package_rv = (RecyclerView) view.findViewById(R.id.reading_package_rv);
-//        important = view.findViewById(R.id.impotant);
-//        recent = view.findViewById(R.id.recent);
-//        common = view.findViewById(R.id.common);
-//        recent.setOnClickListener(this);
-
-
-        dashboardReadingPackageAdapter = new DashboardReadingPackageAdapter(getContext());
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
-        reading_package_rv.setLayoutManager(linearLayoutManager);
-        reading_package_rv.setItemAnimator(new DefaultItemAnimator());
-        reading_package_rv.setAdapter(dashboardReadingPackageAdapter);
-        dashboardReadingPackageAdapter.setData(getRecent());
-        dashboardReadingPackageAdapter.notifyDataSetChanged();
-    }
-    private void initClassScheduleView(View view) {
-
-        class_schedule_rv = (RecyclerView) view.findViewById(R.id.class_schedule_rv);
-
-        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext(),0);
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
-        class_schedule_rv.setLayoutManager(linearLayoutManager);
-        class_schedule_rv.setItemAnimator(new DefaultItemAnimator());
-        class_schedule_rv.setAdapter(dashboardClassScheduleAdapter);
-        dashboardClassScheduleAdapter.setData(getRecent());
-        dashboardClassScheduleAdapter.notifyDataSetChanged();
-    }
-    private void initEventsView(View view) {
-
-        events_rv = (RecyclerView) view.findViewById(R.id.events_rv);
-
-        dashboardEventsAdapter = new DashboardEventsAdapter(getContext(),0);
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
-        events_rv.setLayoutManager(linearLayoutManager);
-        events_rv.setItemAnimator(new DefaultItemAnimator());
-        events_rv.setAdapter(dashboardEventsAdapter);
-        dashboardEventsAdapter.setData(getRecent());
-        dashboardEventsAdapter.notifyDataSetChanged();
+        rv.setAdapter(dashboardAdapter);
+        dashboardAdapter.setData(getStrList());
+        dashboardAdapter.notifyDataSetChanged();
     }
 
-    private ArrayList<String> getStrList() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
 
+
+
+
+    private ArrayList<DemoClass> getStrList() {
+        ArrayList<DemoClass> list = new ArrayList<>();
+       DemoClass demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+       list.add(demoClass);
+        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        list.add(demoClass);
+        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+        list.add(demoClass);
+        demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+        list.add(demoClass);
+        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        list.add(demoClass);
+        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+        list.add(demoClass);
+        demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+        list.add(demoClass);
+        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        list.add(demoClass);
+        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+        list.add(demoClass);
         return list;
     }
     private ArrayList<String> getRecent() {
@@ -221,17 +154,7 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.recent:
-//                dashboardAdapter.setData(getRecent());
-//                dashboardAdapter.notifyDataSetChanged();
-                break;
-            case R.id.impotant:
-                break;
-            case R.id.common:
-                break;
-            case R.id.chart:
-                gotoResearchListFragment();
-                break;
+
         }
     }
 

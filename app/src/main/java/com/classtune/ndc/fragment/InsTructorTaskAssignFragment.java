@@ -4,6 +4,7 @@ package com.classtune.ndc.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +16,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,6 +36,7 @@ import android.widget.Toast;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
+import com.classtune.ndc.adapter.AttachmentAdapterMain;
 import com.classtune.ndc.adapter.TaskAssignAdapter;
 import com.classtune.ndc.adapter.UserTaskAssignAdapter;
 import com.classtune.ndc.apiresponse.Course;
@@ -68,6 +73,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -89,6 +97,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     EditText title, description;
     RadioGroup typeGroup, instituteGroup;
     RadioButton ndc, afwc, capston;
+    CheckBox allNdc, allAfwc, allCapston;
     Button common, custom;
     RecyclerView listView;
     TaskAssignAdapter userTaskAssignAdapter;
@@ -106,7 +115,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     PigeonholeTaskAdd pigeonholeTaskAdd;
 
 
-    AttachmentAdapter attachmentAdapter, attachmentAdapterMain;
+    AttachmentAdapter attachmentAdapter;
+    AttachmentAdapterMain attachmentAdapterMain;
+    public String selectedDate = "Due Date";
 
     private static final String[] STORAGE_AND_CAMERA =
             {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
@@ -144,10 +155,19 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         listFiles = new ArrayList<>();
         attachmentModelList = new ArrayList<>();
         attachmentListMain = view.findViewById(R.id.attachmentListMain);
+//        AttachmentModel attachmentModel = new AttachmentModel("dd", "ddddddddd");
+//
+//        attachmentModelList.add(attachmentModel);
+//        attachmentModel = new AttachmentModel("dd", "ddddddddd");
+//        attachmentModelList.add(attachmentModel);
+//        attachmentModel = new AttachmentModel("dd", "ddddddddd");
+//        attachmentModelList.add(attachmentModel);
+//        attachmentModel = new AttachmentModel("dd", "ddddddddd");
+//        attachmentModelList.add(attachmentModel);
 
-        attachmentAdapter = new AttachmentAdapter(getActivity(), attachmentModelList);
-        attachmentAdapter.notifyDataSetChanged();
-        attachmentListMain.setAdapter(attachmentAdapter);
+        attachmentAdapterMain = new AttachmentAdapterMain(getActivity(), attachmentModelList);
+        attachmentAdapterMain.notifyDataSetChanged();
+        attachmentListMain.setAdapter(attachmentAdapterMain);
 
         layoutDueDate = (LinearLayout) view.findViewById(R.id.layoutDueDate);
         layoutDueDate.setOnClickListener(new View.OnClickListener() {
@@ -156,9 +176,27 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 showDatepicker();
+
+               // selectDate();
             }
         });
     }
+
+    int year, month, day;
+    DatePickerDialog datePickerDialog;
+
+//    private void selectDate() {
+//        datePickerDialog = new DatePickerDialog(getActivity(),
+//                new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                       // eText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+//                    }
+//                }, year, month, day);
+//        datePickerDialog.show();
+//
+//    }
+
 
     private void initView(View view) {
         layoutAssignTo = view.findViewById(R.id.layoutAssignTo);
@@ -189,6 +227,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                                    Date date) {
             // TODO Auto-generated method stub
             dueDate.setText(dateFormatApp);
+            selectedDate = dateFormatApp;
 //            choosenDateTextView.setText(dateFormatApp);
 //            dateFormatServerString = dateFormatServer;
         }
@@ -240,16 +279,52 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         if (!dueDate.getText().toString().trim().isEmpty() )
             pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
 
-        if(ndcCount>0)
-            courseList.add("ndc");
-        if(afwcCount>0)
-            courseList.add("afwc");
-        if(capstonCount>0)
-            courseList.add("capston");
+        if(allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()){
+            selectedList = new ArrayList<>();
+            if(allNdc.isChecked() && ndcStList.size()>0){
+                courseList.add("ndc");
+                for(Student list: ndcStList)
+                {
+                    selectedList.add(list.getId());
+                }
+            }
+            if(allAfwc.isChecked() && afwcStList.size()>0){
+                courseList.add("afwc");
+                for(Student list: afwcStList)
+                {
+                    selectedList.add(list.getId());
+                }
+            }
+            if(allCapston.isChecked() && capstonStList.size()>0){
+                courseList.add("capston");
+                for(Student list: capstonStList)
+                {
+                    selectedList.add(list.getId());
+                }
+            }
+        }
 
-        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
+        else {
+            if (ndcCount > 0)
+                courseList.add("ndc");
+            if (afwcCount > 0)
+                courseList.add("afwc");
+            if (capstonCount > 0)
+                courseList.add("capston");
+        }
 
-     //   callTaskAddApi();
+        String titleSt = title.getText().toString().trim();
+        String descriptionSt = description.getText().toString().trim();
+
+        if(titleSt.isEmpty() || selectedList.size()<=0) {
+            Toast.makeText(getActivity(), "Title and Assign To should not be empty" , Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+//        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
+
+        callTaskAddApi();
 
     }
 
@@ -385,6 +460,11 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             @Override
             public void onClick(View v) {
                 //your business logic
+//               attachmentAdapterMain = new AttachmentAdapterMain(getActivity(), attachmentModelList);
+//                attachmentAdapterMain.notifyDataSetChanged();
+//                attachmentListMain.setAdapter(attachmentAdapterMain);
+                attachmentAdapterMain.setData(attachmentModelList);
+                attachmentAdapterMain.notifyDataSetChanged();
                 fileAttachDialog.dismiss();
             }
         });
@@ -428,6 +508,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         common.setOnClickListener(this);
         custom.setOnClickListener(this);
 
+        allNdc = assignToDialogView.findViewById(R.id.all_ndc);
+        allCapston = assignToDialogView.findViewById(R.id.all_capston);
+        allAfwc = assignToDialogView.findViewById(R.id.all_afwc);
+
         ndc = assignToDialogView.findViewById(R.id.ndc);
         afwc = assignToDialogView.findViewById(R.id.afwc);
         capston = assignToDialogView.findViewById(R.id.capston);
@@ -459,6 +543,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     userTaskAssignAdapter.clear();
+                    if(afwcStList.size()>0)
                     userTaskAssignAdapter.addAllData(afwcStList);
 
                 }
@@ -499,6 +584,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
         instituteGroup.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
+
+        allNdc.setChecked(false);
+        allAfwc.setChecked(false);
+        allCapston.setChecked(false);
     }
 //    private void disableCommonSelection() {
 //
@@ -712,17 +801,80 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         // showFileDialog();
     }
 
-
+    RequestBody rbDueDate ,rbApiKey,rbTitle,rbDescription;
     private void callTaskAddApi() {
 
+        //File myFile = new File(selectedFilePath);
+
+
+        rbApiKey = RequestBody.create(MediaType.parse("multipart/form-data"), AppSharedPreference.getApiKey());
+        rbTitle = RequestBody.create(MediaType.parse("multipart/form-data"), title.getText().toString().trim());
+        rbDescription = RequestBody.create(MediaType.parse("multipart/form-data"), description.getText().toString().trim());
+        if(!selectedDate.equalsIgnoreCase("Due Date"))
+            rbDueDate = RequestBody.create(MediaType.parse("multipart/form-data"), dueDate.getText().toString());
+
+
+//        MultipartBody.Builder builder = new MultipartBody.Builder();
+//        builder.setType(MultipartBody.FORM);
+
+//        builder.addFormDataPart("user_name", "Robert");
+//        builder.addFormDataPart("email", "mobile.apps.pro.vn@gmail.com");
+
+        // Map is used to multipart the file using okhttp3.RequestBody
+        // Multiple Images
+//        for (int i = 0; i < attachmentModelList.size(); i++) {
+//            File file = new File(attachmentModelList.get(i).getFilePath());
+//            builder.addFormDataPart("file[]", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
+//        }
+//
+//
+//        MultipartBody attachments = builder.build();
+
+
+
+        List<String> filePaths = new ArrayList<>();
+
+
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+
+        builder.addFormDataPart("title", "Robert");
+        builder.addFormDataPart("description", "mobile.apps.pro.vn@gmail.com");
+        builder.addFormDataPart("api_key", AppSharedPreference.getApiKey());
+
+        // Map is used to multipart the file using okhttp3.RequestBody
+        // Multiple Images
+        for (int i = 0; i < attachmentModelList.size(); i++) {
+            File file = new File(attachmentModelList.get(i).getFilePath());
+            builder.addFormDataPart("attachments", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
+        }
+
+
+        MultipartBody requestBody = builder.build();
+
+
+
+
+
+//        MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[attachmentModelList.size()];
+//
+//        List<MultipartBody.Part> parts = new ArrayList<>();
+//        for (int i=0; i < attachmentModelList.size(); i++){
+//            File file = new File(attachmentModelList.get(i).getFilePath());
+//            RequestBody attachmentBody = RequestBody.create(MediaType.parse("image/*"), file);
+//            surveyImagesParts[i] = MultipartBody.Part.createFormData("attachments", file.getName(), attachmentBody);
+//           // parts.add(MultipartBody.Part.createFormData("attachment"+i, file.getName(), attachmentBody));
+//
+//        }
+
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
-            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
-//        uiHelper.showLoadingDialog("Authenticating...");
+        uiHelper.showLoadingDialog("Authenticating...");
 
-
-        RetrofitApiClient.getApiInterface().getTaskAssign(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getTaskAssign(requestBody)
+       // RetrofitApiClient.getApiInterface().getTaskAssign(rbApiKey,parts, selectedList, courseList, rbTitle, rbDescription, rbDueDate)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -735,15 +887,11 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     @Override
                     public void onNext(Response<JsonElement> value) {
                         uiHelper.dismissLoadingDialog();
-//                        MenuApiResponse menuApiResponse = value.body();
 
-//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
                         if (value.code() == 200) {
                             Log.v("PigeonholeFragment", value.message());
-                            //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
 
-//                            User user1 = AppSharedPreference.getUserBasicInfo();
 
                         }
 
@@ -753,10 +901,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     @Override
                     public void onError(Throwable e) {
 
-//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
                         uiHelper.dismissLoadingDialog();
                     }
 
