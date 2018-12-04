@@ -3,6 +3,7 @@ package com.classtune.ndc.utils;
 import android.content.SharedPreferences;
 
 import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 
 /**
  * Created by RR on 13-Nov-18.
@@ -35,13 +36,14 @@ public class AppSharedPreference {
         editor.apply();
     }
 
-    public static void savePrefBoolean(String key, boolean value){
+    public static void savePrefBoolean(String key, boolean value) {
         final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
-    public static boolean getPrefBoolean(String key){
+
+    public static boolean getPrefBoolean(String key) {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getBoolean(key, false);
     }
@@ -55,12 +57,13 @@ public class AppSharedPreference {
         editor.putString(keyApiKey, api_key);
         editor.apply();
     }
+
     public static void setUserBasicInfo(User user) {
         final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
 
-        if(user.getId()!=null)
-        editor.putString(AppConstant.USER_NAME, user.getName());
+        if (user.getId() != null)
+            editor.putString(AppConstant.USER_NAME, user.getName());
         editor.putString(AppConstant.USER_EMAIL, user.getEmail());
         editor.putString(AppConstant.USER_ID, user.getId());
         editor.putString(AppConstant.USER_IMAGE, user.getImage());
@@ -78,7 +81,7 @@ public class AppSharedPreference {
         return user;
     }
 
-    public static void setUDID(String udid){
+    public static void setUDID(String udid) {
         final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
 
@@ -91,7 +94,7 @@ public class AppSharedPreference {
         return pref.getString(keyUDID, "");
     }
 
-    public static void setFcm(String fcm_id){
+    public static void setFcm(String fcm_id) {
         final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
 
@@ -108,15 +111,50 @@ public class AppSharedPreference {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getString(keyUserName, "");
     }
+
     public static String getUserPassword() {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getString(keyUserPassword, "");
     }
+
     public static String getApiKey() {
         final SharedPreferences pref = getSharedPreferences();
         return pref.getString(keyApiKey, "");
     }
     //eSWBaw0MaMM:APA91bFhVluppQU8GIpUuMUEF2gCXuWE4ZXiV6Nv9Wsm9ywYe7m4fDx6aK6DakJgCqvu4Iv7_L91AfNxrfXQICVL-pjSTI1b_00MsA5RNqZ_MOy7QQLJqJLslyEQavUSKn13Rc3tWYxy
 
+    public static void setUserPermission(UserPermission userPermission) {
+        final SharedPreferences pref = getSharedPreferences();
+        final SharedPreferences.Editor editor = pref.edit();
+
+
+        editor.putBoolean(AppConstant.USER_TASKS_LIST, userPermission.isTasksList());
+        editor.putBoolean(AppConstant.USER_TASKS_ADD, userPermission.isTasksAdd());
+        editor.putBoolean(AppConstant.USER_TASKS_EDIT, userPermission.isTasksEdit());
+        editor.putBoolean(AppConstant.USER_TASKS_DELETE, userPermission.isTasksDelete());
+        editor.putBoolean(AppConstant.USER_TASKS_VIEW, userPermission.isTasksView());
+        editor.putBoolean(AppConstant.USER_TASKS_SUBMITTED_LIST, userPermission.isTasksSubmittedList());
+        editor.putBoolean(AppConstant.USER_TASKS_SINGLE_VIEW, userPermission.isTasksSingleView());
+        editor.putBoolean(AppConstant.USER_ADD, userPermission.isUserAdd());
+        editor.putBoolean(AppConstant.USER_EDIT, userPermission.isUserEdit());
+        editor.putBoolean(AppConstant.USER_DELETE, userPermission.isUserDelete());
+        editor.apply();
+    }
+    public static UserPermission getUserPermission() {
+        final SharedPreferences pref = getSharedPreferences();
+        UserPermission userPermission = new UserPermission();
+
+        userPermission.setTasksList(pref.getBoolean(AppConstant.USER_TASKS_LIST, false));
+        userPermission.setTasksAdd(pref.getBoolean(AppConstant.USER_TASKS_ADD, false));
+        userPermission.setTasksEdit(pref.getBoolean(AppConstant.USER_TASKS_EDIT, false));
+        userPermission.setTasksDelete(pref.getBoolean(AppConstant.USER_TASKS_DELETE, false));
+        userPermission.setTasksView(pref.getBoolean(AppConstant.USER_TASKS_VIEW, false));
+        userPermission.setTasksSubmittedList(pref.getBoolean(AppConstant.USER_TASKS_SUBMITTED_LIST, false));
+        userPermission.setTasksSingleView(pref.getBoolean(AppConstant.USER_TASKS_SINGLE_VIEW, false));
+        userPermission.setUserAdd(pref.getBoolean(AppConstant.USER_ADD, false));
+        userPermission.setUserEdit(pref.getBoolean(AppConstant.USER_EDIT, false));
+        userPermission.setUserDelete(pref.getBoolean(AppConstant.USER_DELETE, false));
+        return userPermission;
+    }
 
 }

@@ -27,6 +27,7 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.LoginApiModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.model.LoginResponseModel;
 import com.classtune.ndc.model.Wrapper;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
@@ -281,6 +282,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if(menuApiResponse.getCode()==200) {
                             AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
+                            setUpUserPermission(menuApiResponse.getMenuData().getMenus().getSubMenu());
+
+                         //   UserPermission u = AppSharedPreference.getUserPermission();
 
 //                            User user1 = AppSharedPreference.getUserBasicInfo();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -311,6 +315,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void setUpUserPermission(List<String> subMenu) {
+        UserPermission userPermission = new UserPermission();
+        for(int i=0; i<subMenu.size(); i++){
+            if(subMenu.get(i).equalsIgnoreCase("tasks-list"))
+                userPermission.setTasksList(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-add"))
+                userPermission.setTasksAdd(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-edit"))
+                userPermission.setTasksEdit(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-delete"))
+                userPermission.setTasksDelete(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-view"))
+                userPermission.setTasksView(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-submitted_list"))
+                userPermission.setTasksSubmittedList(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-single_view"))
+                userPermission.setTasksSingleView(true);
+            else if(subMenu.get(i).equalsIgnoreCase("user-add"))
+                userPermission.setUserAdd(true);
+            else if(subMenu.get(i).equalsIgnoreCase("user-edit"))
+                userPermission.setUserEdit(true);
+            else if(subMenu.get(i).equalsIgnoreCase("user-delete"))
+                userPermission.setUserDelete(true);
+        }
+
+        AppSharedPreference.setUserPermission(userPermission);
+
+    }
 
 
     @Override

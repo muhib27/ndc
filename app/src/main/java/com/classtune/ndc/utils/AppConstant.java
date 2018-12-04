@@ -20,6 +20,19 @@ public class AppConstant {
     public static final String USER_IMAGE = "image";
 
 
+    public static final String USER_TASKS_LIST = "tasks_list";
+    public static final String USER_TASKS_ADD= "tasks_add";
+    public static final String USER_TASKS_EDIT= "tasks_edit";
+    public static final String USER_TASKS_DELETE= "tasks_delete";
+    public static final String USER_TASKS_VIEW= "tasks_view";
+    public static final String USER_TASKS_SUBMITTED_LIST= "tasks_submitted_list";
+    public static final String USER_TASKS_SINGLE_VIEW= "tasks_single_view";
+    public static final String USER_ADD= "user_add";
+    public static final String USER_EDIT= "user_edit";
+    public static final String USER_DELETE= "user_delete";
+
+
+
 
     public static final long BANNER_POPUP_DISMISS_TIME = 5000;
 
