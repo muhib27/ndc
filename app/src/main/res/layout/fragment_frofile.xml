@@ -63,7 +63,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:paddingTop="@dimen/size_5dp"
-                    android:text="Lt. Col. Esrar"
+                    android:text="Lt Col Meraz"
                     android:textColor="@color/ndc_color"
                     android:textSize="@dimen/text_size_22_sp"
                     android:textStyle="bold" />
