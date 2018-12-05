@@ -20,6 +20,7 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.DashboardNoticeAdapter;
 import com.classtune.ndc.adapter.PigeonholeAdapter;
+import com.classtune.ndc.model.NoticeModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<String> strList = new ArrayList<>();
+    ArrayList<NoticeModel> strList = new ArrayList<>();
     DashboardNoticeAdapter dashboardNoticeAdapter;
     FloatingActionButton floatingActionButton;
 
@@ -116,21 +117,18 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
         transaction.commit();
     }
 
-    private ArrayList<String> getStrList() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-
+    private ArrayList<NoticeModel> getStrList() {
+        ArrayList<NoticeModel> list = new ArrayList<>();
+        NoticeModel noticeModel = new NoticeModel("JOINT SESSION AT NDC", "Commandant, NDC, Lieutenant General Sheikh Mamun Khaled, SUP, rcds, psc, PhD delivered a lecture on Essential Leadership Qualities in the VUCA World");
+        list.add(noticeModel);
+        noticeModel = new NoticeModel("VISIT by Secretary General of IMCTC to NDC", "Lieutenant General Abdul Elah bin Othman Al Salah, Secretary General of Islamic Coalition for Terrorism (IMCTC)  visited NDC on 14 November 2018 for delivering an opportunity lecture on ``IMCTC and its contribution to the peace and Security in the Middle East'' to ND Course 2018. Commandant, Faculty, Staff Officers and Course members of ND Course-2018 attended the Session.");
+        list.add(noticeModel);
+        noticeModel = new NoticeModel("LECTURE TO ND COURSE", "Chief of Army Staff, General Aziz Ahmed, BGBM, PBGM, BGBMS, psc, G, delivered a keynote speech on Bangladesh Army to ND course 2018 and AFWC 2018 on 27 November 2018 at NDC. Commandant, Faculty, Staff Officers and all course members of 2018 attended the session.");
+        list.add(noticeModel);
+        noticeModel = new NoticeModel("The National Mourning Day", "NDC observed The National Mourning Day On 15 August 2018 with due Reverence and Solemnity, marking the 43rd Anniversary of the assassination of Father of the Nation Bangabandhu Sheikh Mujibur Rahman.");
+        list.add(noticeModel);
         return list;
+
     }
 
     @Override

@@ -63,7 +63,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:paddingTop="@dimen/size_5dp"
-                    android:text="Air Chief Marshal Esrar"
+                    android:text="Lt. Col. Esrar"
                     android:textColor="@color/ndc_color"
                     android:textSize="@dimen/text_size_22_sp"
                     android:textStyle="bold" />
@@ -162,7 +162,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center"
                                     android:padding="@dimen/size_5dp"
-                                    android:text="Air Force"
+                                    android:text="BD Army"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/text_size_19_sp"
                                     android:textStyle="bold" />

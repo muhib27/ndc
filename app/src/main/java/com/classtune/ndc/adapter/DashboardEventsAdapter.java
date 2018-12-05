@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
+import com.classtune.ndc.model.EventsModel;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
@@ -44,8 +45,8 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<EventsModel> eventsModelList;
+    private List<EventsModel> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -70,33 +71,33 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public DashboardEventsAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        eventsModelList = new ArrayList<>();
         //this.mOrderProcessCallback = orderProcessCallback;
 
     }
 
     public DashboardEventsAdapter(Context context, int viewparameter) {
         this.context = context;
-        pigeonholeDataModelList = new ArrayList<>();
+        eventsModelList = new ArrayList<>();
         this.viewparameter = viewparameter;
     }
 
-    public DashboardEventsAdapter(Context context, ArrayList<String> strList) {
+    public DashboardEventsAdapter(Context context, ArrayList<EventsModel> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
 
     }
 
-    public void setData(List<String> list) {
-        strList = list;
+    public void setData(List<EventsModel> list) {
+        eventsModelList = list;
 
 
     }
 
 
-    public List<PigeonholeDataModel> getMovies() {
-        return pigeonholeDataModelList;
+    public List<EventsModel> getMovies() {
+        return eventsModelList;
     }
 
 //    public void setMovies(List<PigeonholeDataModel> orderList) {
@@ -110,7 +111,7 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.dashboard_single_events_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.single_events_row, parent, false);
                 viewHolder = new NoticeListItem(viewItem);
                 break;
             case ITEM_1:
@@ -133,7 +134,7 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 final NoticeListItem itemHolder = (NoticeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder.orderTitle.setText(strList.get(position));
+                itemHolder.orderTitle.setText(eventsModelList.get(position).getTitle());
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -157,7 +158,7 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 final NoticeListItem itemHolder_ = (NoticeListItem) holder;
 //                int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder_.orderTitle.setText(strList.get(position));
+                itemHolder_.orderTitle.setText(eventsModelList.get(position).getTitle());
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -196,8 +197,8 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
-        //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
+       // return strList == null ? 0 : strList.size();
+        return eventsModelList == null ? 0 : eventsModelList.size();
     }
 
     @Override
@@ -344,33 +345,33 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
-        pigeonholeDataModelList.add(r);
-        notifyItemInserted(pigeonholeDataModelList.size() - 1);
+    public void add(EventsModel r) {
+        eventsModelList.add(r);
+        notifyItemInserted(eventsModelList.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<EventsModel> moveResults) {
+        for (EventsModel result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
-        pigeonholeDataModelList.clear();
-        pigeonholeDataModelList.addAll(moveResults);
+    public void addAllNewData(List<EventsModel> moveResults) {
+        eventsModelList.clear();
+        eventsModelList.addAll(moveResults);
         notifyDataSetChanged();
     }
 
     public void clearList() {
-        pigeonholeDataModelList.clear();
+        eventsModelList.clear();
     }
 
 
-    public void remove(PigeonholeDataModel r) {
-        int position = pigeonholeDataModelList.indexOf(r);
+    public void remove(EventsModel r) {
+        int position = eventsModelList.indexOf(r);
         if (position > -1) {
-            pigeonholeDataModelList.remove(position);
+            eventsModelList.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -385,23 +386,23 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new EventsModel());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
-        int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        int position = eventsModelList.size() - 1;
+        EventsModel result = getItem(position);
 
         if (result != null) {
-            pigeonholeDataModelList.remove(position);
+            eventsModelList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
-        return pigeonholeDataModelList.get(position);
+    public EventsModel getItem(int position) {
+        return eventsModelList.get(position);
     }
 
     /**
@@ -412,7 +413,7 @@ public class DashboardEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      */
     public void showRetry(boolean show, @Nullable String errorMsg) {
         retryPageLoad = show;
-        notifyItemChanged(pigeonholeDataModelList.size() - 1);
+        notifyItemChanged(eventsModelList.size() - 1);
 
         if (errorMsg != null) this.errorMsg = errorMsg;
     }

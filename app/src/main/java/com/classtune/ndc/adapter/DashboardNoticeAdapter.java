@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
+import com.classtune.ndc.model.NoticeModel;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
@@ -49,8 +50,8 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<NoticeModel> noticeModelList;
+    private List<NoticeModel> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -75,33 +76,33 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public DashboardNoticeAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        noticeModelList = new ArrayList<>();
         //this.mOrderProcessCallback = orderProcessCallback;
 
     }
 
     public DashboardNoticeAdapter(Context context, int viewparameter) {
         this.context = context;
-        pigeonholeDataModelList = new ArrayList<>();
+        noticeModelList = new ArrayList<>();
         this.viewparameter = viewparameter;
     }
 
-    public DashboardNoticeAdapter(Context context, ArrayList<String> strList) {
+    public DashboardNoticeAdapter(Context context, ArrayList<NoticeModel> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
 
     }
 
-    public void setData(List<String> list) {
-        strList = list;
+    public void setData(List<NoticeModel> list) {
+        noticeModelList = list;
 
 
     }
 
 
-    public List<PigeonholeDataModel> getMovies() {
-        return pigeonholeDataModelList;
+    public List<NoticeModel> getMovies() {
+        return noticeModelList;
     }
 
 //    public void setMovies(List<PigeonholeDataModel> orderList) {
@@ -115,7 +116,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.dashboard_single_notice_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.single_notice_row, parent, false);
                 viewHolder = new NoticeListItem(viewItem);
                 break;
             case ITEM_1:
@@ -138,7 +139,8 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 final NoticeListItem itemHolder = (NoticeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder.orderTitle.setText(strList.get(position));
+                itemHolder.orderTitle.setText(noticeModelList.get(position).getTitle());
+                itemHolder.description.setText(noticeModelList.get(position).getDescription());
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -162,7 +164,8 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 final NoticeListItem itemHolder_ = (NoticeListItem) holder;
 //                int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder_.orderTitle.setText(strList.get(position));
+                itemHolder_.orderTitle.setText(noticeModelList.get(position).getTitle());
+                itemHolder_.description.setText(noticeModelList.get(position).getDescription());
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -201,8 +204,8 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
-        //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
+      //  return strList == null ? 0 : strList.size();
+        return noticeModelList == null ? 0 : noticeModelList.size();
     }
 
     @Override
@@ -240,7 +243,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
-        private TextView accepted;
+        private TextView description;
         private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
@@ -254,6 +257,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
+            description = (TextView) itemView.findViewById(R.id.description);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
 
 
@@ -262,7 +266,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     protected class NoticeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
-        private TextView accepted;
+        private TextView description;
         private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
@@ -277,6 +281,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            description = (TextView) itemView.findViewById(R.id.description);
 
 
         }
@@ -349,33 +354,33 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
-        pigeonholeDataModelList.add(r);
-        notifyItemInserted(pigeonholeDataModelList.size() - 1);
+    public void add(NoticeModel r) {
+        noticeModelList.add(r);
+        notifyItemInserted(noticeModelList.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<NoticeModel> moveResults) {
+        for (NoticeModel result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
-        pigeonholeDataModelList.clear();
-        pigeonholeDataModelList.addAll(moveResults);
+    public void addAllNewData(List<NoticeModel> moveResults) {
+        noticeModelList.clear();
+        noticeModelList.addAll(moveResults);
         notifyDataSetChanged();
     }
 
     public void clearList() {
-        pigeonholeDataModelList.clear();
+        noticeModelList.clear();
     }
 
 
-    public void remove(PigeonholeDataModel r) {
-        int position = pigeonholeDataModelList.indexOf(r);
+    public void remove(NoticeModel r) {
+        int position = noticeModelList.indexOf(r);
         if (position > -1) {
-            pigeonholeDataModelList.remove(position);
+            noticeModelList.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -390,23 +395,23 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new NoticeModel());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
-        int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        int position = noticeModelList.size() - 1;
+        NoticeModel result = getItem(position);
 
         if (result != null) {
-            pigeonholeDataModelList.remove(position);
+            noticeModelList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
-        return pigeonholeDataModelList.get(position);
+    public NoticeModel getItem(int position) {
+        return noticeModelList.get(position);
     }
 
     /**
@@ -417,7 +422,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      */
     public void showRetry(boolean show, @Nullable String errorMsg) {
         retryPageLoad = show;
-        notifyItemChanged(pigeonholeDataModelList.size() - 1);
+        notifyItemChanged(noticeModelList.size() - 1);
 
         if (errorMsg != null) this.errorMsg = errorMsg;
     }
