@@ -4,6 +4,8 @@ package com.classtune.ndc.retrofit;
  * Created by RR on 08-Jan-18.
  */
 
+import com.classtune.ndc.utils.URLHelper;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -29,7 +31,7 @@ public class RetrofitWithTime {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.PigeonholeAdapter;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
@@ -30,6 +31,7 @@ import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -89,6 +91,13 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
         pigeonholeFab = (FloatingActionButton) view.findViewById(R.id.pigeonhole_fab);
         pigeonholeFab.setOnClickListener(this);
+
+        UserPermission userPermission = AppSharedPreference.getUserPermission();
+        if(userPermission.isTasksAdd())
+            pigeonholeFab.setVisibility(View.VISIBLE);
+        else
+            pigeonholeFab.setVisibility(View.INVISIBLE);
+
         strList = getStrList();
 
 
@@ -141,6 +150,7 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
                         if (phTaskListResponse.getCode() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
+                            Collections.reverse(phTaskList);
                             pigeonholeAdapter.addAllData(phTaskList);
                             Log.v("tt", phTaskList.toString());
                         }

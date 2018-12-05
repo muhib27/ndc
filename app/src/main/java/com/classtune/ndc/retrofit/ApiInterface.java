@@ -7,10 +7,9 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
 import com.classtune.ndc.utils.URLHelper;
-import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -57,9 +56,10 @@ public interface ApiInterface {
 
 
     @POST(URLHelper.GET_PIGEONHOLE_TASK_ADD)
-      Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+      //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+    Observable<Response<JsonElement>> getTaskAssign(@Body MultipartBody file );
 
-    //  Observable<Response<JsonElement>> getTaskAssign(@Part("api_key") RequestBody api_key,@Part List<MultipartBody.Part> file, @Part("users[]") List<String> selectedList, @Part("course[]") List<String> courseList, @Part("title") RequestBody title, @Part("description") RequestBody description, @Part("due_date") RequestBody due_date);
+      //Observable<Response<JsonElement>> getTaskAssign(@Part("api_key") RequestBody api_key,@Part List<MultipartBody.Part> file, @Part("users[]") List<String> selectedList, @Part("course[]") List<String> courseList, @Part("title") RequestBody title, @Part("description") RequestBody description, @Part("due_date") RequestBody due_date);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PIGEONHOLE_GET_COURSES)
@@ -67,7 +67,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PIGEONHOLE_DETAILS + "/{id}")
-    Observable<Response<PHTaskViewResponse>> getSinglePHDetails(@Field("api_key") String api_key, @Path("id") int id);
+    Observable<Response<PHTaskViewResponse>> getSinglePHDetails(@Field("api_key") String api_key, @Path("id") String id);
 
 
 

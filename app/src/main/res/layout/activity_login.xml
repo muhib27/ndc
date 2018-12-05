@@ -18,7 +18,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="180dp"
                 android:adjustViewBounds="true">
 
                 <ImageView
@@ -182,13 +182,13 @@
                     android:text="Don't have an account? Register"
                     android:textSize="14sp" />-->
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:orientation="horizontal">-->
 
 
                     <!--<TextView-->
@@ -243,29 +243,12 @@
                     <!--</RelativeLayout>-->
 
 
-                </RelativeLayout>
+                <!--</RelativeLayout>-->
 
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Powerd By"
-                    android:textSize="@dimen/text_size_12_sp" />
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="40dp" />
-
-            </LinearLayout>
 
 
         </LinearLayout>
@@ -273,5 +256,28 @@
 
     </ScrollView>
 
+    <LinearLayout
+        android:layout_marginBottom="@dimen/size_10dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/size_5dp"
+            android:textColor="#676767"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_11_sp"
+            android:text="Powered By:"/>
+        <ImageView
 
+            android:src="@drawable/classtune_icon"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </RelativeLayout>

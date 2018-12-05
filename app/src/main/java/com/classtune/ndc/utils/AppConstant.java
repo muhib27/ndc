@@ -31,6 +31,10 @@ public class AppConstant {
     public static final String USER_EDIT= "user_edit";
     public static final String USER_DELETE= "user_delete";
 
+    public static final String NDC = "ndc";
+    public static final String AFWC = "afwc";
+    public static final String CAPSTON = "capston";
+
 
 
 

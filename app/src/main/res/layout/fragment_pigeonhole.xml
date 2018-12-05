@@ -12,25 +12,24 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_10dp"
-        android:layout_marginRight="@dimen/size_10dp"
         android:layout_marginTop="@dimen/size_10dp"
         app:cardCornerRadius="@dimen/margin_0dp"
         card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
+            android:background="@drawable/side_nav_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/page_header_bg"
             android:orientation="horizontal"
             android:padding="@dimen/size_10dp">
 
             <ImageView
+                android:layout_gravity="center"
                 android:layout_width="@dimen/margin_0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/pigenhole_icon" />
+                android:src="@drawable/pigeonhole_top" />
 
             <TextView
                 android:layout_width="@dimen/margin_0dp"
@@ -40,14 +39,15 @@
                 android:paddingLeft="@dimen/size_15dp"
                 android:text="@string/pigeon_hole_text"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_18_sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_20_sp"
+                android:textStyle="normal" />
 
             <ImageView
+                android:layout_gravity="center"
                 android:layout_width="@dimen/margin_0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/filter_icon" />
+                android:src="@drawable/dot_menu_w" />
 
 
         </LinearLayout>
@@ -57,12 +57,13 @@
         android:layout_below="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/size_10dp">
+       >
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/main_recycler"

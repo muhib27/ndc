@@ -109,24 +109,45 @@ public class DashBoardFragment extends Fragment implements View.OnClickListener 
 
 
     private ArrayList<DemoClass> getStrList() {
+//        ArrayList<DemoClass> list = new ArrayList<>();
+//       DemoClass demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+//       list.add(demoClass);
+//        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+//        list.add(demoClass);
+//        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+//        list.add(demoClass);
+//        return list;
+
         ArrayList<DemoClass> list = new ArrayList<>();
-       DemoClass demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
-       list.add(demoClass);
-        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        DemoClass demoClass = new DemoClass("Pigeon Hole", "The etymology of Bangladesh", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
         list.add(demoClass);
-        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+        demoClass = new DemoClass("Research", "Developing National Policy", "Developing National Policy Guidelines on United Nations Peace Operations");
         list.add(demoClass);
-        demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+        demoClass = new DemoClass("Class Schedule", "National Security", "Keynote speech on national security");
         list.add(demoClass);
-        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        demoClass = new DemoClass("Pigeon Hole", "The Syrian Crisis", "The Syrian Crisis: Role of Major Powers");
         list.add(demoClass);
-        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+        demoClass = new DemoClass("Research", "Social Compliance", "Social Compliance in Readymade Garments (RMG) Sector: Towards Ensuring Equitable Justice for Garment Workers and Boosting Bangladesh’s Export Economy");
         list.add(demoClass);
-        demoClass = new DemoClass("PigeonHole", "The etymology of Bangladesh (Country of Bengal) can be traced to the early 20th century");
+        demoClass = new DemoClass("Class Schedule", "BAF", "Keynote speech on BAF");
         list.add(demoClass);
-        demoClass = new DemoClass("Research", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        demoClass = new DemoClass("Pigeon Hole", "National Security Strategy", "Need For National Security Strategy: Relevant Concept and Paradigm and Context of Bangladesh");
         list.add(demoClass);
-        demoClass = new DemoClass("Class Schedule", "After the 1757 Battle of Plassey, Bengal was the first region of the Indian subcontinent.");
+        demoClass = new DemoClass("Research", "The Sultanate of Bengal", "The term gained official status during the Sultanate of Bengal in the 14th century.");
+        list.add(demoClass);
+        demoClass = new DemoClass("Class Schedule", "Ethnocentrism", "Ethnocentrism, Strategic culture & Leadership language");
         list.add(demoClass);
         return list;
     }

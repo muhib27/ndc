@@ -4,10 +4,7 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/size_5dp"
-    android:layout_marginBottom="@dimen/size_5dp"
-    android:background="@color/ndc_color">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -27,11 +24,12 @@
                 android:id="@+id/cell_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/ndc_color"
+                android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/size_10dp">
 
                 <LinearLayout
+                    android:padding="@dimen/size_3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
@@ -53,9 +51,9 @@
                     android:maxLines="1"
                     android:paddingLeft="@dimen/size_10dp"
                     android:text="date"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_22_sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_20_sp"
+                    android:textStyle="normal" />
 
                 <ImageView
                     android:id="@+id/attachment"
@@ -63,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:src="@drawable/attachment_w" />
+                    android:src="@drawable/attachment_icon" />
 
                 <ImageButton
                     android:id="@+id/dot_menu"
@@ -74,11 +72,12 @@
                     android:background="@null"
                     android:src="@drawable/dot_menu_w" />
             </LinearLayout>
-            <!--<View-->
-            <!--android:layout_marginTop="@dimen/size_5dp"-->
-            <!--android:background="@color/ash_1"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"/>-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/size_5dp"
+                android:background="@color/ash_1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,6 +89,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/size_10dp">
+
+                    <TextView
+                        android:id="@+id/subTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:maxLines="2"
+                        android:text="This is Title"
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_18_sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/description"
@@ -144,11 +155,11 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_1dp"
-                android:layout_marginTop="@dimen/size_10dp"
-                android:background="@color/card_cell_view" />
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/margin_1dp"-->
+            <!--android:layout_marginTop="@dimen/size_10dp"-->
+            <!--android:background="@color/card_cell_view" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -162,7 +173,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:text="Assign Date: 15/11/2018"
                     android:textSize="@dimen/text_size_12_sp" />
 

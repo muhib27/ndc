@@ -110,6 +110,7 @@
     <string name="doc_type">(doc,pdf,ppt etc)</string>
     <string name="file_type"> (zip, rar etc)</string>
     <string name="profile_text">Profile</string>
+    <string name="reading_package_text">Reading Package</string>
     <string name="common">Common</string>
     <string name="custom">Custom</string>
     <string name="all_ndc">All NDC</string>

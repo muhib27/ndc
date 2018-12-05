@@ -2,28 +2,23 @@ package com.classtune.ndc.fragment;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,18 +33,16 @@ import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.AttachmentAdapterMain;
 import com.classtune.ndc.adapter.TaskAssignAdapter;
-import com.classtune.ndc.adapter.UserTaskAssignAdapter;
 import com.classtune.ndc.apiresponse.Course;
-import com.classtune.ndc.apiresponse.pigeonhole_api.GetCourseData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeTaskAdd;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
-import com.classtune.ndc.callbacks.IAttachFile;
 import com.classtune.ndc.model.AttachmentModel;
 import com.classtune.ndc.model.CMModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.UserCourses;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
@@ -106,8 +99,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     List<Student> afwcStList;
     List<Student> capstonStList;
 
-    public List<String> courseList;
-    public static List<String> selectedList;
+    public ArrayList<String> courseList;
+    public static ArrayList<String> selectedList;
 
     UIHelper uiHelper;
 
@@ -117,7 +110,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     AttachmentAdapter attachmentAdapter;
     AttachmentAdapterMain attachmentAdapterMain;
-    public String selectedDate = "Due Date";
+    public String selectedDate = "";
 
     private static final String[] STORAGE_AND_CAMERA =
             {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
@@ -177,7 +170,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 // TODO Auto-generated method stub
                 showDatepicker();
 
-               // selectDate();
+                // selectDate();
             }
         });
     }
@@ -214,6 +207,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     }
 
     private void showDatepicker() {
+        selectedDate = "";
         DatePickerFragment picker = new DatePickerFragment();
         picker.setCallbacks(datePickerCallback);
         picker.show(getFragmentManager(), "datePicker");
@@ -227,7 +221,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                                    Date date) {
             // TODO Auto-generated method stub
             dueDate.setText(dateFormatApp);
-            selectedDate = dateFormatApp;
+            selectedDate = dateFormatServer;
 //            choosenDateTextView.setText(dateFormatApp);
 //            dateFormatServerString = dateFormatServer;
         }
@@ -272,52 +266,57 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     private void initTaskAssignApi() {
 
         pigeonholeTaskAdd = new PigeonholeTaskAdd();
-        if (!title.getText().toString().trim().isEmpty() )
+        if (!title.getText().toString().trim().isEmpty())
             pigeonholeTaskAdd.setTitle(title.getText().toString());
-        if (!description.getText().toString().trim().isEmpty() )
+        if (!description.getText().toString().trim().isEmpty())
             pigeonholeTaskAdd.setDescription(description.getText().toString());
-        if (!dueDate.getText().toString().trim().isEmpty() )
+        if (!dueDate.getText().toString().trim().isEmpty())
             pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
 
-        if(allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()){
+        UserCourses userCourses = AppSharedPreference.getUserCourse();
+        if (allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()) {
             selectedList = new ArrayList<>();
-            if(allNdc.isChecked() && ndcStList.size()>0){
-                courseList.add("ndc");
-                for(Student list: ndcStList)
-                {
+            if (allNdc.isChecked() && ndcStList.size() > 0) {
+                if(userCourses.isNdc())
+                courseList.add("1");
+                for (Student list : ndcStList) {
                     selectedList.add(list.getId());
                 }
             }
-            if(allAfwc.isChecked() && afwcStList.size()>0){
-                courseList.add("afwc");
-                for(Student list: afwcStList)
-                {
+            if (allAfwc.isChecked() && afwcStList.size() > 0) {
+                if(userCourses.isAfwc())
+                courseList.add("2");
+                for (Student list : afwcStList) {
                     selectedList.add(list.getId());
                 }
             }
-            if(allCapston.isChecked() && capstonStList.size()>0){
-                courseList.add("capston");
-                for(Student list: capstonStList)
-                {
+            if (allCapston.isChecked() && capstonStList.size() > 0) {
+                if(userCourses.isCapston())
+                courseList.add("3");
+                for (Student list : capstonStList) {
                     selectedList.add(list.getId());
                 }
             }
-        }
-
-        else {
-            if (ndcCount > 0)
-                courseList.add("ndc");
-            if (afwcCount > 0)
-                courseList.add("afwc");
-            if (capstonCount > 0)
-                courseList.add("capston");
+        } else {
+            if (ndcCount > 0) {
+                if(userCourses.isNdc())
+                    courseList.add("1");
+            }
+            if (afwcCount > 0) {
+                if(userCourses.isAfwc())
+                    courseList.add("2");
+            }
+            if (capstonCount > 0) {
+                if(userCourses.isCapston())
+                    courseList.add("3");
+            }
         }
 
         String titleSt = title.getText().toString().trim();
         String descriptionSt = description.getText().toString().trim();
 
-        if(titleSt.isEmpty() || selectedList.size()<=0) {
-            Toast.makeText(getActivity(), "Title and Assign To should not be empty" , Toast.LENGTH_LONG).show();
+        if (titleSt.isEmpty() || selectedList.size() <= 0) {
+            Toast.makeText(getActivity(), "Title and Assign To should not be empty", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -489,7 +488,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     }
 
     public static int ndcCount, afwcCount, capstonCount;
+
     private void showDialogAssignTo() {
+        UserCourses userCourses = AppSharedPreference.getUserCourse();
 
         ndcCount = 0;
         afwcCount = 0;
@@ -508,17 +509,42 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         common.setOnClickListener(this);
         custom.setOnClickListener(this);
 
+
         allNdc = assignToDialogView.findViewById(R.id.all_ndc);
         allCapston = assignToDialogView.findViewById(R.id.all_capston);
         allAfwc = assignToDialogView.findViewById(R.id.all_afwc);
+
 
         ndc = assignToDialogView.findViewById(R.id.ndc);
         afwc = assignToDialogView.findViewById(R.id.afwc);
         capston = assignToDialogView.findViewById(R.id.capston);
 
+        if (userCourses.isNdc()) {
+            allNdc.setVisibility(View.VISIBLE);
+            ndc.setVisibility(View.VISIBLE);
+        } else {
+            allNdc.setVisibility(View.INVISIBLE);
+            ndc.setVisibility(View.INVISIBLE);
+        }
+
+        if (userCourses.isAfwc()) {
+            allAfwc.setVisibility(View.VISIBLE);
+            afwc.setVisibility(View.VISIBLE);
+        } else {
+            allAfwc.setVisibility(View.INVISIBLE);
+            afwc.setVisibility(View.INVISIBLE);
+        }
+
+        if (userCourses.isCapston()) {
+
+            allCapston.setVisibility(View.VISIBLE);
+            capston.setVisibility(View.VISIBLE);
+        } else {
+            allCapston.setVisibility(View.INVISIBLE);
+            capston.setVisibility(View.INVISIBLE);
+        }
+
         listView = assignToDialogView.findViewById(R.id.list);
-
-
 
 
         commonTypeLayout = assignToDialogView.findViewById(R.id.commonTypeLayout);
@@ -537,17 +563,16 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter.clear();
                     userTaskAssignAdapter.addAllData(ndcStList);
                     //some code
-                } else if(checkedId == R.id.afwc) {
+                } else if (checkedId == R.id.afwc) {
                     //some code
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc");
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     userTaskAssignAdapter.clear();
-                    if(afwcStList.size()>0)
-                    userTaskAssignAdapter.addAllData(afwcStList);
+                    if (afwcStList.size() > 0)
+                        userTaskAssignAdapter.addAllData(afwcStList);
 
-                }
-                else if(checkedId == R.id.capston) {
+                } else if (checkedId == R.id.capston) {
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston");
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
@@ -598,6 +623,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //
 
     LinearLayoutManager linearLayoutManager;
+
     private void enableCustomSelection() {
         cmModelList = new ArrayList<>();
         getCMData();
@@ -801,7 +827,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         // showFileDialog();
     }
 
-    RequestBody rbDueDate ,rbApiKey,rbTitle,rbDescription;
+    RequestBody rbDueDate, rbApiKey, rbTitle, rbDescription;
+
     private void callTaskAddApi() {
 
         //File myFile = new File(selectedFilePath);
@@ -810,7 +837,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         rbApiKey = RequestBody.create(MediaType.parse("multipart/form-data"), AppSharedPreference.getApiKey());
         rbTitle = RequestBody.create(MediaType.parse("multipart/form-data"), title.getText().toString().trim());
         rbDescription = RequestBody.create(MediaType.parse("multipart/form-data"), description.getText().toString().trim());
-        if(!selectedDate.equalsIgnoreCase("Due Date"))
+        if (!selectedDate.equalsIgnoreCase("Due Date"))
             rbDueDate = RequestBody.create(MediaType.parse("multipart/form-data"), dueDate.getText().toString());
 
 
@@ -831,29 +858,32 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //        MultipartBody attachments = builder.build();
 
 
-
         List<String> filePaths = new ArrayList<>();
 
 
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
 
-        builder.addFormDataPart("title", "Robert");
-        builder.addFormDataPart("description", "mobile.apps.pro.vn@gmail.com");
+        builder.addFormDataPart("title", title.getText().toString().trim());
+        builder.addFormDataPart("description", description.getText().toString().trim());
         builder.addFormDataPart("api_key", AppSharedPreference.getApiKey());
+        builder.addFormDataPart("due_date", selectedDate);
 
         // Map is used to multipart the file using okhttp3.RequestBody
         // Multiple Images
+        for (int j = 0; j < selectedList.size(); j++) {
+            builder.addFormDataPart("users[" + j + "]", selectedList.get(j));
+        }
+        for (int k = 0; k < courseList.size(); k++) {
+            builder.addFormDataPart("course[" + k + "]", courseList.get(k));
+        }
         for (int i = 0; i < attachmentModelList.size(); i++) {
             File file = new File(attachmentModelList.get(i).getFilePath());
-            builder.addFormDataPart("attachments", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
+            builder.addFormDataPart("attachments[" + i + "]", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
         }
 
 
         MultipartBody requestBody = builder.build();
-
-
-
 
 
 //        MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[attachmentModelList.size()];
@@ -871,10 +901,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
-        uiHelper.showLoadingDialog("Authenticating...");
+        uiHelper.showLoadingDialog("Submitting your task...");
+        String[] users = new String[selectedList.size()];
+        users = selectedList.toArray(users);
 
+        // RetrofitApiClient.getApiInterface().getTaskAssign(requestBody)
         RetrofitApiClient.getApiInterface().getTaskAssign(requestBody)
-       // RetrofitApiClient.getApiInterface().getTaskAssign(rbApiKey,parts, selectedList, courseList, rbTitle, rbDescription, rbDueDate)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -891,9 +923,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                         if (value.code() == 200) {
                             Log.v("PigeonholeFragment", value.message());
-
-
+                            Toast.makeText(getActivity(), "Your task successfully submitted", Toast.LENGTH_SHORT).show();
                         }
+                        else
+                            Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -901,7 +934,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     @Override
                     public void onError(Throwable e) {
 
-
+                        Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
                         uiHelper.dismissLoadingDialog();
                     }
 
@@ -922,7 +955,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
-//        uiHelper.showLoadingDialog("Authenticating...");
+        uiHelper.showLoadingDialog("Please wait...");
 
 
         RetrofitApiClient.getApiInterface().getPigeonholeCourses(AppSharedPreference.getApiKey())
@@ -940,6 +973,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         uiHelper.dismissLoadingDialog();
                         PigeonholeGetCourseApiResponse pigeonholeGetCourseApiResponse = value.body();
 
+                        uiHelper.dismissLoadingDialog();
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
                         if (pigeonholeGetCourseApiResponse.getCode() == 200) {
@@ -976,18 +1010,21 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     }
 
     private void parseCourseData(List<Course> courses) {
-        for(int i=0; i<courses.size(); i++){
-            if(courses.get(i).getName().equalsIgnoreCase("ndc")) {
+        UserCourses userCourses = new UserCourses();
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getName().equalsIgnoreCase("ndc")) {
 
                 ndcStList = courses.get(i).getStudents();
-//                for(int k=0; k<20; k++)
-//                ndcStList.add(courses.get(i).getStudents().get(0));
-            }
-            else if(courses.get(i).getName().equalsIgnoreCase("afwc"))
+                userCourses.setNdc(true);
+            } else if (courses.get(i).getName().equalsIgnoreCase("afwc")) {
                 afwcStList = courses.get(i).getStudents();
-            else if(courses.get(i).getName().equalsIgnoreCase("capston"))
+                userCourses.setAfwc(true);
+            } else if (courses.get(i).getName().equalsIgnoreCase("capston")) {
                 capstonStList = courses.get(i).getStudents();
+                userCourses.setCapston(true);
+            }
         }
+        AppSharedPreference.setUserCourse(userCourses);
     }
 
 

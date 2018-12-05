@@ -5,23 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/deep_ash"
     tools:context="com.classtune.ndc.fragment.DashBoardFragment">
 
 
-    <!--<android.support.v7.widget.CardView-->
-        <!--android:id="@+id/card_view_header"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/size_10dp"-->
-        <!--app:cardCornerRadius="@dimen/margin_0dp"-->
-        <!--card_view:cardElevation="0dp"-->
-        <!--card_view:cardUseCompatPadding="true">-->
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_2dp"
+        app:cardCornerRadius="@dimen/margin_0dp">
 
         <LinearLayout
-            android:layout_marginTop="@dimen/size_5dp"
+            android:background="@drawable/side_nav_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/page_header_bg"
             android:orientation="horizontal"
             android:padding="@dimen/size_10dp">
 
@@ -29,7 +27,7 @@
                 android:layout_width="@dimen/margin_0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/pigeonhole_icon" />
+                android:src="@drawable/home_top" />
 
             <TextView
                 android:layout_width="@dimen/margin_0dp"
@@ -39,14 +37,14 @@
                 android:paddingLeft="@dimen/size_15dp"
                 android:text="Home"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_18_sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_20_sp"
+                android:textStyle="normal" />
 
         </LinearLayout>
-    <!--</android.support.v7.widget.CardView>-->
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
-        android:background="@color/ash_1"
+        android:background="@color/deep_ash"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

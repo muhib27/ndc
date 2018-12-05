@@ -172,9 +172,9 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getTitle());
-              //  itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
+                itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
                 itemHolder.assign_date.setText(Html.fromHtml("Assign Date: " + "<font color = #3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getCreatedAt()) + "<strong></font>"));
-                if(!pigeonholeDataModelList.get(position).getDueDate().isEmpty())
+                if(pigeonholeDataModelList.get(position).getDueDate()!=null && !pigeonholeDataModelList.get(position).getDueDate().isEmpty())
                 itemHolder.due_date.setText(Html.fromHtml("Due Date: " + "<font color=#3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getDueDate()) + "<strong></font>"));
                 else
                     itemHolder.due_date.setText("");
@@ -203,7 +203,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //                        String str = new Gson().toJson(orderList.get(position));
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoInstructorDetailsFragment();
+                        gotoInstructorDetailsFragment(pigeonholeDataModelList.get(position).getId());
 
                     }
                 });
@@ -588,12 +588,15 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    private void gotoInstructorDetailsFragment() {
+    private void gotoInstructorDetailsFragment(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+
         InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        instructorDetailsFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);
-        ;
         transaction.commit();
     }
 

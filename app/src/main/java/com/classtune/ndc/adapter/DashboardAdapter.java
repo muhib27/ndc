@@ -156,22 +156,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.orderTitle.setText(pigeonholeDataModelList.get(position).getTitle());
                 itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
+                itemHolder.subTitle.setText(pigeonholeDataModelList.get(position).getSubTitle());
 
-                if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("pigeonhole")){
-                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.pigeonhole_color));
-                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.pigeonhole_color));
+                if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("pigeon hole")){
+//                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.pigeonhole_color));
+//                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.pigeonhole_color));
                     itemHolder.itemImage.setBackgroundResource(R.drawable.pigenhole_icon);
 
                 }
                 else if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("research")){
-                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.research_color));
-                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.research_color));
+//                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.research_color));
+//                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.research_color));
                     itemHolder.itemImage.setBackgroundResource(R.drawable.research_icon);
 
                 }
                 else if(pigeonholeDataModelList.get(position).getTitle().equalsIgnoreCase("class schedule")){
-                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.class_schedule_color));
-                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.class_schedule_color));
+//                    itemHolder.itemLayout.setBackgroundColor(context.getResources().getColor(R.color.class_schedule_color));
+//                    itemHolder.cellHeader.setBackgroundColor(context.getResources().getColor(R.color.class_schedule_color));
                     itemHolder.itemImage.setBackgroundResource(R.drawable.class_schedule_icon);
 
                 }
@@ -349,7 +350,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
         private TextView description;
-        private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
+        private TextView subTitle, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
         private TextView menuOption;
@@ -366,6 +367,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             cellHeader = (LinearLayout) itemView.findViewById(R.id.cell_header);
             itemImage = itemView.findViewById(R.id.itemImage);
             description = itemView.findViewById(R.id.description);
+            subTitle = itemView.findViewById(R.id.subTitle);
 
 
 

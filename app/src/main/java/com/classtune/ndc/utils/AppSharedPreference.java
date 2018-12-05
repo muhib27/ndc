@@ -157,4 +157,24 @@ public class AppSharedPreference {
         return userPermission;
     }
 
+    public static void setUserCourse(UserCourses userCourse) {
+        final SharedPreferences pref = getSharedPreferences();
+        final SharedPreferences.Editor editor = pref.edit();
+
+        editor.putBoolean(AppConstant.NDC, userCourse.isNdc());
+        editor.putBoolean(AppConstant.AFWC, userCourse.isAfwc());
+        editor.putBoolean(AppConstant.CAPSTON, userCourse.isCapston());
+
+        editor.apply();
+    }
+    public static UserCourses getUserCourse() {
+        final SharedPreferences pref = getSharedPreferences();
+        UserCourses userCourses = new UserCourses();
+
+        userCourses.setNdc(pref.getBoolean(AppConstant.NDC, false));
+        userCourses.setAfwc(pref.getBoolean(AppConstant.AFWC, false));
+        userCourses.setCapston(pref.getBoolean(AppConstant.CAPSTON, false));
+        return userCourses;
+    }
+
 }

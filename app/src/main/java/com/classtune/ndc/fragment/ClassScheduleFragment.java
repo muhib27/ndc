@@ -19,7 +19,9 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
 import com.classtune.ndc.adapter.DashboardNoticeAdapter;
+import com.classtune.ndc.model.ClassScheduleModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
+import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 
 import java.util.ArrayList;
 
@@ -30,7 +32,7 @@ public class ClassScheduleFragment extends Fragment implements PaginationAdapter
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<String> strList = new ArrayList<>();
+    ArrayList<ClassScheduleModel> strList = new ArrayList<>();
     DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
 
 
@@ -79,9 +81,9 @@ public class ClassScheduleFragment extends Fragment implements PaginationAdapter
 //        recent.setOnClickListener(this);
 
         strList = getStrList();
-        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext(), 1);
+        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext());
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(dashboardClassScheduleAdapter);
@@ -112,19 +114,30 @@ public class ClassScheduleFragment extends Fragment implements PaginationAdapter
         transaction.commit();
     }
 
-    private ArrayList<String> getStrList() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
+    private ArrayList<ClassScheduleModel> getStrList() {
+        ArrayList<ClassScheduleModel> list = new ArrayList<>();
+
+        ClassScheduleModel classScheduleModel =new ClassScheduleModel("Keynote speech on national security", "9:00 - 11:00", "09 Dec 2018", "Maj. Gen. Tarique Ahmed Siddique,rcds,psc");
+        list.add(classScheduleModel);
+        classScheduleModel =new ClassScheduleModel("Follow up discussion", "12:00 - 14:00", "09 Dec 2018", "All SDSs");
+        list.add(classScheduleModel);
+        classScheduleModel =new ClassScheduleModel("Keynote speech on BAF", "9:00 - 11:00", "10 Dec 2018", "Air Chief Marshal Masihuzzaman,Serniabat, BBP,OSP,ndu,pscGD(P) Chief of air staff");
+                list.add(classScheduleModel);
+        classScheduleModel =new ClassScheduleModel("Ethnocentrism, Strategic culture & Leadership language", "12:00 - 14:00", "10 Dec 2018", "Lt. Gen. Md. Mahfujur Rahman PSO,AFD");
+        list.add(classScheduleModel);
+
+
+//        list.add("Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
+//        list.add("Lorem ipsum dolor sit amet");
 
         return list;
     }

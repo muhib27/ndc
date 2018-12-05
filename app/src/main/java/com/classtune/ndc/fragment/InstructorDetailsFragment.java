@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
@@ -67,9 +68,16 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        String id = "";
+        Bundle b = getArguments();
+        {
+            if(b.getString("id", "")!=null)
+              id = b.getString("id", "");
+        }
         uiHelper = new UIHelper(getActivity());
         initView(view);
-        callTaskListApi(23);
+        if(id!=null && !id.isEmpty())
+        callTaskListApi(id);
     }
 
     private void initView(View view) {
@@ -115,7 +123,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
         transaction.commit();
     }
 
-    private void callTaskListApi(int id) {
+    private void callTaskListApi(String id) {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -193,24 +201,26 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
+        List<Attachment> attachmentList = phTaskViewData.getPhSingleTask().getAttachments();
+        if(attachmentList!=null && attachmentList.size()>0) {
 
-        for (int i = 0; i < phTaskViewData.getPhSingleTask().getAttachments().size(); i++){
-            // Add the text layout to the parent layout
-            view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
+            for (int i = 0; i < phTaskViewData.getPhSingleTask().getAttachments().size(); i++) {
+                // Add the text layout to the parent layout
+                view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
 
-            // In order to get the view we have to use the new view with text_layout in it
-            attachmentImage = view.findViewById(R.id.attachmentImage);
-            attachmentImage.setTag("Row " + i);
-            attachmentImage.setId(i+1);
-            list.add(attachmentImage);
-            for(final ImageView imageView : list){
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+                // In order to get the view we have to use the new view with text_layout in it
+                attachmentImage = view.findViewById(R.id.attachmentImage);
+                attachmentImage.setTag("Row " + i);
+                attachmentImage.setId(i + 1);
+                list.add(attachmentImage);
+                for (final ImageView imageView : list) {
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 //            textView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -218,8 +228,9 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 //                }
 //            });
 
-            // Add the text view to the parent layout
-            attachment_container.addView(attachmentImage);
+                // Add the text view to the parent layout
+                attachment_container.addView(attachmentImage);
+            }
         }
     }
 

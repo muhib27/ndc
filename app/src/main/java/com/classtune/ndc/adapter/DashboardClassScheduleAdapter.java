@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.classtune.ndc.R;
 import com.classtune.ndc.fragment.ClassScheduleDetailsFragment;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
+import com.classtune.ndc.model.ClassScheduleModel;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
@@ -45,8 +46,8 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<ClassScheduleModel> classScheduleModels;
+    private List<ClassScheduleModel> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -71,33 +72,31 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
     public DashboardClassScheduleAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        classScheduleModels = new ArrayList<>();
         //this.mOrderProcessCallback = orderProcessCallback;
 
     }
 
-    public DashboardClassScheduleAdapter(Context context, int viewparameter) {
+    public DashboardClassScheduleAdapter(Context context) {
         this.context = context;
-        pigeonholeDataModelList = new ArrayList<>();
+        classScheduleModels = new ArrayList<>();
         this.viewparameter = viewparameter;
     }
 
-    public DashboardClassScheduleAdapter(Context context, ArrayList<String> strList) {
+    public DashboardClassScheduleAdapter(Context context, ArrayList<ClassScheduleModel> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
 
     }
 
-    public void setData(List<String> list) {
-        strList = list;
-
-
+    public void setData(List<ClassScheduleModel> list) {
+        classScheduleModels = list;
     }
 
 
-    public List<PigeonholeDataModel> getMovies() {
-        return pigeonholeDataModelList;
+    public List<ClassScheduleModel> getMovies() {
+        return classScheduleModels;
     }
 
 //    public void setMovies(List<PigeonholeDataModel> orderList) {
@@ -111,8 +110,10 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.dashboard_single_class_schedule_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.single_class_schedule_row, parent, false);
                 viewHolder = new NoticeListItem(viewItem);
+//                View viewItem = inflater.inflate(R.layout.dashboard_single_class_schedule_row, parent, false);
+//                viewHolder = new NoticeListItem(viewItem);
                 break;
             case ITEM_1:
                 View viewItem_card = inflater.inflate(R.layout.single_class_schedule_row, parent, false);
@@ -134,7 +135,10 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
                 final NoticeListItem itemHolder = (NoticeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder.orderTitle.setText(strList.get(position));
+                itemHolder.orderTitle.setText(classScheduleModels.get(position).getTitle());
+                itemHolder.time.setText(classScheduleModels.get(position).getDate());
+                itemHolder.date.setText(classScheduleModels.get(position).getTime());
+                itemHolder.name.setText(classScheduleModels.get(position).getLecturerName());
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -158,7 +162,7 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
                 final NoticeListItem itemHolder_ = (NoticeListItem) holder;
 //                int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemHolder_.orderTitle.setText(strList.get(position));
+                itemHolder_.orderTitle.setText(classScheduleModels.get(position).getTitle());
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -197,24 +201,24 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
-        //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
+        //return strList == null ? 0 : strList.size();
+        return classScheduleModels == null ? 0 : classScheduleModels.size();
     }
 
     @Override
     public int getItemViewType(int position) {
 //
-        {
+ //       {
 //            if (position == 23 && isLoadingAdded)
 //                return LOADING;
 //            else
 //                return ADD;
 //        } else {
-            if (viewparameter == 0)
+//            if (viewparameter == 0)
                 return ITEM;
-            else
-                return ITEM_1;
-        }
+//            else
+           //     return ITEM_1;
+       // }
 
 //        if (position!= 24 && position%6 == 0 ) {
 //            return HERO;
@@ -236,8 +240,8 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
-        private TextView accepted;
-        private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
+        private TextView date;
+        private TextView time; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
         private TextView menuOption;
@@ -251,6 +255,8 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            date = (TextView) itemView.findViewById(R.id.date);
+            time = itemView.findViewById(R.id.time);
 
 
         }
@@ -258,8 +264,9 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
     protected class NoticeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
-        private TextView accepted;
-        private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
+        private TextView date;
+        private TextView time;
+        private TextView name; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
         private TextView menuOption;
@@ -273,6 +280,11 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            date = (TextView) itemView.findViewById(R.id.date);
+            time = itemView.findViewById(R.id.time);
+            time = itemView.findViewById(R.id.time);
+            name = itemView.findViewById(R.id.lecturerName);
+
 
 
         }
@@ -345,33 +357,33 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
-        pigeonholeDataModelList.add(r);
-        notifyItemInserted(pigeonholeDataModelList.size() - 1);
+    public void add(ClassScheduleModel r) {
+        classScheduleModels.add(r);
+        notifyItemInserted(classScheduleModels.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<ClassScheduleModel> moveResults) {
+        for (ClassScheduleModel result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
-        pigeonholeDataModelList.clear();
-        pigeonholeDataModelList.addAll(moveResults);
+    public void addAllNewData(List<ClassScheduleModel> moveResults) {
+        classScheduleModels.clear();
+        classScheduleModels.addAll(moveResults);
         notifyDataSetChanged();
     }
 
     public void clearList() {
-        pigeonholeDataModelList.clear();
+        classScheduleModels.clear();
     }
 
 
-    public void remove(PigeonholeDataModel r) {
-        int position = pigeonholeDataModelList.indexOf(r);
+    public void remove(ClassScheduleModel r) {
+        int position = classScheduleModels.indexOf(r);
         if (position > -1) {
-            pigeonholeDataModelList.remove(position);
+            classScheduleModels.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -386,23 +398,23 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new ClassScheduleModel());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
-        int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        int position = classScheduleModels.size() - 1;
+        ClassScheduleModel result = getItem(position);
 
         if (result != null) {
-            pigeonholeDataModelList.remove(position);
+            classScheduleModels.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
-        return pigeonholeDataModelList.get(position);
+    public ClassScheduleModel getItem(int position) {
+        return classScheduleModels.get(position);
     }
 
     /**
@@ -413,7 +425,7 @@ public class DashboardClassScheduleAdapter extends RecyclerView.Adapter<Recycler
      */
     public void showRetry(boolean show, @Nullable String errorMsg) {
         retryPageLoad = show;
-        notifyItemChanged(pigeonholeDataModelList.size() - 1);
+        notifyItemChanged(classScheduleModels.size() - 1);
 
         if (errorMsg != null) this.errorMsg = errorMsg;
     }

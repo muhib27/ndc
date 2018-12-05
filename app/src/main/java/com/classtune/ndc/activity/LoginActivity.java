@@ -214,11 +214,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        Wrapper wrapper = GsonParser.getInstance().parseServerResponse2(
 //                                value.body());
 
-                        if (loginApiModel.getCode() == 200) {
+                        if (loginApiModel.getCode()!= null && loginApiModel.getCode() == 200) {
                             AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
                             callMenuApi();
                         }
-
+                        else
+                            uiHelper.dismissLoadingDialog();
 //                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                            startActivity(intent);
 //                            finish();
