@@ -3,7 +3,8 @@ package com.classtune.ndc.apiresponse.pigeonhole_api;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PHTask {
+
+public class PHTask  {
 
     @SerializedName("id")
     @Expose

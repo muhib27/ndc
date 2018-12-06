@@ -33,7 +33,12 @@ import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.AttachmentAdapterMain;
 import com.classtune.ndc.adapter.TaskAssignAdapter;
+import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.Course;
+import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHSingleTask;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeTaskAdd;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
@@ -41,6 +46,7 @@ import com.classtune.ndc.model.AttachmentModel;
 import com.classtune.ndc.model.CMModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.UserCourses;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
@@ -140,9 +146,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+
         ndcStList = new ArrayList<>();
         afwcStList = new ArrayList<>();
         capstonStList = new ArrayList<>();
+        selectedList = new ArrayList<>();
+        courseList = new ArrayList<>();
         uiHelper = new UIHelper(getActivity());
         initView(view);
         listFiles = new ArrayList<>();
@@ -173,6 +182,16 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 // selectDate();
             }
         });
+
+
+        String id = "";
+        Bundle b = getArguments();
+        if (getArguments() != null) {
+            if (b.getString("id", "") != null)
+                id = b.getString("id", "");
+        }
+        if (id != null && !id.isEmpty())
+            callTaskApi(id);
     }
 
     int year, month, day;
@@ -277,37 +296,37 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         if (allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()) {
             selectedList = new ArrayList<>();
             if (allNdc.isChecked() && ndcStList.size() > 0) {
-                if(userCourses.isNdc())
-                courseList.add("1");
+                if (userCourses.isNdc())
+                    courseList.add("1");
                 for (Student list : ndcStList) {
                     selectedList.add(list.getId());
                 }
             }
             if (allAfwc.isChecked() && afwcStList.size() > 0) {
-                if(userCourses.isAfwc())
-                courseList.add("2");
+                if (userCourses.isAfwc())
+                    courseList.add("2");
                 for (Student list : afwcStList) {
                     selectedList.add(list.getId());
                 }
             }
             if (allCapston.isChecked() && capstonStList.size() > 0) {
-                if(userCourses.isCapston())
-                courseList.add("3");
+                if (userCourses.isCapston())
+                    courseList.add("3");
                 for (Student list : capstonStList) {
                     selectedList.add(list.getId());
                 }
             }
         } else {
             if (ndcCount > 0) {
-                if(userCourses.isNdc())
+                if (userCourses.isNdc())
                     courseList.add("1");
             }
             if (afwcCount > 0) {
-                if(userCourses.isAfwc())
+                if (userCourses.isAfwc())
                     courseList.add("2");
             }
             if (capstonCount > 0) {
-                if(userCourses.isCapston())
+                if (userCourses.isCapston())
                     courseList.add("3");
             }
         }
@@ -548,7 +567,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 
         commonTypeLayout = assignToDialogView.findViewById(R.id.commonTypeLayout);
-        enableCommonSelection();
+        if (!SELECTED_TAB.isEmpty() && SELECTED_TAB.equalsIgnoreCase("common"))
+            enableCommonSelection();
+        else
+            enableCustomSelection();
 
         instituteGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -556,26 +578,44 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                 if (checkedId == R.id.ndc) {
 
-                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc");
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc", editSelectedList, SELECTED_TAB);
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
+                    if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList!=null) {
+                        for (int i = 0; i < ndcStList.size(); i++) {
+                            if (editSelectedList.contains(ndcStList.get(i).getId()))
+                                ndcStList.get(i).setSelected(true);
+                        }
+                    }
 
                     userTaskAssignAdapter.clear();
                     userTaskAssignAdapter.addAllData(ndcStList);
                     //some code
                 } else if (checkedId == R.id.afwc) {
                     //some code
-                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc");
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc", editSelectedList, SELECTED_TAB);
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
+                    if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
+                        for (int i = 0; i < afwcStList.size(); i++) {
+                            if (editSelectedList.contains(afwcStList.get(i).getId()))
+                                afwcStList.get(i).setSelected(true);
+                        }
+                    }
                     userTaskAssignAdapter.clear();
                     if (afwcStList.size() > 0)
                         userTaskAssignAdapter.addAllData(afwcStList);
 
                 } else if (checkedId == R.id.capston) {
-                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston");
+                    userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston", editSelectedList, SELECTED_TAB);
                     userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
+                    if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList!=null) {
+                        for (int i = 0; i < capstonStList.size(); i++) {
+                            if (editSelectedList.contains(capstonStList.get(i).getId()))
+                                capstonStList.get(i).setSelected(true);
+                        }
+                    }
                     userTaskAssignAdapter.clear();
                     userTaskAssignAdapter.addAllData(capstonStList);
 
@@ -610,9 +650,19 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         instituteGroup.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
 
-        allNdc.setChecked(false);
-        allAfwc.setChecked(false);
-        allCapston.setChecked(false);
+        if (editCourseListSt != null && editCourseListSt.size() > 0) {
+            for (int course_st = 0; course_st < editCourseListSt.size(); course_st++)
+                if (editCourseListSt.get(course_st).equals("1"))
+                    allNdc.setChecked(true);
+                else if (editCourseListSt.get(course_st).equals("2"))
+                    allAfwc.setChecked(true);
+                else if (editCourseListSt.get(course_st).equals("3"))
+                    allCapston.setChecked(true);
+        } else {
+            allNdc.setChecked(false);
+            allAfwc.setChecked(false);
+            allCapston.setChecked(false);
+        }
     }
 //    private void disableCommonSelection() {
 //
@@ -638,7 +688,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         listView.setVisibility(View.VISIBLE);
 
 
-        userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc");
+        userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc", editSelectedList, SELECTED_TAB);
 //        userTaskAssignAdapter.notifyDataSetChanged();
 //        listView.setAdapter(userTaskAssignAdapter);
 
@@ -651,6 +701,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(userTaskAssignAdapter);
 
+        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
+            for (int i = 0; i < afwcStList.size(); i++) {
+                if (editSelectedList.contains(afwcStList.get(i).getId()))
+                    afwcStList.get(i).setSelected(true);
+            }
+        }
         userTaskAssignAdapter.addAllData(ndcStList);
     }
 
@@ -924,8 +980,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         if (value.code() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             Toast.makeText(getActivity(), "Your task successfully submitted", Toast.LENGTH_SHORT).show();
-                        }
-                        else
+                        } else
                             Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
 
                     }
@@ -1027,6 +1082,123 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         AppSharedPreference.setUserCourse(userCourses);
     }
 
+
+    private void callTaskApi(String id) {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().getSinglePHDetails(AppSharedPreference.getApiKey(), id)
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<PHTaskViewResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<PHTaskViewResponse> value) {
+                        uiHelper.dismissLoadingDialog();
+                        PHTaskViewResponse phTaskViewResponse = value.body();
+//                        MenuApiResponse menuApiResponse = value.body();
+
+//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+
+                        if (phTaskViewResponse.getCode() == 200) {
+                            Log.v("PigeonholeFragment", value.message());
+
+                            PHTaskViewData phTaskViewData = phTaskViewResponse.getPhTaskViewData();
+                            //setPageData(phTaskViewData);
+                            populateData(phTaskViewData);
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
+
+    List<Course> editCourseList = new ArrayList<>();
+    List<String> editSelectedList = new ArrayList<>();
+    List<String> editCourseListSt = new ArrayList<>();
+    private static String SELECTED_TAB = "";
+
+    private void populateData(PHTaskViewData phTaskViewData) {
+        PHSingleTask phSingleTask = phTaskViewData.getPhSingleTask();
+        if (phSingleTask.getTitle() != null)
+            title.setText(phSingleTask.getTitle());
+        if (phSingleTask.getDescription() != null)
+            description.setText(phSingleTask.getDescription());
+
+        if (phSingleTask.getDueDate() != null) {
+            try {
+                String st = AppUtility.getDateString(phSingleTask.getDueDate(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER);
+                dueDate.setText(AppUtility.getDateString(phSingleTask.getDueDate(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+            } catch (Exception e) {
+
+            }
+        }
+        List<Attachment> attachmentEditList;
+        AttachmentModel attachmentModel = new AttachmentModel();
+        if (phSingleTask.getAttachments() != null) {
+            attachmentEditList = phSingleTask.getAttachments();
+            List<AttachmentModel> attachmentModelsEdit = new ArrayList<>();
+            for (int i = 0; i < attachmentEditList.size(); i++) {
+                attachmentModel.setFileName(attachmentEditList.get(i).getName());
+                attachmentModelsEdit.add(attachmentModel);
+            }
+
+            attachmentAdapterMain.setData(attachmentModelsEdit);
+            attachmentAdapterMain.notifyDataSetChanged();
+        }
+        String total = phSingleTask.getTotal();
+        int totalSt = 0;
+        if (phTaskViewData.getCourses() != null) {
+            editCourseList = phTaskViewData.getCourses();
+            for (int j = 0; j < editCourseList.size(); j++) {
+                totalSt = editCourseList.get(j).getStudents().size();
+                if (editCourseList.get(j).getStudents() != null) {
+                    for (int st_id = 0; st_id < editCourseList.get(j).getStudents().size(); st_id++)
+                        editSelectedList.add(editCourseList.get(j).getStudents().get(st_id).getId());
+                }
+                editCourseListSt.add(editCourseList.get(j).getId());
+            }
+            if (total != null) {
+                if (Integer.parseInt(total) == totalSt) {
+                    SELECTED_TAB = "common";
+                } else {
+                    SELECTED_TAB = "custom";
+                }
+            }
+
+        }
+
+
+        assignBtn.setText("Update");
+    }
 
 //    private void showFileDialog() {
 //        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();

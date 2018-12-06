@@ -70,6 +70,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
         String id = "";
         Bundle b = getArguments();
+        if(getArguments()!=null)
         {
             if(b.getString("id", "")!=null)
               id = b.getString("id", "");

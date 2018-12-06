@@ -52,7 +52,7 @@
         <item
             app:itemTextColor="#676767"
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/logout_icon"
             android:title="Log out" />
     </group>
     <group

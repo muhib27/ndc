@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
@@ -147,12 +148,15 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
-                        if (phTaskListResponse.getCode() == 200) {
+                        if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
                             Collections.reverse(phTaskList);
                             pigeonholeAdapter.addAllData(phTaskList);
                             Log.v("tt", phTaskList.toString());
+                        }
+                        else if(phTaskListResponse.getCode()==500){
+                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -198,7 +202,6 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);
-        ;
         transaction.commit();
     }
 

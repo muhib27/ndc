@@ -23,6 +23,7 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.fragment.ResearchTopicListFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
+import com.classtune.ndc.model.ResearcherModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
 import java.text.SimpleDateFormat;
@@ -47,8 +48,8 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<ResearcherModel> researcherModelList;
+    private List<ResearcherModel> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -72,25 +73,25 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public ResearchListAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        researcherModelList = new ArrayList<>();
         //this.mOrderProcessCallback = orderProcessCallback;
 
     }
 
     public ResearchListAdapter(Context context) {
         this.context = context;
-        pigeonholeDataModelList = new ArrayList<>();
+        researcherModelList = new ArrayList<>();
     }
 
-    public ResearchListAdapter(Context context, ArrayList<String> strList) {
+    public ResearchListAdapter(Context context, ArrayList<ResearcherModel> strList) {
         this.context = context;
         this.mCallback = mCallback;
-        this.strList = strList;
+        this.researcherModelList = strList;
 
     }
 
-    public List<PigeonholeDataModel> getMovies() {
-        return pigeonholeDataModelList;
+    public List<ResearcherModel> getMovies() {
+        return researcherModelList;
     }
 
 //    public void setMovies(List<PigeonholeDataModel> orderList) {
@@ -134,6 +135,9 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 final PigeonholeListItem itemHolder = (PigeonholeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                itemHolder.name.setText(researcherModelList.get(position).getName());
+                itemHolder.email.setText(researcherModelList.get(position).getEmail());
+
 //                itemHolder.orderTitle.setText(strList.get(position));
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
@@ -175,8 +179,8 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
-        //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
+       // return strList == null ? 0 : strList.size();
+        return researcherModelList == null ? 0 : researcherModelList.size();
     }
 
     @Override
@@ -200,7 +204,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //            return ADD;
 //        }
 //        else {
-        return (position == strList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        return (position == researcherModelList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
 //        }
     }
 
@@ -230,33 +234,33 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
-        pigeonholeDataModelList.add(r);
-        notifyItemInserted(pigeonholeDataModelList.size() - 1);
+    public void add(ResearcherModel r) {
+        researcherModelList.add(r);
+        notifyItemInserted(researcherModelList.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<ResearcherModel> moveResults) {
+        for (ResearcherModel result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
-        pigeonholeDataModelList.clear();
-        pigeonholeDataModelList.addAll(moveResults);
+    public void addAllNewData(List<ResearcherModel> moveResults) {
+        researcherModelList.clear();
+        researcherModelList.addAll(moveResults);
         notifyDataSetChanged();
     }
 
     public void clearList() {
-        pigeonholeDataModelList.clear();
+        researcherModelList.clear();
     }
 
 
-    public void remove(PigeonholeDataModel r) {
-        int position = pigeonholeDataModelList.indexOf(r);
+    public void remove(ResearcherModel r) {
+        int position = researcherModelList.indexOf(r);
         if (position > -1) {
-            pigeonholeDataModelList.remove(position);
+            researcherModelList.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -275,23 +279,23 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new ResearcherModel());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
-        int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        int position = researcherModelList.size() - 1;
+        ResearcherModel result = getItem(position);
 
         if (result != null) {
-            pigeonholeDataModelList.remove(position);
+            researcherModelList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
-        return pigeonholeDataModelList.get(position);
+    public ResearcherModel getItem(int position) {
+        return researcherModelList.get(position);
     }
 
     /**
@@ -302,7 +306,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      */
     public void showRetry(boolean show, @Nullable String errorMsg) {
         retryPageLoad = show;
-        notifyItemChanged(pigeonholeDataModelList.size() - 1);
+        notifyItemChanged(researcherModelList.size() - 1);
 
         if (errorMsg != null) this.errorMsg = errorMsg;
     }
@@ -313,9 +317,9 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
-        private TextView orderTitle;
-        private TextView accepted;
-        private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
+        private TextView name;
+        private TextView email;
+      //  private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
         private TextView menuOption;
@@ -327,8 +331,9 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public PigeonholeListItem(View itemView) {
             super(itemView);
 
-            orderTitle = (TextView) itemView.findViewById(R.id.title);
+            name = (TextView) itemView.findViewById(R.id.name);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            email = (TextView) itemView.findViewById(R.id.email);
 
 
 

@@ -62,7 +62,9 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private List<Student> pigeonholeDataModelList;
     private List<Student> phTasks = new ArrayList<>();
+    private List<String> editSelectedList = new ArrayList<>();
     private Context context;
+    private String SELECTED_TAB = "";
 
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
@@ -90,11 +92,19 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         current = s;
     }
 
-    public TaskAssignAdapter(Context context, List<Student> strList, String s) {
+    public TaskAssignAdapter(Context context, List<Student> strList) {
         this.context = context;
         this.mCallback = mCallback;
         pigeonholeDataModelList = new ArrayList<>();
 
+    }
+
+    public TaskAssignAdapter(FragmentActivity activity, String ndc, List<String> editSelectedList, String SELECTED_TAB) {
+        this.context = context;
+        this.mCallback = mCallback;
+        pigeonholeDataModelList = new ArrayList<>();
+        this.editSelectedList = editSelectedList;
+        this.SELECTED_TAB = SELECTED_TAB;
     }
 
 
@@ -147,7 +157,13 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
-                if(selectedList.contains(pigeonholeDataModelList.get(position).getId()))
+                if(SELECTED_TAB.isEmpty()) {
+                    if (selectedList.contains(pigeonholeDataModelList.get(position).getId()))
+                        itemHolder.selectCM.setChecked(true);
+                    else
+                        itemHolder.selectCM.setChecked(false);
+                }
+                else if(SELECTED_TAB.equals("custom") && pigeonholeDataModelList.get(position).isSelected())
                     itemHolder.selectCM.setChecked(true);
                 else
                     itemHolder.selectCM.setChecked(false);

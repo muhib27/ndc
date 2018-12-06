@@ -19,6 +19,7 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.CMListAdapter;
 import com.classtune.ndc.adapter.ResearchListAdapter;
+import com.classtune.ndc.model.ResearcherModel;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ResearchListFragment extends Fragment {
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<String> strList = new ArrayList<>();
+    ArrayList<ResearcherModel> strList = new ArrayList<>();
     ResearchListAdapter researchListAdapter;
 
 
@@ -70,19 +71,22 @@ public class ResearchListFragment extends Fragment {
     }
 
 
-    private ArrayList<String> getStrList() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
-        list.add("Lorem ipsum dolor sit amet");
+    private ArrayList<ResearcherModel> getStrList() {
+        ArrayList<ResearcherModel> list = new ArrayList<>();
+        ResearcherModel researcherModel = new ResearcherModel("Brig Gen Monirul Islam Akhand, ndc, psc","ndc1@ndc.gov.bd");
+        list.add(researcherModel);
+        researcherModel = new ResearcherModel("Col Salahuddin Khaled","ndc2@ndc.gov.bd");
+        list.add(researcherModel);
+        researcherModel = new ResearcherModel("Col Mohammad Shahriar Zaman, afwc, psc, G, Arty","ndc3@ndc.gov.bd");
+        list.add(researcherModel);
+        researcherModel = new ResearcherModel("Lt Col S M Merazul Islam, afwc, psc, Engr","ndc4@ndc.gov.bd");
+        list.add(researcherModel);
+        researcherModel = new ResearcherModel("Lt Col Syed Jamil Ahsan, afwc, psc, AC","ndc5@ndc.gov.bd");
+        list.add(researcherModel);
+        researcherModel = new ResearcherModel("LT Col Md Kamrul Islam, BGBM, psc, Arty","ndc6@ndc.gov.bd");
+        list.add(researcherModel);
+        researcherModel = new ResearcherModel("Lt Col A S M Badiul Alam, afwc, psc, Arty","ndc7@ndc.gov.bd");
+        list.add(researcherModel);
 
         return list;
     }

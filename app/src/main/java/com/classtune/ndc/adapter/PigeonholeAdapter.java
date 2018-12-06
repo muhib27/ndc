@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
+import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
@@ -65,6 +66,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<PHTask> pigeonholeDataModelList;
     private List<PHTask> phTasks = new ArrayList<>();
     private Context context;
+    PHTask editPHTask;
 
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
@@ -188,6 +190,39 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 String customerName = "";
                 int totalItem = 0;
 
+//                itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        PopupMenu popup = new PopupMenu(context, itemHolder.dotMenu);
+//
+//                        popup.inflate(R.menu.pigeonhole_cell_menu);
+//
+//                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                            @Override
+//                            public boolean onMenuItemClick(MenuItem item) {
+//                                switch (item.getItemId()) {
+//                                    case R.id.delete:
+//
+////                                        integerList.remove(holder.getAdapterPosition());
+////                                        notifyItemRemoved(holder.getAdapterPosition());
+//                                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+//                                        return true;
+//                                    case R.id.edit:
+//
+////                                        integerList.remove(holder.getAdapterPosition());
+////                                        notifyItemRemoved(holder.getAdapterPosition());
+//                                        Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+//                                        return true;
+//                                }
+//                                return false;
+//                            }
+//                        });
+//
+//                        popup.show();
+//                    }
+//                });
+
+
                 itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -234,7 +269,8 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     PopupMenu popupMenu;
 
-    private void showPopupMenu(View view, int position) {
+    private void showPopupMenu(View view, final int position) {
+
         // inflate menu
 //        PopupMenu popup = new PopupMenu(view.getContext(),view );
 //        MenuInflater inflater = popup.getMenuInflater();
@@ -246,6 +282,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         popupMenu = new PopupMenu(wrapper, view);
         popupMenu.inflate(R.menu.pigeonhole_cell_menu);
 
+
 // Force icons to show
         Object menuHelper;
         Class[] argTypes;
@@ -256,16 +293,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             argTypes = new Class[]{boolean.class};
             menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
         } catch (Exception e) {
-            // Possible exceptions are NoSuchMethodError and NoSuchFieldError
-            //
-            // In either case, an exception indicates something is wrong with the reflection code, or the
-            // structure of the PopupMenu class or its dependencies has changed.
-            //
-            // These exceptions should never happen since we're shipping the AppCompat library in our own apk,
-            // but in the case that they do, we simply can't force icons to display, so log the error and
-            // show the menu normally.
 
-            //Log.w(TAG, "error forcing menu icons to show", e);
             popupMenu.show();
             return;
         }
@@ -278,7 +306,8 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.edit:
-                        Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+                        initEditApi(pigeonholeDataModelList.get(position).getId(), position);
                         break;
                     case R.id.delete:
                         Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
@@ -289,40 +318,26 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         });
     }
 
-//    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-//
-//        private int position;
-//        public MyMenuItemClickListener(int positon) {
-//            this.position=positon;
-//        }
-//
-//        @Override
-//        public boolean onMenuItemClick(MenuItem menuItem) {
-//            switch (menuItem.getItemId()) {
-//
-////            case R.id.Not_interasted_catugury:
-////                String RemoveCategory=mDataSet.get(position).getCategory();
-////                // mDataSet.remove(position);
-////                //notifyItemRemoved(position);
-////                // notifyItemRangeChanged(position,mDataSet.size());
-////
-////                mySharedPreferences.saveStringPrefs(Constants.REMOVE_CTAGURY,RemoveCategory,MainActivity.context);
-////                Toast.makeText(MainActivity.context, "Add to favourite", Toast.LENGTH_SHORT).show();
-////                return true;
-//                case R.id.edit:
-////                mDataSet.remove(position);
-////                notifyItemRemoved(position);
-////                notifyItemRangeChanged(position,mDataSet.size());
-//                Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show();
-//                    return true;
-//                case R.id.delete:
-//                    Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
-////                mySharedPreferences.deletePrefs(Constants.REMOVE_CTAGURY,MainActivity.context);
-//                default:
-//            }
-//            return false;
-//        }
-//    }
+    private void initEditApi(String id, int pos) {
+        editPHTask = pigeonholeDataModelList.get(pos);
+        String i = editPHTask.getId();
+
+        gotoInstructorTaskAssignFragment(editPHTask);
+    }
+
+
+    private void gotoInstructorTaskAssignFragment(PHTask editPHTask) {
+        Bundle bundle=new Bundle();
+//        bundle.putSerializable("phTask",editPHTask);
+        bundle.putString("id", editPHTask.getId());
+
+        InsTructorTaskAssignFragment insTructorTaskAssignFragment = new InsTructorTaskAssignFragment();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        insTructorTaskAssignFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);
+        transaction.commit();
+    }
 
     private void gotoOrderDetailsFragment(Bundle bundle) {
 

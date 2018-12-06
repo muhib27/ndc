@@ -29,6 +29,7 @@ import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.fragment.ClassScheduleFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment;
+import com.classtune.ndc.fragment.HomeFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.ProfileFragment;
@@ -341,6 +342,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_logout) {
             callLogOutApi();
         }
+        else if (id == R.id.nav_reading_package) {
+            return false;
+        }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -408,11 +412,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void gotoDashboardFragment() {
         setUpBackStackCountToZero();
-        DashBoardFragment dashBoardFragment = new DashBoardFragment();
+        HomeFragment homeFragment = new HomeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, dashBoardFragment, "dashBoardFragment");
+        transaction.replace(R.id.main_acitivity_container, homeFragment, "homeFragment");
         transaction.commit();
+//        DashBoardFragment dashBoardFragment = new DashBoardFragment();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.main_acitivity_container, dashBoardFragment, "dashBoardFragment");
+//        transaction.commit();
     }
 
     private void gotoNoticeFragment() {

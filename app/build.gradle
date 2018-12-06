@@ -65,4 +65,3 @@ dependencies {
 //    implementation project(':filepicker')
 }
 apply plugin: 'com.google.gms.google-services'
-
