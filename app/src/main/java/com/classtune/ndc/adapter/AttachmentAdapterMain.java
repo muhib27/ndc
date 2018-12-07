@@ -48,6 +48,11 @@ public class AttachmentAdapterMain extends BaseAdapter {
     public void setData(List<AttachmentModel> list){
         this.studentList = list;
     }
+    public void AddData(List<AttachmentModel> list){
+        for(AttachmentModel attachmentModel:list)
+            studentList.add(attachmentModel);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getCount() {

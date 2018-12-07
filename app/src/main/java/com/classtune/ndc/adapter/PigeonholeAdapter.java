@@ -34,6 +34,7 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
+import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -311,6 +312,9 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         break;
                     case R.id.delete:
                         Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                        CommonApiCall commonApiCall = new CommonApiCall(context);
+
+                        commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
                         break;
                 }
                 return false;

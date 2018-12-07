@@ -125,6 +125,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     private ArrayList<String> listFiles;
     public static InsTructorTaskAssignFragment instance;
     ListView attachmentListMain;
+    public static String id = "";
 
     public InsTructorTaskAssignFragment() {
         // Required empty public constructor
@@ -184,7 +185,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         });
 
 
-        String id = "";
+
         Bundle b = getArguments();
         if (getArguments() != null) {
             if (b.getString("id", "") != null)
@@ -268,6 +269,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
                 break;
             case R.id.assignBtn:
+                if(assignBtn.getText().toString().equalsIgnoreCase("Update"))
+                    initTaskEditApi();
+                else
                 initTaskAssignApi();
                 break;
             case R.id.common:
@@ -474,7 +478,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //        text.setText(st);
         fileAttachDialog = new AlertDialog.Builder(getActivity()).create();
         fileAttachDialog.setView(fileAttachDialogView);
-        fileAttachDialogView.findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
+        fileAttachDialogView.findViewById(R.id.btnAttach).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //your business logic
@@ -483,6 +487,11 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //                attachmentListMain.setAdapter(attachmentAdapterMain);
                 attachmentAdapterMain.setData(attachmentModelList);
                 attachmentAdapterMain.notifyDataSetChanged();
+
+                if(!id.isEmpty() && attachmentModelsEdit!=null && attachmentModelsEdit.size()>0)
+                {
+                    attachmentAdapterMain.AddData(attachmentModelsEdit);
+                }
                 fileAttachDialog.dismiss();
             }
         });
@@ -567,10 +576,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 
         commonTypeLayout = assignToDialogView.findViewById(R.id.commonTypeLayout);
-        if (!SELECTED_TAB.isEmpty() && SELECTED_TAB.equalsIgnoreCase("common"))
-            enableCommonSelection();
-        else
+        if (!SELECTED_TAB.isEmpty() && SELECTED_TAB.equalsIgnoreCase("custom"))
             enableCustomSelection();
+        else
+            enableCommonSelection();
 
         instituteGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -1142,8 +1151,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     }
 
     List<Course> editCourseList = new ArrayList<>();
-    List<String> editSelectedList = new ArrayList<>();
-    List<String> editCourseListSt = new ArrayList<>();
+    ArrayList<String> editSelectedList = new ArrayList<>();
+    ArrayList<String> editCourseListSt = new ArrayList<>();
+    ArrayList<AttachmentModel> attachmentModelsEdit = new ArrayList<>();
     private static String SELECTED_TAB = "";
 
     private void populateData(PHTaskViewData phTaskViewData) {
@@ -1165,7 +1175,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         AttachmentModel attachmentModel = new AttachmentModel();
         if (phSingleTask.getAttachments() != null) {
             attachmentEditList = phSingleTask.getAttachments();
-            List<AttachmentModel> attachmentModelsEdit = new ArrayList<>();
+            attachmentModelsEdit = new ArrayList<>();
             for (int i = 0; i < attachmentEditList.size(); i++) {
                 attachmentModel.setFileName(attachmentEditList.get(i).getName());
                 attachmentModelsEdit.add(attachmentModel);
@@ -1316,4 +1326,202 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //
 //        instance = null;
 //    }
+
+
+    private void initTaskEditApi() {
+
+        pigeonholeTaskAdd = new PigeonholeTaskAdd();
+        if (!title.getText().toString().trim().isEmpty())
+            pigeonholeTaskAdd.setTitle(title.getText().toString());
+        if (!description.getText().toString().trim().isEmpty())
+            pigeonholeTaskAdd.setDescription(description.getText().toString());
+        if (!dueDate.getText().toString().trim().isEmpty())
+            pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
+
+        UserCourses userCourses = AppSharedPreference.getUserCourse();
+        if(allNdc==null || allAfwc ==null || allCapston==null) {
+
+           selectedList = editSelectedList;
+           courseList = editCourseListSt;
+        }
+        else {
+            if (allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()) {
+                selectedList = new ArrayList<>();
+                if (allNdc.isChecked() && ndcStList.size() > 0) {
+                    if (userCourses.isNdc())
+                        courseList.add("1");
+                    for (Student list : ndcStList) {
+                        selectedList.add(list.getId());
+                    }
+                }
+                if (allAfwc.isChecked() && afwcStList.size() > 0) {
+                    if (userCourses.isAfwc())
+                        courseList.add("2");
+                    for (Student list : afwcStList) {
+                        selectedList.add(list.getId());
+                    }
+                }
+                if (allCapston.isChecked() && capstonStList.size() > 0) {
+                    if (userCourses.isCapston())
+                        courseList.add("3");
+                    for (Student list : capstonStList) {
+                        selectedList.add(list.getId());
+                    }
+                }
+            } else {
+                if (ndcCount > 0) {
+                    if (userCourses.isNdc())
+                        courseList.add("1");
+                }
+                if (afwcCount > 0) {
+                    if (userCourses.isAfwc())
+                        courseList.add("2");
+                }
+                if (capstonCount > 0) {
+                    if (userCourses.isCapston())
+                        courseList.add("3");
+                }
+            }
+        }
+
+        String titleSt = title.getText().toString().trim();
+        String descriptionSt = description.getText().toString().trim();
+
+        if (titleSt.isEmpty() || selectedList.size() <= 0) {
+            Toast.makeText(getActivity(), "Title and Assign To should not be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+//        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
+
+        callTaskEditApi();
+
+    }
+    private void callTaskEditApi() {
+
+
+        int m =0;
+
+//        MultipartBody.Builder builder = new MultipartBody.Builder();
+//        builder.setType(MultipartBody.FORM);
+
+//        builder.addFormDataPart("user_name", "Robert");
+//        builder.addFormDataPart("email", "mobile.apps.pro.vn@gmail.com");
+
+        // Map is used to multipart the file using okhttp3.RequestBody
+        // Multiple Images
+//        for (int i = 0; i < attachmentModelList.size(); i++) {
+//            File file = new File(attachmentModelList.get(i).getFilePath());
+//            builder.addFormDataPart("file[]", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
+//        }
+//
+//
+//        MultipartBody attachments = builder.build();
+
+
+        List<String> filePaths = new ArrayList<>();
+
+
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+
+        builder.addFormDataPart("title", title.getText().toString().trim());
+        builder.addFormDataPart("description", description.getText().toString().trim());
+        builder.addFormDataPart("api_key", AppSharedPreference.getApiKey());
+        builder.addFormDataPart("due_date", selectedDate);
+
+        // Map is used to multipart the file using okhttp3.RequestBody
+        // Multiple Images
+        for (int j = 0; j < selectedList.size(); j++) {
+            builder.addFormDataPart("users[" + j + "]", selectedList.get(j));
+        }
+        for (int k = 0; k < courseList.size(); k++) {
+            builder.addFormDataPart("course[" + k + "]", courseList.get(k));
+        }
+        if(attachmentModelList!=null && attachmentModelList.size()>0) {
+            for (int i = 0; i < attachmentModelList.size(); i++) {
+                if (attachmentModelList.get(i).getFilePath() != null) {
+                    File file = new File(attachmentModelList.get(i).getFilePath());
+                    builder.addFormDataPart("attachments[" + i + "]", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
+                } else {
+                    builder.addFormDataPart("attachments_edit[" + m + "]", attachmentModelList.get(i).getFileName());
+                    m++;
+                }
+            }
+        }
+        else if(attachmentModelsEdit!=null && attachmentModelsEdit.size()>0 ) {
+            for (int p = 0; p < attachmentModelsEdit.size(); p++) {
+                builder.addFormDataPart("attachments_edit[" + p + "]", attachmentModelsEdit.get(p).getFileName());
+            }
+        }
+
+        MultipartBody requestBody = builder.build();
+
+        MultipartBody.Builder builder1 = new MultipartBody.Builder();
+        builder1.setType(MultipartBody.FORM);
+        builder1.addFormDataPart("id", id);
+        MultipartBody reQuestId = builder1.build();
+
+
+//        MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[attachmentModelList.size()];
+//
+//        List<MultipartBody.Part> parts = new ArrayList<>();
+//        for (int i=0; i < attachmentModelList.size(); i++){
+//            File file = new File(attachmentModelList.get(i).getFilePath());
+//            RequestBody attachmentBody = RequestBody.create(MediaType.parse("image/*"), file);
+//            surveyImagesParts[i] = MultipartBody.Part.createFormData("attachments", file.getName(), attachmentBody);
+//           // parts.add(MultipartBody.Part.createFormData("attachment"+i, file.getName(), attachmentBody));
+//
+//        }
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        uiHelper.showLoadingDialog("Submitting your task...");
+        String[] users = new String[selectedList.size()];
+        users = selectedList.toArray(users);
+
+        // RetrofitApiClient.getApiInterface().getTaskAssign(requestBody)
+        RetrofitApiClient.getApiInterface().getTaskEdit(requestBody)
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+
+
+                        if (value.code() == 200) {
+                            Log.v("PigeonholeFragment", value.message());
+                            Toast.makeText(getActivity(), "Your task successfully submitted", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
 }

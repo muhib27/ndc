@@ -6,6 +6,7 @@ import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.utils.URLHelper;
 import com.google.gson.JsonElement;
 
@@ -22,6 +23,8 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+
+
 
 //import io.reactivex.Observable;
 
@@ -58,6 +61,14 @@ public interface ApiInterface {
     @POST(URLHelper.GET_PIGEONHOLE_TASK_ADD)
       //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
     Observable<Response<JsonElement>> getTaskAssign(@Body MultipartBody file );
+
+    @POST(URLHelper.GET_PIGEONHOLE_TASK_EDIT + "/{ InsTructorTaskAssignFragment.id}")
+        //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+    Observable<Response<JsonElement>> getTaskEdit(@Body MultipartBody file);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PIGEONHOLE_TASK_DELETE)
+    Observable<Response<JsonElement>> pigeonholeDelete(@Field("id") String id, @Field("api_key") String api_key);
 
       //Observable<Response<JsonElement>> getTaskAssign(@Part("api_key") RequestBody api_key,@Part List<MultipartBody.Part> file, @Part("users[]") List<String> selectedList, @Part("course[]") List<String> courseList, @Part("title") RequestBody title, @Part("description") RequestBody description, @Part("due_date") RequestBody due_date);
 

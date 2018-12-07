@@ -99,12 +99,13 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
-    public TaskAssignAdapter(FragmentActivity activity, String ndc, List<String> editSelectedList, String SELECTED_TAB) {
-        this.context = context;
+    public TaskAssignAdapter(FragmentActivity activity, String current, List<String> editSelectedList, String SELECTED_TAB) {
+        this.context = activity;
         this.mCallback = mCallback;
         pigeonholeDataModelList = new ArrayList<>();
         this.editSelectedList = editSelectedList;
         this.SELECTED_TAB = SELECTED_TAB;
+        this.current = current;
     }
 
 
