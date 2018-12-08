@@ -87,4 +87,38 @@ public class CommonApiCall {
 
         return status;
     }
+
+
+//    public void commit(final RetrofitResponseListener retrofitResponseListener) {
+//
+//        requestHandler.insertFields(tableName, values).enqueue(new Callback<DatabaseModel>() {
+//            @Override
+//            public void onResponse(Call<DatabaseModel> call,
+//                                   Response<DatabaseModel> response) {
+//                if (response.isSuccessful())
+//                    retrofitResponseListener.onSuccess();
+//                else
+//                    retrofitResponseListener.onFailure();
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DatabaseModel> call, Throwable t) {
+//                retrofitResponseListener.onFailure();
+//            }
+//        });
+//    }
+//private void setListener() {
+//    commit(new RetrofitResponseListener() {
+//        @Override
+//        public void onSuccess() {
+//
+//        }
+//
+//        @Override
+//        public void onFailure() {
+//
+//        }
+//    });
+//}
 }
