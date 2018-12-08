@@ -9,6 +9,7 @@ public class UserPermission {
     public boolean tasksAdd;
     public boolean tasksEdit;
     public boolean tasksDelete;
+    public boolean userTasksSubmitTask;
     public boolean tasksView;
     public boolean tasksSubmittedList;
     public boolean tasksSingleView;
@@ -97,5 +98,13 @@ public class UserPermission {
 
     public void setUserDelete(boolean userDelete) {
         this.userDelete = userDelete;
+    }
+
+    public boolean isUserTasksSubmitTask() {
+        return userTasksSubmitTask;
+    }
+
+    public void setUserTasksSubmitTask(boolean userTasksSubmitTask) {
+        this.userTasksSubmitTask = userTasksSubmitTask;
     }
 }

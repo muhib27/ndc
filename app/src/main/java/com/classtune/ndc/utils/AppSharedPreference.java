@@ -133,6 +133,7 @@ public class AppSharedPreference {
         editor.putBoolean(AppConstant.USER_TASKS_EDIT, userPermission.isTasksEdit());
         editor.putBoolean(AppConstant.USER_TASKS_DELETE, userPermission.isTasksDelete());
         editor.putBoolean(AppConstant.USER_TASKS_VIEW, userPermission.isTasksView());
+        editor.putBoolean(AppConstant.USER_TASKS_SUBMIT_TASK, userPermission.isUserTasksSubmitTask());
         editor.putBoolean(AppConstant.USER_TASKS_SUBMITTED_LIST, userPermission.isTasksSubmittedList());
         editor.putBoolean(AppConstant.USER_TASKS_SINGLE_VIEW, userPermission.isTasksSingleView());
         editor.putBoolean(AppConstant.USER_ADD, userPermission.isUserAdd());
@@ -148,6 +149,7 @@ public class AppSharedPreference {
         userPermission.setTasksAdd(pref.getBoolean(AppConstant.USER_TASKS_ADD, false));
         userPermission.setTasksEdit(pref.getBoolean(AppConstant.USER_TASKS_EDIT, false));
         userPermission.setTasksDelete(pref.getBoolean(AppConstant.USER_TASKS_DELETE, false));
+        userPermission.setUserTasksSubmitTask(pref.getBoolean(AppConstant.USER_TASKS_SUBMIT_TASK, false));
         userPermission.setTasksView(pref.getBoolean(AppConstant.USER_TASKS_VIEW, false));
         userPermission.setTasksSubmittedList(pref.getBoolean(AppConstant.USER_TASKS_SUBMITTED_LIST, false));
         userPermission.setTasksSingleView(pref.getBoolean(AppConstant.USER_TASKS_SINGLE_VIEW, false));

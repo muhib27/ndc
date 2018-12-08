@@ -4,6 +4,8 @@
 package com.classtune.ndc.utils;
 
 public class URLHelper {
+	public URLHelper() {
+	}
 
 	public static final String BASE_URL = "http://teamworkbd.com/";
 	//public static final String BASE_URL = "http://192.168.2.38/";
@@ -22,6 +24,8 @@ public class URLHelper {
     public final static String GET_PIGEONHOLE_TASK_DELETE= "tasks/delete";
 	public final static String GET_PIGEONHOLE_GET_COURSES= "tasks/get_courses";
 	public final static String GET_PIGEONHOLE_DETAILS= "tasks/view";
+	public final static String GET_PIGEONHOLE_TASK_VIEW_SUBITTED_TASK= "tasks/view_submitted_task";
+	public final static String GET_PIGEONHOLE_TASK_SUBMIT_TASK= "tasks/submit_task/";
 	
 	public final static String URL_GCM_REGISTER = "freeuser/addgcm";
 

@@ -33,23 +33,44 @@ public class RetrofitApiClient {
     private RetrofitApiClient() {} // So that nobody can create an object with constructor
 
     public static synchronized Retrofit getClient() {
-        if (retrofit==null) {
-//        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-//                .readTimeout(180, TimeUnit.SECONDS)
-//                .connectTimeout(180, TimeUnit.SECONDS)
-//                .build();
+       // if (retrofit==null) {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(300, TimeUnit.SECONDS)
+                .connectTimeout(300, TimeUnit.SECONDS)
+                .build();
             retrofit = new Retrofit.Builder()
                     .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                 //   .client(okHttpClient)
+                    .client(okHttpClient)
                     .build();
-        }
+       // }
+        return retrofit;
+    }
+
+
+    public static synchronized Retrofit getClientWithId(String url) {
+        // if (retrofit==null) {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(300, TimeUnit.SECONDS)
+                .connectTimeout(300, TimeUnit.SECONDS)
+                .build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL + url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+        // }
         return retrofit;
     }
 
     public static ApiInterface getApiInterface(){
         return  RetrofitApiClient.getClient().create(ApiInterface.class);
+    }
+
+    public static ApiInterface getApiInterfaceWithId(String id){
+        return  RetrofitApiClient.getClientWithId(id).create(ApiInterface.class);
     }
 }
 

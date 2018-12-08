@@ -48,6 +48,7 @@ import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.utils.UserCourses;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
@@ -1484,7 +1485,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         users = selectedList.toArray(users);
 
         // RetrofitApiClient.getApiInterface().getTaskAssign(requestBody)
-        RetrofitApiClient.getApiInterface().getTaskEdit(requestBody)
+        RetrofitApiClient.getApiInterfaceWithId(URLHelper.GET_PIGEONHOLE_TASK_EDIT + "/" + id + "/").getTaskEdit(requestBody)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

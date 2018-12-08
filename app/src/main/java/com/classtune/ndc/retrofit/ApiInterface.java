@@ -4,8 +4,10 @@ package com.classtune.ndc.retrofit;
 import com.classtune.ndc.apiresponse.LoginApiModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.fragment.CMTaskSubmitFragment;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.utils.URLHelper;
 import com.google.gson.JsonElement;
@@ -24,6 +26,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
+import static com.classtune.ndc.fragment.CMTaskSubmitFragment.phTaskSubmitId;
 
 
 //import io.reactivex.Observable;
@@ -34,6 +37,7 @@ import retrofit2.http.Path;
  */
 
 public interface ApiInterface {
+    String phTaskSubmitId = CMTaskSubmitFragment.phTaskSubmitId;
 
     @FormUrlEncoded
     @POST(URLHelper.URL_LOGIN)
@@ -62,7 +66,7 @@ public interface ApiInterface {
       //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
     Observable<Response<JsonElement>> getTaskAssign(@Body MultipartBody file );
 
-    @POST(URLHelper.GET_PIGEONHOLE_TASK_EDIT + "/{ InsTructorTaskAssignFragment.id}")
+    @POST(".")
         //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
     Observable<Response<JsonElement>> getTaskEdit(@Body MultipartBody file);
 
@@ -79,6 +83,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(URLHelper.GET_PIGEONHOLE_DETAILS + "/{id}")
     Observable<Response<PHTaskViewResponse>> getSinglePHDetails(@Field("api_key") String api_key, @Path("id") String id);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PIGEONHOLE_TASK_VIEW_SUBITTED_TASK + "/{id}")
+    Observable<Response<PHTaskSubmitResponse>> getPHTaskViewSubmitTask(@Field("api_key") String api_key, @Path("id") String id);
+
+    @POST(".")
+        //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+    Observable<Response<JsonElement>> getPHTaskSubmitTask(@Body MultipartBody file);
 
 
 

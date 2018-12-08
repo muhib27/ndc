@@ -327,6 +327,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 userPermission.setTasksEdit(true);
             else if(subMenu.get(i).equalsIgnoreCase("tasks-delete"))
                 userPermission.setTasksDelete(true);
+            else if(subMenu.get(i).equalsIgnoreCase("tasks-submit_task"))
+                userPermission.setUserTasksSubmitTask(true);
             else if(subMenu.get(i).equalsIgnoreCase("tasks-view"))
                 userPermission.setTasksView(true);
             else if(subMenu.get(i).equalsIgnoreCase("tasks-submitted_list"))

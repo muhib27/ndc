@@ -25,6 +25,7 @@ public class AppConstant {
     public static final String USER_TASKS_EDIT= "tasks_edit";
     public static final String USER_TASKS_DELETE= "tasks_delete";
     public static final String USER_TASKS_VIEW= "tasks_view";
+    public static final String USER_TASKS_SUBMIT_TASK= "tasks_submit_task";
     public static final String USER_TASKS_SUBMITTED_LIST= "tasks_submitted_list";
     public static final String USER_TASKS_SINGLE_VIEW= "tasks_single_view";
     public static final String USER_ADD= "user_add";

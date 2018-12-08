@@ -30,10 +30,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
+import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.google.gson.Gson;
@@ -222,7 +224,11 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //                        popup.show();
 //                    }
 //                });
-
+                UserPermission userPermission = AppSharedPreference.getUserPermission();
+                if(userPermission.isTasksEdit() && userPermission.isTasksDelete())
+                    itemHolder.dotMenu.setVisibility(View.VISIBLE);
+                else
+                    itemHolder.dotMenu.setVisibility(View.INVISIBLE);
 
                 itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -313,8 +319,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     case R.id.delete:
                         Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
                         CommonApiCall commonApiCall = new CommonApiCall(context);
-
-                        commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
+                        boolean b = commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
                         break;
                 }
                 return false;

@@ -1,32 +1,46 @@
 package com.classtune.ndc.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.Attachment;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.SubmittedTaskData;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +57,13 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
     LinearLayout submittedLayout, pendingLayout;
     UIHelper uiHelper;
     TextView title, assignDate, dueDate, description, cmNumber, submitNumber, pendingNumber;
-    LinearLayout attachment_container;
+    LinearLayout attachment_container, statusViewLayout;
     List<ImageView> list = new ArrayList<ImageView>();
     ImageView attachmentImage;
+    ImageButton dotMenu;
+    Button submitBtn;
+    UserPermission userPermission;
+    String id = "";
 
 
     public InstructorDetailsFragment() {
@@ -67,21 +85,31 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        userPermission = AppSharedPreference.getUserPermission();
 
-        String id = "";
+
         Bundle b = getArguments();
-        if(getArguments()!=null)
-        {
-            if(b.getString("id", "")!=null)
-              id = b.getString("id", "");
+        if (getArguments() != null) {
+            if (b.getString("id", "") != null)
+                id = b.getString("id", "");
         }
         uiHelper = new UIHelper(getActivity());
         initView(view);
-        if(id!=null && !id.isEmpty())
-        callTaskListApi(id);
+        if (id != null && !id.isEmpty())
+            callTaskListApi(id);
     }
 
     private void initView(View view) {
+        dotMenu = view.findViewById(R.id.dot_menu);
+        dotMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(dotMenu);
+            }
+        });
+        submitBtn = view.findViewById(R.id.submit);
+        submitBtn.setOnClickListener(this);
+
         title = view.findViewById(R.id.titleText);
         assignDate = view.findViewById(R.id.assignDate);
         dueDate = view.findViewById(R.id.dueDate);
@@ -93,23 +121,100 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
 
         submittedLayout = view.findViewById(R.id.submittedLayout);
+        statusViewLayout = view.findViewById(R.id.statusViewLayout);
         submittedLayout.setOnClickListener(this);
         pendingLayout = view.findViewById(R.id.pendingLayout);
         pendingLayout.setOnClickListener(this);
 
         attachment_container = view.findViewById(R.id.attachment_container);
+
+        if (userPermission.isTasksEdit() && userPermission.isTasksDelete())
+            dotMenu.setVisibility(View.VISIBLE);
+        else
+            dotMenu.setVisibility(View.INVISIBLE);
+
+
+        if (userPermission.isUserTasksSubmitTask()) {
+            submitBtn.setVisibility(View.VISIBLE);
+            statusViewLayout.setVisibility(View.GONE);
+        } else {
+            submitBtn.setVisibility(View.GONE);
+            statusViewLayout.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.submittedLayout:
-                gotoCMListFragment("submitted");
-                break;
-            case R.id.pendingLayout:
-                gotoCMListFragment("pending");
+//            case R.id.submittedLayout:
+//                gotoCMListFragment("submitted");
+//                break;
+//            case R.id.pendingLayout:
+//                gotoCMListFragment("pending");
+//                break;
+            case R.id.submit:
+               callForSubmitStatus(id);
                 break;
         }
+    }
+
+    private void callForSubmitStatus(final String id) {
+
+            if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+                //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            uiHelper.showLoadingDialog("Please wait...");
+
+
+            RetrofitApiClient.getApiInterface().getPHTaskViewSubmitTask(AppSharedPreference.getApiKey(), id)
+
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Response<PHTaskSubmitResponse>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(Response<PHTaskSubmitResponse> value) {
+                            uiHelper.dismissLoadingDialog();
+                            PHTaskSubmitResponse phTaskSubmitResponse = value.body();
+
+                            if (phTaskSubmitResponse!=null && phTaskSubmitResponse.getCode() == 200) {
+                                Log.v("PigeonholeFragment", value.message());
+                                if(phTaskSubmitResponse.getSubmittedTaskData().getSubmittedTask()==null)
+                                {
+                                    gotoCMTaskSubmitFragment(id);
+                                }
+                                else {
+                                    gotoCMSubmitTaskDetailsFragment(phTaskSubmitResponse.getSubmittedTaskData());
+                                }
+
+                            }
+
+                        }
+
+
+                        @Override
+                        public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            uiHelper.dismissLoadingDialog();
+                        }
+
+                        @Override
+                        public void onComplete() {
+//                        progressDialog.dismiss();
+                            uiHelper.dismissLoadingDialog();
+                        }
+                    });
+
     }
 
     private void gotoCMListFragment(String cmType) {
@@ -120,7 +225,26 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         cmListFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, cmListFragment, "cmListFragment").addToBackStack(null);
-        ;
+        transaction.commit();
+    }
+    private void gotoCMTaskSubmitFragment(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+        CMTaskSubmitFragment cmTaskSubmitFragment = new CMTaskSubmitFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        cmTaskSubmitFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, cmTaskSubmitFragment, "cmTaskSubmitFragment").addToBackStack(null);
+        transaction.commit();
+    }
+    private void gotoCMSubmitTaskDetailsFragment(SubmittedTaskData submittedTaskData) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("submittedTaskData", submittedTaskData);
+        CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = new CMSubmitTaskDetailsFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        cmSubmitTaskDetailsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, cmSubmitTaskDetailsFragment, "cmSubmitTaskDetailsFragment").addToBackStack(null);
         transaction.commit();
     }
 
@@ -130,7 +254,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
-//        uiHelper.showLoadingDialog("Authenticating...");
+        uiHelper.showLoadingDialog("Please wait...");
 
 
         RetrofitApiClient.getApiInterface().getSinglePHDetails(AppSharedPreference.getApiKey(), id)
@@ -203,7 +327,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
         List<Attachment> attachmentList = phTaskViewData.getPhSingleTask().getAttachments();
-        if(attachmentList!=null && attachmentList.size()>0) {
+        if (attachmentList != null && attachmentList.size() > 0) {
 
             for (int i = 0; i < phTaskViewData.getPhSingleTask().getAttachments().size(); i++) {
                 // Add the text layout to the parent layout
@@ -236,4 +360,68 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
     }
 
 
+
+    PopupMenu popupMenu;
+
+    private void showPopupMenu(View view) {
+
+        Context wrapper = new ContextThemeWrapper(getActivity(), R.style.popupMenuStyle);
+        popupMenu = new PopupMenu(wrapper, view);
+        popupMenu.inflate(R.menu.pigeonhole_cell_menu);
+
+
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[]{boolean.class};
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+
+            popupMenu.show();
+            return;
+        }
+
+
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.edit:
+//                         Toast.makeText(getActivity(), "edit", Toast.LENGTH_SHORT).show();
+                        gotoInstructorTaskAssignFragment(id);
+                        break;
+                    case R.id.delete:
+//                        Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
+                        CommonApiCall commonApiCall = new CommonApiCall(getActivity());
+                        boolean b = commonApiCall.callPigeonholeDeleteApi(id);
+                        if(b){
+                            int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            int count1 = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+                            Log.v("tag", count1+"");
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+
+    private void gotoInstructorTaskAssignFragment(String id) {
+        Bundle bundle=new Bundle();
+        bundle.putString("id", id);
+
+        InsTructorTaskAssignFragment insTructorTaskAssignFragment = new InsTructorTaskAssignFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        insTructorTaskAssignFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, insTructorTaskAssignFragment, "insTructorTaskAssignFragment").addToBackStack(null);
+        transaction.commit();
+    }
 }

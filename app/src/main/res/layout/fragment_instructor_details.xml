@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/list_background"
-    android:padding="@dimen/size_10dp"
     tools:context="com.classtune.ndc.fragment.InstructorDetailsFragment">
 
     <android.support.v7.widget.CardView
@@ -188,6 +187,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/statusViewLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -322,7 +322,15 @@
                     </android.support.v7.widget.CardView>
 
                 </LinearLayout>
-
+                <Button
+                    android:textAllCaps="false"
+                    android:id="@+id/submit"
+                    android:layout_gravity="center"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_shape_background_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_40dp" />
 
             </LinearLayout>
 
