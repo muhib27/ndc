@@ -313,7 +313,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
             description.setText(phTaskViewData.getPhSingleTask().getDescription());
         if (!phTaskViewData.getPhSingleTask().getCreatedAt().isEmpty())
             assignDate.setText(uiHelper.dateTimeParse(phTaskViewData.getPhSingleTask().getCreatedAt()));
-        if (!phTaskViewData.getPhSingleTask().getDueDate().isEmpty())
+        if (phTaskViewData.getPhSingleTask().getDueDate()!=null && !phTaskViewData.getPhSingleTask().getDueDate().isEmpty())
             dueDate.setText(uiHelper.dateTimeParse(phTaskViewData.getPhSingleTask().getDueDate()));
 
         if (phTaskViewData.getPhSingleTask().getTotal() != null)

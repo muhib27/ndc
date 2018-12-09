@@ -26,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.fragment.CMBoxFragment;
 import com.classtune.ndc.fragment.ClassScheduleFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment;
@@ -325,7 +326,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             gotoPigeonholeFragment();
 
-        } else if (id == R.id.nav_notice) {
+        }
+        else if (id == R.id.nav_cm_box) {
+
+            gotoCMBoxFragment();
+
+        }else if (id == R.id.nav_notice) {
             gotoNoticeFragment();
 
         } else if (id == R.id.nav_manage) {
@@ -451,6 +457,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
         ;
+        transaction.commit();
+    }
+    private void gotoCMBoxFragment() {
+        setUpBackStackCountToZero();
+        CMBoxFragment cmBoxFragment = new CMBoxFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, cmBoxFragment, "cmBoxFragment").addToBackStack(null);
         transaction.commit();
     }
 

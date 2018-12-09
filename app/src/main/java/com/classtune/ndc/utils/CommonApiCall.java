@@ -105,7 +105,7 @@ public class CommonApiCall {
 //            @Override
 //            public void onFailure(Call<DatabaseModel> call, Throwable t) {
 //                retrofitResponseListener.onFailure();
-//            }
+//            } 
 //        });
 //    }
 //private void setListener() {

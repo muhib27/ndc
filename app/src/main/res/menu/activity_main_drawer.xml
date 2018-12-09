@@ -21,6 +21,11 @@
             android:title="Pigeonhole" />
         <item
             app:itemTextColor="#676767"
+            android:id="@+id/nav_cm_box"
+            android:icon="@drawable/pigenhole_icon"
+            android:title="CM Box" />
+        <item
+            app:itemTextColor="#676767"
             android:id="@+id/nav_notice"
             android:icon="@drawable/notice_nav"
             android:title="Notice" />
