@@ -3,6 +3,7 @@ package com.classtune.ndc.retrofit;
 
 import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.LoginApiModel;
+import com.classtune.ndc.apiresponse.course_calendar_api.RoutineResponseModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
@@ -102,7 +103,13 @@ public interface ApiInterface {
     Observable<Response<CMBoxSubmittedTaskResponse>> getCMBoxDetails(@Field("api_key") String api_key, @Path("id") String id);
 
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PROGRAM_WHITE_ROUTINE_LIST)
+    Observable<Response<JsonElement>> getWhiteRoutine(@Field("api_key") String api_key);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PROGRAM_YELLOW_ROUTINE_LIST)
+    Observable<Response<RoutineResponseModel>> getYellowRoutine(@Field("api_key") String api_key);
 
 
 

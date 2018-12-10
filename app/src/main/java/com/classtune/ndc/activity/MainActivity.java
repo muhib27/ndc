@@ -28,6 +28,7 @@ import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.fragment.CMBoxFragment;
 import com.classtune.ndc.fragment.ClassScheduleFragment;
+import com.classtune.ndc.fragment.CourseCalendarParentFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment;
 import com.classtune.ndc.fragment.HomeFragment;
@@ -334,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else if (id == R.id.nav_notice) {
             gotoNoticeFragment();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_course_calendar) {
             gotoClassScheduleFragment();
 
         } else if (id == R.id.nav_events) {
@@ -442,11 +443,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void gotoClassScheduleFragment() {
         setUpBackStackCountToZero();
-        ClassScheduleFragment classScheduleFragment = new ClassScheduleFragment();
+        CourseCalendarParentFragment courseCalendarParentFragment = new CourseCalendarParentFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, classScheduleFragment, "classScheduleFragment").addToBackStack(null);
-        ;
+        transaction.replace(R.id.main_acitivity_container, courseCalendarParentFragment, "courseCalendarParentFragment").addToBackStack(null);
         transaction.commit();
     }
 

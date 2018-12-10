@@ -31,9 +31,9 @@
             android:title="Notice" />
         <item
             app:itemTextColor="#676767"
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_course_calendar"
             android:icon="@drawable/class_schedule_nav"
-            android:title="@string/class_schedule_text" />
+            android:title="@string/course_calendar_text" />
         <item
             app:itemTextColor="#676767"
             android:id="@+id/nav_events"

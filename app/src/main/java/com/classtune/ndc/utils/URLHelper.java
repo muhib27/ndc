@@ -30,6 +30,10 @@ public class URLHelper {
 	//cm box
     public final static String GET_CM_BOX_SUBMITTED_LIST = "cmbox/submitted_list";
     public final static String GET_CM_BOX_DETAILS= "tasks/single_view";
+
+    //Course calendar
+    public final static String GET_PROGRAM_WHITE_ROUTINE_LIST = "program_white/routine_list";
+    public final static String GET_PROGRAM_YELLOW_ROUTINE_LIST = "program_yellow/routine_list";
 	
 	public final static String URL_GCM_REGISTER = "freeuser/addgcm";
 
