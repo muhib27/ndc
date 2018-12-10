@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
+import com.classtune.ndc.adapter.RoutineAdapter;
 import com.classtune.ndc.apiresponse.course_calendar_api.Routine;
 import com.classtune.ndc.apiresponse.course_calendar_api.RoutineResponseModel;
 import com.classtune.ndc.model.ClassScheduleModel;
@@ -51,7 +53,7 @@ public class RoutineYellowFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<ClassScheduleModel> strList = new ArrayList<>();
-    DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
+    RoutineAdapter routineAdapter;
     UIHelper uiHelper;
 
     @Override
@@ -74,14 +76,14 @@ public class RoutineYellowFragment extends Fragment {
         rv = (RecyclerView) view.findViewById(R.id.class_schedule_rv);
 
         strList = getStrList();
-        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext());
+        routineAdapter = new RoutineAdapter(getContext());
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(dashboardClassScheduleAdapter);
-        dashboardClassScheduleAdapter.setData(getStrList());
-        dashboardClassScheduleAdapter.notifyDataSetChanged();
+        rv.setAdapter(routineAdapter);
+//        routineAdapter.setData(getStrList());
+        routineAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<ClassScheduleModel> getStrList() {
@@ -126,16 +128,16 @@ public class RoutineYellowFragment extends Fragment {
                         RoutineResponseModel routineResponseModel = value.body();
 
 
-//                        if (routineResponseModel != null && routineResponseModel.getCode() == 200) {
-//                            Log.v("routineResponseModel", value.message());
-//                            List<Routine> routine = routineResponseModel.getRoutineData().getRoutine();
-//                            Collections.reverse(cmBoxSubmittedTasks);
-//                            cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
-//                            Log.v("tt", cmBoxSubmittedTasks.toString());
-//                        }
-//                        else if(cmBoxSubmittedTaskResponse.getCode()==500){
-//                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
-//                        }
+                        if (routineResponseModel != null && routineResponseModel.getCode() == 200) {
+                            Log.v("routineResponseModel", value.message());
+                            List<Routine> routine = routineResponseModel.getRoutineData().getRoutine();
+                            Collections.reverse(routine);
+                            routineAdapter.addAllData(routine);
+                            //Log.v("tt", cmBoxSubmittedTasks.toString());
+                        }
+                        else if(routineResponseModel.getCode()==500){
+                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
