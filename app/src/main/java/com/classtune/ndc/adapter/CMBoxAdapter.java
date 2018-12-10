@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxData;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.fragment.CMBoxDetailsFragment;
@@ -56,8 +58,8 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PHTask> pigeonholeDataModelList;
-    private List<PHTask> phTasks = new ArrayList<>();
+    private List<CMBoxSubmittedTask> pigeonholeDataModelList;
+    private List<CMBoxSubmittedTask> phTasks = new ArrayList<>();
     private Context context;
     PHTask editPHTask;
 
@@ -93,7 +95,7 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         pigeonholeDataModelList = new ArrayList<>();
     }
 
-    public CMBoxAdapter(Context context, ArrayList<PHTask> strList) {
+    public CMBoxAdapter(Context context, ArrayList<CMBoxSubmittedTask> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.phTasks = strList;
@@ -101,7 +103,7 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    public List<PHTask> getMovies() {
+    public List<CMBoxSubmittedTask> getMovies() {
         return pigeonholeDataModelList;
     }
 
@@ -167,16 +169,17 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getTitle());
-                itemHolder.description.setText(pigeonholeDataModelList.get(position).getDescription());
-                itemHolder.assign_date.setText(Html.fromHtml("Assign Date: " + "<font color = #3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getCreatedAt()) + "<strong></font>"));
+                itemHolder.submittedBy.setText(pigeonholeDataModelList.get(position).getUserName());
+                itemHolder.assignedBy.setText(pigeonholeDataModelList.get(position).getAssignedBy());
+                itemHolder.assign_date.setText(Html.fromHtml("Assign Date: " + "<font color = #3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getSubmitDate()) + "<strong></font>"));
                 if(pigeonholeDataModelList.get(position).getDueDate()!=null && !pigeonholeDataModelList.get(position).getDueDate().isEmpty())
                 itemHolder.due_date.setText(Html.fromHtml("Due Date: " + "<font color=#3F86A0><strong>" + dateTimeParse(pigeonholeDataModelList.get(position).getDueDate()) + "<strong></font>"));
                 else
                     itemHolder.due_date.setText("");
-                if(pigeonholeDataModelList.get(position).getAttachmentId()!=null)
-                    itemHolder.attachment.setVisibility(View.VISIBLE);
-                else
-                    itemHolder.attachment.setVisibility(View.INVISIBLE);
+//                if(pigeonholeDataModelList.get(position).getAttachmentId()!=null)
+//                    itemHolder.attachment.setVisibility(View.VISIBLE);
+//                else
+//                    itemHolder.attachment.setVisibility(View.INVISIBLE);
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -235,7 +238,7 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //                        String str = new Gson().toJson(orderList.get(position));
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoInstructorDetailsFragment(pigeonholeDataModelList.get(position).getId());
+                        gotoCMBoxDetailsFragment(pigeonholeDataModelList.get(position).getId());
 
                     }
                 });
@@ -264,65 +267,6 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 //    myTextView.setText(Html.fromHtml(stringB + "<font color=red>" + stringA + "</font>);
 
-    PopupMenu popupMenu;
-
-    private void showPopupMenu(View view, final int position) {
-
-        // inflate menu
-//        PopupMenu popup = new PopupMenu(view.getContext(),view );
-//        MenuInflater inflater = popup.getMenuInflater();
-//        inflater.inflate(R.menu.pigeonhole_cell_menu, popup.getMenu());
-//        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
-//        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, (MenuBuilder)popup.getMenu(), view);
-//        popup.show();
-        Context wrapper = new ContextThemeWrapper(context, R.style.popupMenuStyle);
-        popupMenu = new PopupMenu(wrapper, view);
-        popupMenu.inflate(R.menu.pigeonhole_cell_menu);
-
-
-// Force icons to show
-        Object menuHelper;
-        Class[] argTypes;
-        try {
-            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-            fMenuHelper.setAccessible(true);
-            menuHelper = fMenuHelper.get(popupMenu);
-            argTypes = new Class[]{boolean.class};
-            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
-        } catch (Exception e) {
-
-            popupMenu.show();
-            return;
-        }
-
-
-        popupMenu.show();
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.edit:
-                       // Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
-                        initEditApi(pigeonholeDataModelList.get(position).getId(), position);
-                        break;
-                    case R.id.delete:
-                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                        CommonApiCall commonApiCall = new CommonApiCall(context);
-                        boolean b = commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
-                        break;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void initEditApi(String id, int pos) {
-        editPHTask = pigeonholeDataModelList.get(pos);
-        String i = editPHTask.getId();
-
-        gotoInstructorTaskAssignFragment(editPHTask);
-    }
 
 
     private void gotoInstructorTaskAssignFragment(PHTask editPHTask) {
@@ -405,19 +349,19 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
    _________________________________________________________________________________________________
     */
 
-    public void add(PHTask r) {
+    public void add(CMBoxSubmittedTask r) {
         pigeonholeDataModelList.add(r);
         notifyItemInserted(pigeonholeDataModelList.size() - 1);
     }
 
-    public void addAllData(List<PHTask> pigeonholeDataModels) {
-        for (PHTask result : pigeonholeDataModels) {
+    public void addAllData(List<CMBoxSubmittedTask> pigeonholeDataModels) {
+        for (CMBoxSubmittedTask result : pigeonholeDataModels) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PHTask> moveResults) {
+    public void addAllNewData(List<CMBoxSubmittedTask> moveResults) {
         pigeonholeDataModelList.clear();
         pigeonholeDataModelList.addAll(moveResults);
         notifyDataSetChanged();
@@ -428,7 +372,7 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    public void remove(PHTask r) {
+    public void remove(CMBoxSubmittedTask r) {
         int position = pigeonholeDataModelList.indexOf(r);
         if (position > -1) {
             pigeonholeDataModelList.remove(position);
@@ -450,14 +394,14 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PHTask());
+        add(new CMBoxSubmittedTask());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = pigeonholeDataModelList.size() - 1;
-        PHTask result = getItem(position);
+        CMBoxSubmittedTask result = getItem(position);
 
         if (result != null) {
             pigeonholeDataModelList.remove(position);
@@ -465,7 +409,7 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public PHTask getItem(int position) {
+    public CMBoxSubmittedTask getItem(int position) {
         return pigeonholeDataModelList.get(position);
     }
 
@@ -485,7 +429,8 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView title;
-        private TextView description;
+        private TextView submittedBy;
+        private TextView assignedBy;
         private ImageView attachment;
 
         private TextView menuOption;
@@ -498,10 +443,10 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
 
             title = (TextView) itemView.findViewById(R.id.title);
-            description = (TextView) itemView.findViewById(R.id.description);
+            submittedBy = (TextView) itemView.findViewById(R.id.submitteBy);
             assign_date = (TextView) itemView.findViewById(R.id.assign_date);
             due_date = (TextView) itemView.findViewById(R.id.due_date);
-            attachment = itemView.findViewById(R.id.attachment);
+            assignedBy = itemView.findViewById(R.id.assignedBy);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
 //            dotMenu = itemView.findViewById(R.id.dot_menu);
 
@@ -602,7 +547,7 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    private void gotoInstructorDetailsFragment(String id) {
+    private void gotoCMBoxDetailsFragment(String id) {
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
 

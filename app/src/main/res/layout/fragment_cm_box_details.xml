@@ -56,82 +56,111 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/assignDateLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/size_10dp">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Submitted By "
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
+
+                    <TextView
                         android:layout_weight="1.5"
-                        android:text="@string/assign_date"
-                        android:textSize="@dimen/text_size_17_sp" />
-
-                    <TextView
-                        android:id="@+id/assignDate"
-                        android:layout_width="@dimen/margin_0dp"
+                        android:id="@+id/submitteBy"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2.5"
-                        android:text=": 19/11/2018"
-                        android:textColor="@color/dnc_color"
-                        android:textSize="@dimen/text_size_17_sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Fahim vi"
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
                 </LinearLayout>
-
                 <LinearLayout
-                    android:id="@+id/dueDateLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/size_10dp">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Assigned By "
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
+
+                    <TextView
                         android:layout_weight="1.5"
-                        android:text="@string/due_date"
-                        android:textSize="@dimen/text_size_17_sp" />
+                        android:id="@+id/assignedBy"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Fahim vi"
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/dueDate"
-                        android:layout_width="@dimen/margin_0dp"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2.5"
-                        android:text=": 19/11/2018"
-                        android:textColor="@color/dnc_color"
-                        android:textSize="@dimen/text_size_17_sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Sumitted Date "
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
+
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:id="@+id/submittedDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Fahim vi"
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Due Date "
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
+
+                    <TextView
+                        android:layout_weight="1.5"
+                        android:id="@+id/dueDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_2dp"
+                        android:lineSpacingExtra="@dimen/size_5dp"
+                        android:text="Fahim vi"
+                        android:textColor="@color/deep_ash"
+                        android:textSize="@dimen/text_size_16_sp" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginTop="@dimen/size_10dp"
-                    android:text="@string/description"
-                    android:textSize="@dimen/text_size_17_sp" />
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/size_10dp"
-                    app:cardCornerRadius="@dimen/size_5dp"
-                    card_view:cardBackgroundColor="@android:color/white"
-                    card_view:cardElevation="3dp"
-                    card_view:cardUseCompatPadding="true">
-
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:background="@color/list_background"
-                        android:padding="@dimen/size_10dp"
-                        android:text="@string/test_description"
-                        android:textSize="@dimen/text_size_15_sp" />
-                </android.support.v7.widget.CardView>
 
                 <TextView
                     android:layout_width="wrap_content"

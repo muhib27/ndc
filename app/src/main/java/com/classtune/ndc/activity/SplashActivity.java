@@ -141,7 +141,7 @@ public class SplashActivity extends AppCompatActivity {
 //        params.put("password", password);
 
 
-        RetrofitApiClient.getApiInterface().addFcm(fcm_id)
+        RetrofitApiClient.getApiInterfaceWithoutTime().addFcm(fcm_id)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

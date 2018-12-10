@@ -1,6 +1,7 @@
 package com.classtune.ndc.retrofit;
 
 
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.LoginApiModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
@@ -92,6 +93,13 @@ public interface ApiInterface {
         //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
     Observable<Response<JsonElement>> getPHTaskSubmitTask(@Body MultipartBody file);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_CM_BOX_SUBMITTED_LIST)
+    Observable<Response<CMBoxSubmittedTaskResponse>> getCMBoxList(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_CM_BOX_DETAILS + "/{id}")
+    Observable<Response<CMBoxSubmittedTaskResponse>> getCMBoxDetails(@Field("api_key") String api_key, @Path("id") String id);
 
 
 

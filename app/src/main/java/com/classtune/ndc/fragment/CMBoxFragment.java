@@ -21,6 +21,9 @@ import android.widget.Toast;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.CMBoxAdapter;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxData;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
@@ -30,6 +33,7 @@ import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,13 +119,13 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
         rv.setAdapter(cmBoxAdapter);
         //cmBoxAdapter.addAllData(strList);
 
-        callTaskListApi();
+        callCMBoxListApi();
 
 
     }
 
 
-    private void callTaskListApi() {
+    private void callCMBoxListApi() {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -130,32 +134,30 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getPigeonholeTaskList(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getCMBoxList(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<PHTaskListResponse>>() {
+                .subscribe(new Observer<Response<CMBoxSubmittedTaskResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<PHTaskListResponse> value) {
+                    public void onNext(Response<CMBoxSubmittedTaskResponse> value) {
                         uiHelper.dismissLoadingDialog();
-                        PHTaskListResponse phTaskListResponse = value.body();
-//                        MenuApiResponse menuApiResponse = value.body();
+                        CMBoxSubmittedTaskResponse cmBoxSubmittedTaskResponse = value.body();
 
-//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
-                        if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
-                            Log.v("PigeonholeFragment", value.message());
-                            List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
-                            Collections.reverse(phTaskList);
-                            cmBoxAdapter.addAllData(phTaskList);
-                            Log.v("tt", phTaskList.toString());
+                        if (cmBoxSubmittedTaskResponse != null && cmBoxSubmittedTaskResponse.getCode() == 200) {
+                            Log.v("cmBoxSubmittedTaskResponse", value.message());
+                            List<CMBoxSubmittedTask> cmBoxSubmittedTasks = cmBoxSubmittedTaskResponse.getCmBoxData().getCmBoxSubmittedTasks();
+                            Collections.reverse(cmBoxSubmittedTasks);
+                            cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
+                            Log.v("tt", cmBoxSubmittedTasks.toString());
                         }
-                        else if(phTaskListResponse.getCode()==500){
+                        else if(cmBoxSubmittedTaskResponse.getCode()==500){
                             Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                         }
 

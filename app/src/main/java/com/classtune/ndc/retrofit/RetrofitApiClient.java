@@ -30,21 +30,22 @@ public class RetrofitApiClient {
             .setLenient()
             .create();
 
-    private RetrofitApiClient() {} // So that nobody can create an object with constructor
+    private RetrofitApiClient() {
+    } // So that nobody can create an object with constructor
 
     public static synchronized Retrofit getClient() {
-       // if (retrofit==null) {
+        // if (retrofit==null) {
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(300, TimeUnit.SECONDS)
                 .connectTimeout(300, TimeUnit.SECONDS)
                 .build();
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(okHttpClient)
-                    .build();
-       // }
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+        // }
         return retrofit;
     }
 
@@ -65,12 +66,28 @@ public class RetrofitApiClient {
         return retrofit;
     }
 
-    public static ApiInterface getApiInterface(){
-        return  RetrofitApiClient.getClient().create(ApiInterface.class);
+    public static synchronized Retrofit getClientWithoutTime() {
+        if (retrofit == null) {
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(URLHelper.BASE_URL + URLHelper.SUB_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }
+        return retrofit;
     }
 
-    public static ApiInterface getApiInterfaceWithId(String id){
-        return  RetrofitApiClient.getClientWithId(id).create(ApiInterface.class);
+    public static ApiInterface getApiInterface() {
+        return RetrofitApiClient.getClient().create(ApiInterface.class);
+    }
+
+    public static ApiInterface getApiInterfaceWithId(String id) {
+        return RetrofitApiClient.getClientWithId(id).create(ApiInterface.class);
+    }
+
+    public static ApiInterface getApiInterfaceWithoutTime() {
+        return RetrofitApiClient.getClientWithoutTime().create(ApiInterface.class);
     }
 }
 

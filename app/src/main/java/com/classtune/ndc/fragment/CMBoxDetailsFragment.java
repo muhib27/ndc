@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.Attachment;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
@@ -32,9 +34,11 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.SubmittedTaskData;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,7 +56,7 @@ import retrofit2.Response;
 public class CMBoxDetailsFragment extends Fragment implements View.OnClickListener {
     LinearLayout submittedLayout, pendingLayout;
     UIHelper uiHelper;
-    TextView title, assignDate, dueDate, description, cmNumber, submitNumber, pendingNumber;
+    TextView title, submittedBy, dueDate, submittedDate, assignBy, assignDate;
     LinearLayout attachment_container, statusViewLayout;
     List<ImageView> list = new ArrayList<ImageView>();
     ImageView attachmentImage;
@@ -92,17 +96,16 @@ public class CMBoxDetailsFragment extends Fragment implements View.OnClickListen
         uiHelper = new UIHelper(getActivity());
         initView(view);
         if (id != null && !id.isEmpty())
-            callTaskListApi(id);
+            callTaskViewApi(id);
     }
 
     private void initView(View view) {
 
         title = view.findViewById(R.id.titleText);
-        assignDate = view.findViewById(R.id.assignDate);
+        submittedBy = view.findViewById(R.id.submitteBy);
+        assignBy = view.findViewById(R.id.assignedBy);
+        submittedDate = view.findViewById(R.id.submittedDate);
         dueDate = view.findViewById(R.id.dueDate);
-        description = view.findViewById(R.id.description);
-
-
 
 
         attachment_container = view.findViewById(R.id.attachment_container);
@@ -136,7 +139,7 @@ public class CMBoxDetailsFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void callTaskListApi(String id) {
+    private void callTaskViewApi(String id) {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -145,29 +148,29 @@ public class CMBoxDetailsFragment extends Fragment implements View.OnClickListen
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getSinglePHDetails(AppSharedPreference.getApiKey(), id)
+        RetrofitApiClient.getApiInterface().getCMBoxDetails(AppSharedPreference.getApiKey(), id)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<PHTaskViewResponse>>() {
+                .subscribe(new Observer<Response<CMBoxSubmittedTaskResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<PHTaskViewResponse> value) {
+                    public void onNext(Response<CMBoxSubmittedTaskResponse> value) {
                         uiHelper.dismissLoadingDialog();
-                        PHTaskViewResponse phTaskViewResponse = value.body();
+                        CMBoxSubmittedTaskResponse cmBoxSubmittedTaskResponse = value.body();
 //                        MenuApiResponse menuApiResponse = value.body();
 
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
 
-                        if (phTaskViewResponse.getCode() == 200) {
+                        if (cmBoxSubmittedTaskResponse.getCode() == 200) {
                             Log.v("PigeonholeFragment", value.message());
 
-                            PHTaskViewData phTaskViewData = phTaskViewResponse.getPhTaskViewData();
-                            setPageData(phTaskViewData);
+                            CMBoxSubmittedTask cmBoxSubmittedTask = cmBoxSubmittedTaskResponse.getCmBoxData().getSubmittedTask();
+                            setPageData(cmBoxSubmittedTask);
 
                         }
 
@@ -194,30 +197,25 @@ public class CMBoxDetailsFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private void setPageData(PHTaskViewData phTaskViewData) {
-        if (!phTaskViewData.getPhSingleTask().getTitle().isEmpty())
-            title.setText(phTaskViewData.getPhSingleTask().getTitle());
-        if (!phTaskViewData.getPhSingleTask().getDescription().isEmpty())
-            description.setText(phTaskViewData.getPhSingleTask().getDescription());
-        if (!phTaskViewData.getPhSingleTask().getCreatedAt().isEmpty())
-            assignDate.setText(uiHelper.dateTimeParse(phTaskViewData.getPhSingleTask().getCreatedAt()));
-        if (phTaskViewData.getPhSingleTask().getDueDate()!=null && !phTaskViewData.getPhSingleTask().getDueDate().isEmpty())
-            dueDate.setText(uiHelper.dateTimeParse(phTaskViewData.getPhSingleTask().getDueDate()));
-
-//        if (phTaskViewData.getPhSingleTask().getTotal() != null)
-//            cmNumber.setText(phTaskViewData.getPhSingleTask().getTotal());
-//        if (phTaskViewData.getPhSingleTask().getSubmittedTotal() != null)
-//            submitNumber.setText(phTaskViewData.getPhSingleTask().getSubmittedTotal());
-//        if (phTaskViewData.getPhSingleTask().getTotal() != null && phTaskViewData.getPhSingleTask().getSubmittedTotal() != null)
-//            pendingNumber.setText("" + (Integer.parseInt(phTaskViewData.getPhSingleTask().getTotal()) - Integer.parseInt(phTaskViewData.getPhSingleTask().getSubmittedTotal())));
+    private void setPageData(CMBoxSubmittedTask cmBoxSubmittedTask) {
+        if (!cmBoxSubmittedTask.getTitle().isEmpty())
+            title.setText(cmBoxSubmittedTask.getTitle());
+        if (cmBoxSubmittedTask.getUserName()!=null)
+            submittedBy.setText(": "+cmBoxSubmittedTask.getUserName());
+        if (cmBoxSubmittedTask.getAssignedBy()!=null)
+            assignBy.setText(": "+cmBoxSubmittedTask.getAssignedBy());
+        if (cmBoxSubmittedTask.getSubmitDate()!=null)
+            submittedDate.setText(": " + AppUtility.getDateString(cmBoxSubmittedTask.getSubmitDate(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+        if (cmBoxSubmittedTask.getDueDate()!=null)
+            dueDate.setText(": " + AppUtility.getDateString(cmBoxSubmittedTask.getDueDate(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
 
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
-        List<Attachment> attachmentList = phTaskViewData.getPhSingleTask().getAttachments();
+        List<Attachment> attachmentList = cmBoxSubmittedTask.getAttachments();
         if (attachmentList != null && attachmentList.size() > 0) {
 
-            for (int i = 0; i < phTaskViewData.getPhSingleTask().getAttachments().size(); i++) {
+            for (int i = 0; i < cmBoxSubmittedTask.getAttachments().size(); i++) {
                 // Add the text layout to the parent layout
                 view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
 
