@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.course_calendar_api.Routine;
 import com.classtune.ndc.fragment.ClassScheduleDetailsFragment;
-import com.classtune.ndc.model.ClassScheduleModel;
 import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
@@ -32,7 +31,7 @@ import java.util.List;
  * Created by Muhib on 20/11/18.
  */
 
-public class RoutineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class BlueRoutineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     // View Types
@@ -69,7 +68,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     String billingAddressTwo = "";
 
     //
-    public RoutineAdapter(Context context, PaginationAdapterCallback mCallback) {
+    public BlueRoutineAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
         routineList = new ArrayList<>();
@@ -77,13 +76,13 @@ public class RoutineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    public RoutineAdapter(Context context) {
+    public BlueRoutineAdapter(Context context) {
         this.context = context;
         routineList = new ArrayList<>();
         this.viewparameter = viewparameter;
     }
 
-    public RoutineAdapter(Context context, ArrayList<Routine> strList) {
+    public BlueRoutineAdapter(Context context, ArrayList<Routine> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
@@ -149,7 +148,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if(routineList.get(position).getMode()!=null)
                     itemHolder.mode.setText(routineList.get(position).getMode());
                 if(routineList.get(position).getProgramPlan()!=null){
-                    itemHolder.colorView.setBackgroundColor(context.getResources().getColor(R.color.yellow));
+                    itemHolder.colorView.setBackgroundColor(context.getResources().getColor(R.color.light_blue_color));
                 }
 
 

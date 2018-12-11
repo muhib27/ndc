@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
+import com.classtune.ndc.adapter.WhiteRoutineAdapter;
 import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
 import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
+import com.classtune.ndc.apiresponse.course_calendar_api.Routine;
+import com.classtune.ndc.apiresponse.course_calendar_api.RoutineResponseModel;
 import com.classtune.ndc.model.ClassScheduleModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
@@ -46,7 +49,7 @@ public class RoutineWhiteFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<ClassScheduleModel> strList = new ArrayList<>();
-    DashboardClassScheduleAdapter dashboardClassScheduleAdapter;
+    WhiteRoutineAdapter whiteRoutineAdapter;
     UIHelper uiHelper;
     public RoutineWhiteFragment() {
         // Required empty public constructor
@@ -73,14 +76,14 @@ public class RoutineWhiteFragment extends Fragment {
         rv = (RecyclerView) view.findViewById(R.id.class_schedule_rv);
 
         strList = getStrList();
-        dashboardClassScheduleAdapter = new DashboardClassScheduleAdapter(getContext());
+        whiteRoutineAdapter = new WhiteRoutineAdapter(getContext());
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(dashboardClassScheduleAdapter);
-        dashboardClassScheduleAdapter.setData(getStrList());
-        dashboardClassScheduleAdapter.notifyDataSetChanged();
+        rv.setAdapter(whiteRoutineAdapter);
+        //whiteRoutineAdapter.setData(getStrList());
+        whiteRoutineAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<ClassScheduleModel> getStrList() {
@@ -109,32 +112,31 @@ public class RoutineWhiteFragment extends Fragment {
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getYellowRoutine(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getWhiteRoutine(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<JsonElement>>() {
+                .subscribe(new Observer<Response<RoutineResponseModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<JsonElement> value) {
+                    public void onNext(Response<RoutineResponseModel> value) {
                         uiHelper.dismissLoadingDialog();
-//                        CMBoxSubmittedTaskResponse cmBoxSubmittedTaskResponse = value.body();
-//
-//
-//                        if (cmBoxSubmittedTaskResponse != null && cmBoxSubmittedTaskResponse.getCode() == 200) {
-//                            Log.v("cmBoxSubmittedTaskResponse", value.message());
-//                            List<CMBoxSubmittedTask> cmBoxSubmittedTasks = cmBoxSubmittedTaskResponse.getCmBoxData().getCmBoxSubmittedTasks();
-//                            Collections.reverse(cmBoxSubmittedTasks);
-//                            cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
-//                            Log.v("tt", cmBoxSubmittedTasks.toString());
-//                        }
-//                        else if(cmBoxSubmittedTaskResponse.getCode()==500){
-//                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
-//                        }
+                        RoutineResponseModel routineResponseModel = value.body();
+
+                        if (whiteRoutineAdapter != null && routineResponseModel.getCode() == 200) {
+                            Log.v("routineResponseModel", value.message());
+                            List<Routine> routine = routineResponseModel.getRoutineData().getRoutine();
+                            Collections.reverse(routine);
+                            whiteRoutineAdapter.addAllData(routine);
+                            //Log.v("tt", cmBoxSubmittedTasks.toString());
+                        }
+                        else if(routineResponseModel.getCode()==500){
+                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 

@@ -4,14 +4,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.classtune.ndc.fragment.CMBoxFragment;
+import com.classtune.ndc.fragment.CourseCalendarParentFragment;
 import com.classtune.ndc.fragment.EventFragment;
+import com.classtune.ndc.fragment.HomeFragment;
+import com.classtune.ndc.fragment.NoticeFragment;
+import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.RoutineBlueFragment;
 import com.classtune.ndc.fragment.RoutineWhiteFragment;
 import com.classtune.ndc.fragment.RoutineYellowFragment;
 
-public class CCViewPagerAdapter extends FragmentPagerAdapter {
+public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
-    public CCViewPagerAdapter(FragmentManager fm) {
+    public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -20,26 +25,34 @@ public class CCViewPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         if (position == 0)
         {
-            fragment = new EventFragment();
+            fragment = new HomeFragment();
         }
         else if (position == 1)
         {
-            fragment = new RoutineWhiteFragment();
+            fragment = new PigeonholeFragment();
         }
         else if (position == 2)
         {
-            fragment = new RoutineYellowFragment();
+            fragment = new CMBoxFragment();
         }
         else if (position == 3)
         {
-            fragment = new RoutineBlueFragment();
+            fragment = new NoticeFragment();
+        }
+        else if (position == 4)
+        {
+            fragment = new CourseCalendarParentFragment();
+        }
+        else if (position == 5)
+        {
+            fragment = new EventFragment();
         }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 6;
     }
 
     @Override
@@ -47,19 +60,27 @@ public class CCViewPagerAdapter extends FragmentPagerAdapter {
         String title = null;
         if (position == 0)
         {
-            title = "Event";
+            title = "Home";
         }
         else if (position == 1)
         {
-            title = "White";
+            title = "Pigeonhole";
         }
         else if (position == 2)
         {
-            title = "Yellow";
+            title = "CM Box";
         }
         else if (position == 3)
         {
-            title = "Blue";
+            title = "Notice";
+        }
+        else if (position == 4)
+        {
+            title = "Course Calendar";
+        }
+        else if (position == 5)
+        {
+            title = "Events";
         }
         return title;
     }

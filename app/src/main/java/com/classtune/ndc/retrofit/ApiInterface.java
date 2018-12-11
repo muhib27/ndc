@@ -105,11 +105,15 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PROGRAM_WHITE_ROUTINE_LIST)
-    Observable<Response<JsonElement>> getWhiteRoutine(@Field("api_key") String api_key);
+    Observable<Response<RoutineResponseModel>> getWhiteRoutine(@Field("api_key") String api_key);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_PROGRAM_YELLOW_ROUTINE_LIST)
     Observable<Response<RoutineResponseModel>> getYellowRoutine(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_PROGRAM_YELLOW_ROUTINE_LIST)
+    Observable<Response<RoutineResponseModel>> getBlueRoutine(@Field("api_key") String api_key);
 
 
 

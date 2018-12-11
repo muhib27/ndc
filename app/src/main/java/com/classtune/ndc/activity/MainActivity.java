@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
+import com.classtune.ndc.adapter.CCViewPagerAdapter;
+import com.classtune.ndc.adapter.MainViewPagerAdapter;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.fragment.CMBoxFragment;
@@ -61,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CircleImageView userImage;
     TextView userName, userEmail;
     User user;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    MainViewPagerAdapter mainViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        drawer.addDrawerListener(toggle);
 //        toggle.syncState();
+
+//        viewPager = (ViewPager) findViewById(R.id.viewPager);
+//        mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+//        viewPager.setAdapter(mainViewPagerAdapter);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_nav).setTag("st1"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeonhole_icon).setTag("st2"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.class_schedule_icon).setTag("st3"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_nav).setTag("st4"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeonhole_icon).setTag("st5"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.class_schedule_icon).setTag("st6"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getTag().equals("st5")){
+                    Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+//        tabLayout.setupWithViewPager(viewPager);
 
 
         uiHelper = new UIHelper(MainActivity.this);

@@ -10,162 +10,162 @@
     android:padding="@dimen/size_10dp"
     tools:context=".fragment.HomeFragment">
 
-    <LinearLayout
-        android:layout_marginTop="@dimen/size_20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/size_10dp">
+    <!--<LinearLayout-->
+        <!--android:layout_marginTop="@dimen/size_20dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:padding="@dimen/size_10dp">-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pigeonhole_home" />
-
-
-            <com.classtune.ndc.viewhelpers.MyTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/size_5dp"
-                android:text="Sample"
-                android:textSize="@dimen/text_size_15_sp"
-                custom:typefaceAsset="fonts/Roboto_Light.ttf" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pigeonhole_home" />
-
-            <com.classtune.ndc.viewhelpers.MyTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/size_5dp"
-                android:text="Sample"
-                android:textSize="@dimen/text_size_15_sp"
-                custom:typefaceAsset="fonts/Roboto_Light.ttf" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pigeonhole_home" />
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/pigeonhole_home" />-->
 
 
-            <com.classtune.ndc.viewhelpers.MyTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/size_5dp"
-                android:text="Sample"
-                android:textSize="@dimen/text_size_15_sp"
-                custom:typefaceAsset="fonts/Roboto_Light.ttf" />
-        </LinearLayout>
+            <!--<com.classtune.ndc.viewhelpers.MyTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/size_5dp"-->
+                <!--android:text="Sample"-->
+                <!--android:textSize="@dimen/text_size_15_sp"-->
+                <!--custom:typefaceAsset="fonts/Roboto_Light.ttf" />-->
+        <!--</LinearLayout>-->
 
-    </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical">-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/size_10dp">
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/pigeonhole_home" />-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            <!--<com.classtune.ndc.viewhelpers.MyTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/size_5dp"-->
+                <!--android:text="Sample"-->
+                <!--android:textSize="@dimen/text_size_15_sp"-->
+                <!--custom:typefaceAsset="fonts/Roboto_Light.ttf" />-->
+        <!--</LinearLayout>-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pigeonhole_home" />
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical">-->
 
-            <com.classtune.ndc.viewhelpers.MyTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/size_5dp"
-                android:text="Sample"
-                android:textSize="@dimen/text_size_15_sp"
-                custom:typefaceAsset="fonts/Roboto_Light.ttf" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pigeonhole_home" />
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/pigeonhole_home" />-->
 
 
-            <com.classtune.ndc.viewhelpers.MyTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/size_5dp"
-                android:text="Sample"
-                android:textSize="@dimen/text_size_15_sp"
-                custom:typefaceAsset="fonts/Roboto_Light.ttf" />
-        </LinearLayout>
+            <!--<com.classtune.ndc.viewhelpers.MyTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/size_5dp"-->
+                <!--android:text="Sample"-->
+                <!--android:textSize="@dimen/text_size_15_sp"-->
+                <!--custom:typefaceAsset="fonts/Roboto_Light.ttf" />-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+    <!--</LinearLayout>-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pigeonhole_home" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:padding="@dimen/size_10dp">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/pigeonhole_home" />-->
+
+            <!--<com.classtune.ndc.viewhelpers.MyTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/size_5dp"-->
+                <!--android:text="Sample"-->
+                <!--android:textSize="@dimen/text_size_15_sp"-->
+                <!--custom:typefaceAsset="fonts/Roboto_Light.ttf" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/pigeonhole_home" />-->
 
 
-            <com.classtune.ndc.viewhelpers.MyTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/size_5dp"
-                android:text="Sample"
-                android:textSize="@dimen/text_size_15_sp"
-                custom:typefaceAsset="fonts/Roboto_Light.ttf" />
-        </LinearLayout>
+            <!--<com.classtune.ndc.viewhelpers.MyTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/size_5dp"-->
+                <!--android:text="Sample"-->
+                <!--android:textSize="@dimen/text_size_15_sp"-->
+                <!--custom:typefaceAsset="fonts/Roboto_Light.ttf" />-->
+        <!--</LinearLayout>-->
 
-    </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/pigeonhole_home" />-->
+
+
+            <!--<com.classtune.ndc.viewhelpers.MyTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/size_5dp"-->
+                <!--android:text="Sample"-->
+                <!--android:textSize="@dimen/text_size_15_sp"-->
+                <!--custom:typefaceAsset="fonts/Roboto_Light.ttf" />-->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>

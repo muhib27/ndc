@@ -42,6 +42,7 @@
     <color name="browse_color">#CDCBCC</color>
 
     <color name="blue_color">#007894</color>
+    <color name="light_blue_color">#c5007894</color>
     <color name="selected_color">#00BD9F</color>
     <color name="not_selected_color">#FD506E</color>
     <color name="today_color">#f0536c</color>
@@ -53,6 +54,7 @@
     <color name="class_schedule_color">#607d8b</color>
     <color name="event_color">#9c27b0</color>
     <color name="notice_color">#cddc39</color>
+    <color name="yellow">#ffdf00</color>
 
 
 </resources>
