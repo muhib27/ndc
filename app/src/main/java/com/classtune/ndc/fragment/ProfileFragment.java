@@ -17,8 +17,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.URLHelper;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +35,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     EditText courseNo, marritalStatus, bdContact, countryContact, rank;
     FloatingActionButton save;
     LinearLayout rankLayout;
+    CircleImageView profileImage;
+    User user;
 
 
     public ProfileFragment() {
@@ -48,8 +57,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             MainActivity.toggle.setDrawerIndicatorEnabled(true);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+        user = AppSharedPreference.getUserBasicInfo();
 
         initView(view);
+
+        loadImage();
     }
 
     private void initView(View view) {
@@ -61,6 +73,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         bdContact = view.findViewById(R.id.bdContact);
         countryContact = view.findViewById(R.id.countryContact);
         save = view.findViewById(R.id.save_fab);
+        profileImage = view.findViewById(R.id.profile_image);
 
 
         save.setOnClickListener(this);
@@ -107,6 +120,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         bdContact.setEnabled(false);
         countryContact.setEnabled(false);
         rank.setEnabled(false);
+    }
+
+
+    private void loadImage() {
+        Glide
+                .with(this)
+                .load(URLHelper.BASE_URL + user.getImage())
+                .apply(new RequestOptions()
+                        .placeholder(R.mipmap.ic_launcher_round)
+                        .fitCenter())
+                .into(profileImage);
+
     }
 
 }
