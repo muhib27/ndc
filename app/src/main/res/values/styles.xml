@@ -15,7 +15,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <!--<item name="android:icon">@drawable/ndc_icon</item>-->
         <!--<item name="android:layout_centerInParent">true</item>-->
 
@@ -37,8 +37,7 @@
     </style>
 
 
-
-<!--humberger-->
+    <!--humberger-->
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
 
     </style>
@@ -57,7 +56,7 @@
         <item name="color">@color/dnc_color</item>
     </style>
 
-    <style name="popupMenuStyle" >
+    <style name="popupMenuStyle">
         <item name="android:textColor">@color/ash</item>
         <item name="android:itemBackground">#ffffff</item>
         <item name="android:divider">#eaeaea</item>
@@ -65,10 +64,10 @@
     </style>
 
     <!--<style name="FilePickerTheme" parent="LibAppTheme">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
     <!--</style>-->
 
     <!--humberger-->

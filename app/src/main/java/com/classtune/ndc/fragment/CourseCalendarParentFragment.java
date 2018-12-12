@@ -43,6 +43,7 @@ public class CourseCalendarParentFragment extends Fragment {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        int back = getActivity().getSupportFragmentManager().getBackStackEntryCount();
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         ccViewPagerAdapter = new CCViewPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(ccViewPagerAdapter);

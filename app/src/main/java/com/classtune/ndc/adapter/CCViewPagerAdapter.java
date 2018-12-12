@@ -3,13 +3,14 @@ package com.classtune.ndc.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.classtune.ndc.fragment.EventFragment;
+import com.classtune.ndc.fragment.EventsFragment;
 import com.classtune.ndc.fragment.RoutineBlueFragment;
 import com.classtune.ndc.fragment.RoutineWhiteFragment;
 import com.classtune.ndc.fragment.RoutineYellowFragment;
 
-public class CCViewPagerAdapter extends FragmentPagerAdapter {
+public class CCViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public CCViewPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -20,7 +21,7 @@ public class CCViewPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         if (position == 0)
         {
-            fragment = new EventFragment();
+            fragment = new EventsFragment();
         }
         else if (position == 1)
         {

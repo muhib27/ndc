@@ -3,6 +3,7 @@ package com.classtune.ndc.retrofit;
 
 import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.LoginApiModel;
+import com.classtune.ndc.apiresponse.course_calendar_api.EventsResponseModel;
 import com.classtune.ndc.apiresponse.course_calendar_api.RoutineResponseModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
@@ -112,8 +113,12 @@ public interface ApiInterface {
     Observable<Response<RoutineResponseModel>> getYellowRoutine(@Field("api_key") String api_key);
 
     @FormUrlEncoded
-    @POST(URLHelper.GET_PROGRAM_YELLOW_ROUTINE_LIST)
+    @POST(URLHelper.GET_PROGRAM_BLUE_ROUTINE_LIST)
     Observable<Response<RoutineResponseModel>> getBlueRoutine(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_EVENTS_LIST)
+    Observable<Response<EventsResponseModel>> getEvents(@Field("api_key") String api_key, @Field("start") String start, @Field("end") String end);
 
 
 

@@ -2,6 +2,7 @@ package com.classtune.ndc.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.activity.VideoPlayerActivity;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
@@ -335,14 +337,19 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
                 // In order to get the view we have to use the new view with text_layout in it
                 attachmentImage = view.findViewById(R.id.attachmentImage);
-                attachmentImage.setTag("Row " + i);
+                attachmentImage.setTag(attachmentList.get(i).getName());
                 attachmentImage.setId(i + 1);
                 list.add(attachmentImage);
                 for (final ImageView imageView : list) {
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+                            if(imageView.getTag().toString().contains(".mp4")) {
+                                Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                                intent.putExtra("url", imageView.getTag().toString());
+                                startActivity(intent);
+                            }
                         }
                     });
                 }

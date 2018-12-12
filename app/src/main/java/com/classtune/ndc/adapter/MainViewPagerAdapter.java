@@ -6,13 +6,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.classtune.ndc.fragment.CMBoxFragment;
 import com.classtune.ndc.fragment.CourseCalendarParentFragment;
-import com.classtune.ndc.fragment.EventFragment;
+import com.classtune.ndc.fragment.EventsFragment;
 import com.classtune.ndc.fragment.HomeFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
-import com.classtune.ndc.fragment.RoutineBlueFragment;
-import com.classtune.ndc.fragment.RoutineWhiteFragment;
-import com.classtune.ndc.fragment.RoutineYellowFragment;
 
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -45,7 +42,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         }
         else if (position == 5)
         {
-            fragment = new EventFragment();
+            fragment = new EventsFragment();
         }
         return fragment;
     }

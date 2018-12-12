@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ndc_logo" />
@@ -28,6 +27,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="10001" />
+
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -40,8 +40,8 @@
         </service>
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme">
 
             <!-- <intent-filter> -->
@@ -67,7 +67,11 @@
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.ForgotPasswordActivity"/>
+        <activity android:name=".activity.ForgotPasswordActivity" />
+        <activity
+            android:name=".activity.VideoPlayerActivity"
+            android:label="@string/title_activity_video_player"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

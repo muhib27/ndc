@@ -127,4 +127,5 @@
     <string name="tap_to_reload">try</string>
     <string name="submit">Submit</string>
     <string name="course_calendar_text">Course Calendar</string>
+    <string name="title_activity_video_player">VideoPlayerActivity</string>
 </resources>

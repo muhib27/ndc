@@ -363,12 +363,12 @@ public class RoutineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private void gotoDetailsFragment() {
-        ClassScheduleDetailsFragment classScheduleDetailsFragment = new ClassScheduleDetailsFragment();
-        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, classScheduleDetailsFragment, "classScheduleDetailsFragment").addToBackStack(null);
-        ;
-        transaction.commit();
+//        ClassScheduleDetailsFragment classScheduleDetailsFragment = new ClassScheduleDetailsFragment();
+//        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.main_acitivity_container, classScheduleDetailsFragment, "classScheduleDetailsFragment").addToBackStack(null);
+//        ;
+//        transaction.commit();
     }
 
       /*
