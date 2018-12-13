@@ -1,6 +1,7 @@
 package com.classtune.ndc.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.activity.VideoPlayerActivity;
+import com.classtune.ndc.apiresponse.Attachment;
+import com.classtune.ndc.apiresponse.NoticeApi.Notice;
 import com.classtune.ndc.apiresponse.NoticeApi.SingleNoticeResponseModel;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
@@ -107,7 +111,7 @@ public class NoticeDetailsFragment extends Fragment {
             dotMenu.setVisibility(View.VISIBLE);
         else
             dotMenu.setVisibility(View.INVISIBLE);
-        
+
 
     }
 
@@ -133,16 +137,20 @@ public class NoticeDetailsFragment extends Fragment {
                     @Override
                     public void onNext(Response<SingleNoticeResponseModel> value) {
                         uiHelper.dismissLoadingDialog();
-//                        PHTaskViewResponse phTaskViewResponse = value.body();
-////                        MenuApiResponse menuApiResponse = value.body();
-//
-////                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
-//
-//                        if (phTaskViewResponse.getCode() == 200) {
-//                            Log.v("PigeonholeFragment", value.message());
-//
-//
-//                        }
+                        SingleNoticeResponseModel singleNoticeResponseModel = value.body();
+//                        MenuApiResponse menuApiResponse = value.body();
+
+//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+
+                        if (singleNoticeResponseModel!=null && singleNoticeResponseModel.getCode()!= null) {
+                            if(singleNoticeResponseModel.getCode()==200){
+                                Notice notice = singleNoticeResponseModel.getSingleNoticeData().getNotice();
+                                setPageData(notice);
+                            }
+                            Log.v("PigeonholeFragment", value.message());
+
+
+                        }
 
                     }
 
@@ -165,5 +173,56 @@ public class NoticeDetailsFragment extends Fragment {
                 });
 
 
+    }
+
+    private void setPageData(Notice notice) {
+        if (!notice.getTitle().isEmpty())
+            title.setText(notice.getTitle());
+        if (!notice.getDescription().isEmpty())
+            description.setText(notice.getDescription());
+        if (!notice.getCreatedAt().isEmpty())
+            assignDate.setText(uiHelper.dateTimeParse(notice.getCreatedAt()));
+//        if (phTaskViewData.getPhSingleTask().getDueDate()!=null && !phTaskViewData.getPhSingleTask().getDueDate().isEmpty())
+//            dueDate.setText(uiHelper.dateTimeParse(phTaskViewData.getPhSingleTask().getDueDate()));
+
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view;
+        List<Attachment> attachmentList = notice.getAttachments();
+        if (attachmentList != null && attachmentList.size() > 0) {
+
+            for (int i = 0; i < notice.getAttachments().size(); i++) {
+                // Add the text layout to the parent layout
+                view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
+
+                // In order to get the view we have to use the new view with text_layout in it
+                attachmentImage = view.findViewById(R.id.attachmentImage);
+                attachmentImage.setTag(attachmentList.get(i).getName());
+                attachmentImage.setId(i + 1);
+                list.add(attachmentImage);
+                for (final ImageView imageView : list) {
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+                            if(imageView.getTag().toString().contains(".mp4")) {
+                                Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                                intent.putExtra("url", imageView.getTag().toString());
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                }
+//            textView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(getApplicationContext(), textView.getTag().toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+
+                // Add the text view to the parent layout
+                attachment_container.addView(attachmentImage);
+            }
+        }
     }
 }
