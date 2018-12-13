@@ -127,15 +127,21 @@ public class RoutineWhiteFragment extends Fragment {
                         uiHelper.dismissLoadingDialog();
                         RoutineResponseModel routineResponseModel = value.body();
 
-                        if (whiteRoutineAdapter != null && routineResponseModel.getCode() == 200) {
-                            Log.v("routineResponseModel", value.message());
-                            List<Routine> routine = routineResponseModel.getRoutineData().getRoutine();
-                            Collections.reverse(routine);
-                            whiteRoutineAdapter.addAllData(routine);
-                            //Log.v("tt", cmBoxSubmittedTasks.toString());
+                        if (whiteRoutineAdapter != null && routineResponseModel.getCode() != null) {
+                            if(routineResponseModel.getCode()==200) {
+                                Log.v("routineResponseModel", value.message());
+                                List<Routine> routine = routineResponseModel.getRoutineData().getRoutine();
+                                Collections.reverse(routine);
+                                whiteRoutineAdapter.addAllData(routine);
+                                //Log.v("tt", cmBoxSubmittedTasks.toString())
+                                // ;
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else if(routineResponseModel.getCode()==500){
-                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
                         }
 
                     }

@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab).setTag("notice"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package_tab).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_icon_tab).setTag("research_icon"));
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
+        }
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -238,10 +242,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //Toast.makeText(getApplicationContext(), "fds", Toast.LENGTH_LONG).show();
 //                DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
                 HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("homeFragment");
-                if(homeFragment.isVisible())
+                if(homeFragment != null && homeFragment.isVisible())
                     return;
-                else
+                else {
                     gotoDashboardFragment();
+                    TabLayout.Tab tab = tabLayout.getTabAt(0);
+                    tab.select();
+                }
             }
         });
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

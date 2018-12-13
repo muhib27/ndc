@@ -3,6 +3,8 @@ package com.classtune.ndc.retrofit;
 
 import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.LoginApiModel;
+import com.classtune.ndc.apiresponse.NoticeApi.NoticeResponseModel;
+import com.classtune.ndc.apiresponse.NoticeApi.SingleNoticeResponseModel;
 import com.classtune.ndc.apiresponse.course_calendar_api.EventsResponseModel;
 import com.classtune.ndc.apiresponse.course_calendar_api.RoutineResponseModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
@@ -120,8 +122,14 @@ public interface ApiInterface {
     @POST(URLHelper.GET_EVENTS_LIST)
     Observable<Response<EventsResponseModel>> getEvents(@Field("api_key") String api_key, @Field("start") String start, @Field("end") String end);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_NOTICE_LIST)
+    Observable<Response<NoticeResponseModel>> getNoticeList(@Field("api_key") String api_key);
 
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_NOTICE_DETAILS + "/{id}")
+    Observable<Response<SingleNoticeResponseModel>>  getSingleNoticeDetails(@Field("api_key") String api_key, @Path("id") String id);
 
 
 

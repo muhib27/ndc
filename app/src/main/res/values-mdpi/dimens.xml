@@ -19,7 +19,7 @@
     <dimen name="common_height_land">30dp</dimen>
     <dimen name="common_padding_land">5dp</dimen>
     <dimen name="common_gap_land">1dp</dimen>
-
+    <dimen name="tab_icon_size">36dp</dimen>
 
 
 </resources>

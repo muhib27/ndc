@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.NoticeApi.Notice;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.model.NoticeModel;
 import com.classtune.ndc.model.PigeonholeDataModel;
+import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
 import java.text.SimpleDateFormat;
@@ -50,8 +53,8 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<NoticeModel> noticeModelList;
-    private List<NoticeModel> strList = new ArrayList<>();
+    private List<Notice> noticeModelList;
+    private List<Notice> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -87,21 +90,21 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.viewparameter = viewparameter;
     }
 
-    public DashboardNoticeAdapter(Context context, ArrayList<NoticeModel> strList) {
+    public DashboardNoticeAdapter(Context context, ArrayList<Notice> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.strList = strList;
 
     }
 
-    public void setData(List<NoticeModel> list) {
+    public void setData(List<Notice> list) {
         noticeModelList = list;
 
 
     }
 
 
-    public List<NoticeModel> getMovies() {
+    public List<Notice> getMovies() {
         return noticeModelList;
     }
 
@@ -141,6 +144,10 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.orderTitle.setText(noticeModelList.get(position).getTitle());
                 itemHolder.description.setText(noticeModelList.get(position).getDescription());
+                if(noticeModelList.get(position).getIsImportant()!=null && noticeModelList.get(position).getIsImportant().equals("1") ){
+                    itemHolder.colorView.setBackgroundColor(context.getResources().getColor(R.color.red));
+                }
+                itemHolder.publishDate.setText(Html.fromHtml("Publish Date: " + "<font color = #3F86A0><strong>" + AppUtility.getDateString(noticeModelList.get(position).getCreatedAt(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER) + "<strong></font>"));
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
                 //itemHolder.itemNameLayout.removeAllViews();
@@ -155,7 +162,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //                        String str = new Gson().toJson(orderList.get(position));
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoDetailsFragment();
+                        gotoDetailsFragment(noticeModelList.get(position).getId());
 
                     }
                 });
@@ -180,7 +187,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //                        String str = new Gson().toJson(orderList.get(position));
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoDetailsFragment();
+                        gotoDetailsFragment(noticeModelList.get(position).getId());
 
                     }
                 });
@@ -211,17 +218,15 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
 //
-        {
+
 //            if (position == 23 && isLoadingAdded)
 //                return LOADING;
 //            else
 //                return ADD;
 //        } else {
-            if (viewparameter == 0)
+
                 return ITEM;
-            else
-                return ITEM_1;
-        }
+
 
 //        if (position!= 24 && position%6 == 0 ) {
 //            return HERO;
@@ -250,7 +255,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private TextView menuOption;
         private LinearLayout itemLayout;
         private LinearLayout itemNameLayout;
-        private TextView rejected;
+        private TextView publishDate;
         private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
 
         public PigeonholeListItem(View itemView) {
@@ -259,6 +264,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             description = (TextView) itemView.findViewById(R.id.description);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            publishDate = (TextView) itemView.findViewById(R.id.publishDate);
 
 
         }
@@ -273,8 +279,9 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private TextView menuOption;
         private LinearLayout itemLayout;
         private LinearLayout itemNameLayout;
-        private TextView rejected;
+        private TextView publishDate;
         private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
+        View colorView;
 
         public NoticeListItem(View itemView) {
             super(itemView);
@@ -282,27 +289,31 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             orderTitle = (TextView) itemView.findViewById(R.id.title);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
             description = (TextView) itemView.findViewById(R.id.description);
-
+            publishDate = (TextView) itemView.findViewById(R.id.publishDate);
+            colorView = (View) itemView.findViewById(R.id.view);
 
         }
     }
 
 
-    private String dateTimeParse(String dateTime, String timeToAdd) {
-        String[] timeToAddParts = timeToAdd.split(" ");
+    private String dateTimeParse(String dateTime) {
+//        String[] timeToAddParts = timeToAdd.split(" ");
         String parsedString = "";
-        if (dateTime.contains("T")) {
-            String[] parts = dateTime.split("T");
+        if (dateTime.contains(" ")) {
+            String[] parts = dateTime.split(" ");
             if (!parts[0].isEmpty() && parts[0] != null)
-                parsedString = parsedString + dateReverse(parts[0], parts[1], Integer.valueOf(timeToAddParts[0]));
+                parsedString = parsedString + dateReverse(parts[0]);
 //            if(!parts[1].isEmpty() && parts[1]!=null)
 //                parsedString = parsedString + "  "+ parts[1].substring(0, parts[1].lastIndexOf(":"));
         }
+        else if(!dateTime.isEmpty() && dateTime!=null)
+            parsedString = dateReverse(dateTime);
+
 
         return parsedString;
     }
 
-    public static String dateReverse(String duedate, String times, int timeToAdd) {
+    public static String dateReverse(String duedate, String times) {
 
         SimpleDateFormat format1 = new SimpleDateFormat("dd MMM, yyyy-HH:mm");
         //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -320,7 +331,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
             c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeparts[0]));
             c.set(Calendar.MINUTE, Integer.parseInt(timeparts[1]));
-            c.add(Calendar.MINUTE, timeToAdd);
+//            c.add(Calendar.MINUTE, timeToAdd);
             String tt = c.getTime().toString();
 
 
@@ -339,13 +350,52 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
         return returnResult;
     }
+    public static String dateReverse(String duedate) {
 
-    private void gotoDetailsFragment() {
+        SimpleDateFormat format1 = new SimpleDateFormat("dd MMM, yyyy");
+        //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+//        format1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String result = "";
+        String returnResult = "";
+        String dateText = duedate;
+
+
+        if (dateText != null && dateText.contains("-")) {
+            String[] parts = dateText.split("-");
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.parseInt(parts[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
+
+//            c.add(Calendar.MINUTE, timeToAdd);
+            String tt = c.getTime().toString();
+
+
+            // result = ( new SimpleDateFormat( "dd-MM-yyyy' 'HH:mm" ) ).format( c.getTime()).toString();;
+            result = format1.format(c.getTime());
+            String[] lastParse;
+//            if (result.contains("-")) {
+//                try {
+//                    lastParse = result.split("-");
+//                    returnResult = lastParse[0] + " at " + lastParse[1];
+//                } catch (Exception e) {
+//
+//                }
+//            }
+
+        }
+        return result;
+    }
+
+
+    private void gotoDetailsFragment(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
         NoticeDetailsFragment noticeDetailsFragment = new NoticeDetailsFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        noticeDetailsFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, noticeDetailsFragment, "noticeDetailsFragment").addToBackStack(null);
-        ;
         transaction.commit();
     }
 
@@ -354,19 +404,19 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
    _________________________________________________________________________________________________
     */
 
-    public void add(NoticeModel r) {
+    public void add(Notice r) {
         noticeModelList.add(r);
         notifyItemInserted(noticeModelList.size() - 1);
     }
 
-    public void addAllData(List<NoticeModel> moveResults) {
-        for (NoticeModel result : moveResults) {
+    public void addAllData(List<Notice> moveResults) {
+        for (Notice result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<NoticeModel> moveResults) {
+    public void addAllNewData(List<Notice> moveResults) {
         noticeModelList.clear();
         noticeModelList.addAll(moveResults);
         notifyDataSetChanged();
@@ -377,7 +427,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    public void remove(NoticeModel r) {
+    public void remove(Notice r) {
         int position = noticeModelList.indexOf(r);
         if (position > -1) {
             noticeModelList.remove(position);
@@ -395,14 +445,14 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new NoticeModel());
+        add(new Notice());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = noticeModelList.size() - 1;
-        NoticeModel result = getItem(position);
+        Notice result = getItem(position);
 
         if (result != null) {
             noticeModelList.remove(position);
@@ -410,7 +460,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    public NoticeModel getItem(int position) {
+    public Notice getItem(int position) {
         return noticeModelList.get(position);
     }
 

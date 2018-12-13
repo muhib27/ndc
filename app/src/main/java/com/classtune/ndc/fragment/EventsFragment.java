@@ -138,16 +138,19 @@ public class EventsFragment extends Fragment {
                         uiHelper.dismissLoadingDialog();
                         EventsResponseModel eventsResponseModel = value.body();
 
-
-                        if (eventsResponseModel != null && eventsResponseModel.getCode() == 200) {
-                            Log.v("eventsResponseModel", value.message());
-                            List<EventList> routine = eventsResponseModel.getEventsData().getEventList();
-                            Collections.reverse(routine);
-                            eventsAdapter.addAllData(routine);
-                            //Log.v("tt", cmBoxSubmittedTasks.toString());
+                        if(eventsResponseModel != null && eventsResponseModel.getCode()!=null) {
+                            if (eventsResponseModel.getCode() == 200) {
+                                Log.v("eventsResponseModel", value.message());
+                                List<EventList> routine = eventsResponseModel.getEventsData().getEventList();
+                                Collections.reverse(routine);
+                                eventsAdapter.addAllData(routine);
+                                //Log.v("tt", cmBoxSubmittedTasks.toString());
+                            } else if (eventsResponseModel.getCode() == 500) {
+                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else if(eventsResponseModel.getCode()==500){
-                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
                         }
 
                     }

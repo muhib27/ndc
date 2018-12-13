@@ -149,16 +149,19 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
                         uiHelper.dismissLoadingDialog();
                         CMBoxSubmittedTaskResponse cmBoxSubmittedTaskResponse = value.body();
 
-
-                        if (cmBoxSubmittedTaskResponse != null && cmBoxSubmittedTaskResponse.getCode() == 200) {
-                            Log.v("cmBoxSubmittedTaskResponse", value.message());
-                            List<CMBoxSubmittedTask> cmBoxSubmittedTasks = cmBoxSubmittedTaskResponse.getCmBoxData().getCmBoxSubmittedTasks();
-                            Collections.reverse(cmBoxSubmittedTasks);
-                            cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
-                            Log.v("tt", cmBoxSubmittedTasks.toString());
+                        if(cmBoxSubmittedTaskResponse != null && cmBoxSubmittedTaskResponse.getCode()!=null) {
+                            if (cmBoxSubmittedTaskResponse.getCode() == 200) {
+                                Log.v("cmBoxSubmittedTaskResponse", value.message());
+                                List<CMBoxSubmittedTask> cmBoxSubmittedTasks = cmBoxSubmittedTaskResponse.getCmBoxData().getCmBoxSubmittedTasks();
+                                Collections.reverse(cmBoxSubmittedTasks);
+                                cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
+                                Log.v("tt", cmBoxSubmittedTasks.toString());
+                            } else if (cmBoxSubmittedTaskResponse.getCode() == 500) {
+                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else if(cmBoxSubmittedTaskResponse.getCode()==500){
-                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
                         }
 
                     }
