@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/list_background"
+    android:padding="@dimen/size_5dp"
+    tools:context="com.classtune.ndc.fragment.InsTructorTaskAssignFragment">
+
+        <RelativeLayout
+            android:layout_above="@+id/assignBtn"
+            android:id="@+id/rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:background="@drawable/round_shape_background_task_assign"
+                android:hint="@string/title_et"
+                android:padding="@dimen/size_10dp" />
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:background="@drawable/round_shape_background_task_assign"
+                android:gravity="top"
+                android:hint="@string/description_et"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:padding="@dimen/size_10dp" />
+            <CheckBox
+                android:layout_below="@+id/description"
+                android:text="Important"
+                android:id="@+id/isImportant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/attachmentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/isImportant"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:text="@string/attachment"
+                android:textSize="@dimen/text_size_20_sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/v"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_2dp"
+                android:layout_below="@+id/attachmentText"
+                android:layout_marginLeft="@dimen/size_20dp"
+                android:layout_marginRight="@dimen/size_10dp"
+                android:background="@color/ndc_color" />
+
+            <Button
+                android:id="@+id/attachFile"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/v"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:background="@drawable/round_shape_background_browse"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:text="@string/attach"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_15_sp" />
+
+            <ListView
+                android:scrollbars="vertical"
+                android:id="@+id/attachmentListMain"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/attachFile" />
+
+        </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/assignBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/round_shape_background_assign"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:text="@string/assign"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_15_sp" />
+</RelativeLayout>

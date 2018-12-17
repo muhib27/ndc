@@ -12,6 +12,7 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.apiresponse.research_api.ResearchWingResponseModel;
 import com.classtune.ndc.fragment.CMTaskSubmitFragment;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.utils.URLHelper;
@@ -131,10 +132,21 @@ public interface ApiInterface {
     @POST(URLHelper.GET_NOTICE_DETAILS + "/{id}")
     Observable<Response<SingleNoticeResponseModel>>  getSingleNoticeDetails(@Field("api_key") String api_key, @Path("id") String id);
 
+    @POST(URLHelper.GET_NOTICE_ADD)
+        //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+    Observable<Response<JsonElement>> getNoticeAdd(@Body MultipartBody file );
 
+    @POST(".")
+        //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
+    Observable<Response<JsonElement>> getNoticeEdit(@Body MultipartBody file);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_NOTICE_DELETE)
+    Observable<Response<JsonElement>> noticeDelete(@Field("id") String id, @Field("api_key") String api_key);
 
-
+    @FormUrlEncoded
+    @POST(URLHelper.GET_RESEARCH_WING_LIST)
+    Observable<Response<ResearchWingResponseModel>> getResearchWingList(@Field("api_key") String api_key);
 
 
 

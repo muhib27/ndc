@@ -1,19 +1,25 @@
 package com.classtune.ndc.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.classtune.ndc.R;
@@ -27,9 +33,12 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +104,7 @@ public class NoticeDetailsFragment extends Fragment {
         dotMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //showPopupMenu(dotMenu);
+                showPopupMenu(dotMenu);
             }
         });
 
@@ -224,5 +233,109 @@ public class NoticeDetailsFragment extends Fragment {
                 attachment_container.addView(attachmentImage);
             }
         }
+    }
+
+    PopupMenu popupMenu;
+
+    private void showPopupMenu(View view) {
+
+        Context wrapper = new ContextThemeWrapper(getActivity(), R.style.popupMenuStyle);
+        popupMenu = new PopupMenu(wrapper, view);
+        popupMenu.inflate(R.menu.pigeonhole_cell_menu);
+
+
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[]{boolean.class};
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+
+            popupMenu.show();
+            return;
+        }
+
+
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.edit:
+//                         Toast.makeText(getActivity(), "edit", Toast.LENGTH_SHORT).show();
+                        gotoNoticeAddFragment(id);
+                        break;
+                    case R.id.delete:
+//                        Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
+                        callNoticeDeleteApi(id);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void gotoNoticeAddFragment(String id) {
+        Bundle bundle=new Bundle();
+        bundle.putString("id", id);
+
+        NoticeAddFragment noticeAddFragment = new NoticeAddFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        noticeAddFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, noticeAddFragment, "noticeAddFragment").addToBackStack(null);
+        transaction.commit();
+    }
+    public void callNoticeDeleteApi(String id) {
+
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().noticeDelete(id, AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+
+
+                        if(value.code() ==200) {
+
+//                            noticeModelList.remove(pos);
+//                            notifyDataSetChanged();
+                        }
+
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+        return;
     }
 }

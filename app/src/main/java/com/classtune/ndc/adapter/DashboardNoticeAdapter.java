@@ -9,30 +9,53 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.NoticeApi.Notice;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
+import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
+import com.classtune.ndc.fragment.NoticeAddFragment;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.model.NoticeModel;
 import com.classtune.ndc.model.PigeonholeDataModel;
+import com.classtune.ndc.retrofit.RetrofitApiClient;
+import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.AppUtility;
+import com.classtune.ndc.utils.CommonApiCall;
+import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
+import com.classtune.ndc.viewhelpers.UIHelper;
+import com.google.gson.JsonElement;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 
 /**
@@ -56,6 +79,8 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<Notice> noticeModelList;
     private List<Notice> strList = new ArrayList<>();
     private Context context;
+    Notice editNotice;
+    UIHelper uiHelper;
 
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
@@ -88,6 +113,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.context = context;
         noticeModelList = new ArrayList<>();
         this.viewparameter = viewparameter;
+        uiHelper = new UIHelper((MainActivity)context);
     }
 
     public DashboardNoticeAdapter(Context context, ArrayList<Notice> strList) {
@@ -154,6 +180,18 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 String customerName = "";
                 int totalItem = 0;
 
+                UserPermission userPermission = AppSharedPreference.getUserPermission();
+                if(userPermission.isTasksEdit() && userPermission.isTasksDelete())
+                    itemHolder.dotMenu.setVisibility(View.VISIBLE);
+                else
+                    itemHolder.dotMenu.setVisibility(View.INVISIBLE);
+
+                itemHolder.dotMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showPopupMenu(itemHolder.dotMenu, position);
+                    }
+                });
 
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -273,6 +311,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     protected class NoticeListItem extends RecyclerView.ViewHolder {
         private TextView orderTitle;
         private TextView description;
+        private ImageButton dotMenu;
         private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
@@ -291,6 +330,7 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             description = (TextView) itemView.findViewById(R.id.description);
             publishDate = (TextView) itemView.findViewById(R.id.publishDate);
             colorView = (View) itemView.findViewById(R.id.view);
+            dotMenu = itemView.findViewById(R.id.dot_menu);
 
         }
     }
@@ -476,5 +516,130 @@ public class DashboardNoticeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (errorMsg != null) this.errorMsg = errorMsg;
     }
+
+
+    PopupMenu popupMenu;
+
+    private void showPopupMenu(View view, final int position) {
+
+        // inflate menu
+//        PopupMenu popup = new PopupMenu(view.getContext(),view );
+//        MenuInflater inflater = popup.getMenuInflater();
+//        inflater.inflate(R.menu.pigeonhole_cell_menu, popup.getMenu());
+//        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
+//        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, (MenuBuilder)popup.getMenu(), view);
+//        popup.show();
+        Context wrapper = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+        popupMenu = new PopupMenu(wrapper, view);
+        popupMenu.inflate(R.menu.pigeonhole_cell_menu);
+
+
+// Force icons to show
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[]{boolean.class};
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+
+            popupMenu.show();
+            return;
+        }
+
+
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.edit:
+                        // Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show();
+                        initEditApi(noticeModelList.get(position).getId(), position);
+                        break;
+                    case R.id.delete:
+                       // Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                       // CommonApiCall commonApiCall = new CommonApiCall(context);
+                        callNoticeDeleteApi(noticeModelList.get(position).getId(),position);
+                     //   boolean b = commonApiCall.callPigeonholeDeleteApi(noticeModelList.get(position).getId());
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void initEditApi(String id, int pos) {
+        editNotice = noticeModelList.get(pos);
+        String i = editNotice.getId();
+//
+        gotoNoticeAddFragment(i);
+    }
+
+    private void gotoNoticeAddFragment(String id) {
+        Bundle bundle=new Bundle();
+        bundle.putString("id", id);
+
+        NoticeAddFragment noticeAddFragment = new NoticeAddFragment();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        noticeAddFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, noticeAddFragment, "noticeAddFragment").addToBackStack(null);
+        transaction.commit();
+    }
+
+
+    public void callNoticeDeleteApi(String id, final int pos) {
+
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().noticeDelete(id, AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+
+
+                        if(value.code() ==200) {
+
+                            noticeModelList.remove(pos);
+                            notifyDataSetChanged();
+                        }
+
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+        return;
+    }
+
 
 }

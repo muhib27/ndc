@@ -80,16 +80,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
 //        viewPager.setAdapter(mainViewPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeonhole_tab).setTag("pigeonhole"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box_tab).setTag("cm_box"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.course_calendar_tab).setTag("course_calendar"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_tab_icon).setTag("pigeonhole"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_tab_icon).setTag("cm_box"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_tab_icon).setTag("course_calendar"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab).setTag("notice"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package_tab).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_icon_tab).setTag("research_icon"));
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
-        }
+//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+//            TabLayout.Tab tab = tabLayout.getTabAt(i);
+//            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
+//        }
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

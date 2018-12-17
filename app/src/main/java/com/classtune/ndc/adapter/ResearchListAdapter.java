@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.research_api.Research;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.fragment.ResearchTopicListFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
@@ -48,8 +49,8 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<ResearcherModel> researcherModelList;
-    private List<ResearcherModel> strList = new ArrayList<>();
+    private List<Research> researcherModelList;
+    private List<Research> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -83,14 +84,14 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         researcherModelList = new ArrayList<>();
     }
 
-    public ResearchListAdapter(Context context, ArrayList<ResearcherModel> strList) {
+    public ResearchListAdapter(Context context, ArrayList<Research> strList) {
         this.context = context;
         this.mCallback = mCallback;
         this.researcherModelList = strList;
 
     }
 
-    public List<ResearcherModel> getMovies() {
+    public List<Research> getMovies() {
         return researcherModelList;
     }
 
@@ -136,7 +137,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.name.setText(researcherModelList.get(position).getName());
-                itemHolder.email.setText(researcherModelList.get(position).getEmail());
+                itemHolder.email.setText(researcherModelList.get(position).getBatchName());
 
 //                itemHolder.orderTitle.setText(strList.get(position));
 //                itemHolder.name.setText("Pizza");
@@ -154,7 +155,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                        String str = new Gson().toJson(orderList.get(position));
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
-                        gotoITopicListFragment();
+                        gotoITopicListFragment(researcherModelList.get(position).getId());
 
                     }
                 });
@@ -234,19 +235,19 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
    _________________________________________________________________________________________________
     */
 
-    public void add(ResearcherModel r) {
+    public void add(Research r) {
         researcherModelList.add(r);
         notifyItemInserted(researcherModelList.size() - 1);
     }
 
-    public void addAllData(List<ResearcherModel> moveResults) {
-        for (ResearcherModel result : moveResults) {
+    public void addAllData(List<Research> moveResults) {
+        for (Research result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<ResearcherModel> moveResults) {
+    public void addAllNewData(List<Research> moveResults) {
         researcherModelList.clear();
         researcherModelList.addAll(moveResults);
         notifyDataSetChanged();
@@ -257,7 +258,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public void remove(ResearcherModel r) {
+    public void remove(Research r) {
         int position = researcherModelList.indexOf(r);
         if (position > -1) {
             researcherModelList.remove(position);
@@ -279,14 +280,14 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new ResearcherModel());
+        add(new Research());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = researcherModelList.size() - 1;
-        ResearcherModel result = getItem(position);
+        Research result = getItem(position);
 
         if (result != null) {
             researcherModelList.remove(position);
@@ -294,7 +295,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public ResearcherModel getItem(int position) {
+    public Research getItem(int position) {
         return researcherModelList.get(position);
     }
 
@@ -396,10 +397,13 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return returnResult;
     }
 
-    private void gotoITopicListFragment() {
+    private void gotoITopicListFragment(String id) {
+        Bundle bundle=new Bundle();
+        bundle.putString("id", id);
         ResearchTopicListFragment researchTopicListFragment = new ResearchTopicListFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        researchTopicListFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, researchTopicListFragment, "researchTopicListFragment").addToBackStack(null);;
         transaction.commit();
     }

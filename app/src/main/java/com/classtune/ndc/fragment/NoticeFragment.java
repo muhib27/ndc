@@ -195,10 +195,10 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
 
 
     private void gotoInstructorNoticeCreateFragment() {
-        InsTructorNoticeCreateFragment insTructorNoticeCreateFragment = new InsTructorNoticeCreateFragment();
+        NoticeAddFragment noticeAddFragment = new NoticeAddFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, insTructorNoticeCreateFragment, "insTructorNoticeCreateFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, noticeAddFragment, "noticeAddFragment").addToBackStack(null);;
         transaction.commit();
     }
 
