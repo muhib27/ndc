@@ -141,6 +141,7 @@ public class ResearchListFragment extends Fragment {
                                 Log.v("researchWingRespon", value.message());
                                 List<Research> researchList = researchWingResponseModel.getResearchWingData().getResearch();
                                 Collections.reverse(researchList);
+                                researchListAdapter.clear();
                                 researchListAdapter.addAllData(researchList);
                                 Log.v("tt", researchList.toString());
                             } else if (researchWingResponseModel.getCode() == 500) {

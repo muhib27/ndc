@@ -36,6 +36,15 @@ public class AppConstant {
     public static final String AFWC = "afwc";
     public static final String CAPSTON = "capston";
 
+    //menu
+    public static final String MENU_TASKS = "tasks";
+    public static final String MENU_EVENTS= "events";
+    public static final String MENU_ROUTINE= "routine";
+    public static final String MENU_RESEARCH= "research";
+    public static final String MENU_RESEARCH_WING= "research_wing";
+    public static final String MENU_NOTICE= "notice";
+    public static final String MENU_READING_LIST= "reading_list";
+
 
 
 

@@ -3,6 +3,7 @@ package com.classtune.ndc.utils;
 import android.content.SharedPreferences;
 
 import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.apiresponse.menu_api.UserMenu;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 
 /**
@@ -158,6 +159,36 @@ public class AppSharedPreference {
         userPermission.setUserDelete(pref.getBoolean(AppConstant.USER_DELETE, false));
         return userPermission;
     }
+
+    public static void setUserMenu(UserMenu userMenu) {
+        final SharedPreferences pref = getSharedPreferences();
+        final SharedPreferences.Editor editor = pref.edit();
+
+        editor.putBoolean(AppConstant.MENU_TASKS, userMenu.isTasks());
+        editor.putBoolean(AppConstant.MENU_EVENTS, userMenu.isEvents());
+        editor.putBoolean(AppConstant.MENU_ROUTINE, userMenu.isRoutine());
+        editor.putBoolean(AppConstant.MENU_RESEARCH, userMenu.isResearch());
+        editor.putBoolean(AppConstant.MENU_RESEARCH_WING, userMenu.isResearch_wing());
+        editor.putBoolean(AppConstant.MENU_NOTICE, userMenu.isNotice());
+        editor.putBoolean(AppConstant.MENU_READING_LIST, userMenu.isReading_list());
+        editor.apply();
+    }
+    public static UserMenu getUserMenu() {
+        final SharedPreferences pref = getSharedPreferences();
+        UserMenu userMenu = new UserMenu();
+
+        userMenu.setTasks(pref.getBoolean(AppConstant.MENU_TASKS, false));
+        userMenu.setEvents(pref.getBoolean(AppConstant.MENU_EVENTS, false));
+        userMenu.setRoutine(pref.getBoolean(AppConstant.MENU_ROUTINE, false));
+        userMenu.setResearch(pref.getBoolean(AppConstant.MENU_RESEARCH, false));
+        userMenu.setResearch_wing(pref.getBoolean(AppConstant.MENU_RESEARCH_WING, false));
+        userMenu.setNotice(pref.getBoolean(AppConstant.MENU_NOTICE, false));
+        userMenu.setReading_list(pref.getBoolean(AppConstant.MENU_READING_LIST, false));
+
+        return userMenu;
+    }
+
+
 
     public static void setUserCourse(UserCourses userCourse) {
         final SharedPreferences pref = getSharedPreferences();

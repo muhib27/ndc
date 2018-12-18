@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ import java.util.List;
  * Created by Muhib on 20/11/18.
  */
 
-public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     // View Types
@@ -57,12 +58,12 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private boolean retryPageLoad = false;
 
     private PaginationAdapterCallback mCallback;
-//    private OrderProcess mOrderProcessCallback;
+    //    private OrderProcess mOrderProcessCallback;
     View myView;
     LayoutInflater layoutInflater;
     LinearLayout layout;
 
-//
+    //
     private String errorMsg;
     //HomeFragment homeFragment;
 
@@ -70,7 +71,8 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     String shippingAddressTwo = "";
     String billingAddressOne = "";
     String billingAddressTwo = "";
-//
+
+    //
     public ResearchListAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
@@ -138,6 +140,12 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.name.setText(researcherModelList.get(position).getName());
                 itemHolder.email.setText(researcherModelList.get(position).getBatchName());
+                if (researcherModelList.get(position).getResearchCount() != null)
+                    itemHolder.total.setText(researcherModelList.get(position).getResearchCount());
+                if(researcherModelList.get(position).getIsResearchLock().equals("1"))
+                itemHolder.selected.setBackground(ContextCompat.getDrawable(context, R.drawable.selected));
+                else
+                    itemHolder.selected.setBackground(ContextCompat.getDrawable(context, R.drawable.unselected));
 
 //                itemHolder.orderTitle.setText(strList.get(position));
 //                itemHolder.name.setText("Pizza");
@@ -145,7 +153,6 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 //itemHolder.itemNameLayout.removeAllViews();
                 String customerName = "";
                 int totalItem = 0;
-
 
 
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +173,6 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-
     private void gotoOrderDetailsFragment(Bundle bundle) {
 
 
@@ -180,7 +186,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-       // return strList == null ? 0 : strList.size();
+        // return strList == null ? 0 : strList.size();
         return researcherModelList == null ? 0 : researcherModelList.size();
     }
 
@@ -313,17 +319,13 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-
-
-
-
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView email;
-      //  private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
-        private ImageView itemImage;
+        //  private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
+        private ImageView selected;
         private ProgressBar mProgress;
-        private TextView menuOption;
+        private TextView total;
         private LinearLayout itemLayout;
         private LinearLayout itemNameLayout;
         private TextView rejected;
@@ -335,14 +337,12 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             name = (TextView) itemView.findViewById(R.id.name);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
             email = (TextView) itemView.findViewById(R.id.email);
-
-
+            selected = itemView.findViewById(R.id.selected);
+            total = itemView.findViewById(R.id.total);
 
 
         }
     }
-
-
 
 
     private String dateTimeParse(String dateTime, String timeToAdd) {
@@ -388,7 +388,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 try {
                     lastParse = result.split("-");
                     returnResult = lastParse[0] + " at " + lastParse[1];
-                }catch (Exception e) {
+                } catch (Exception e) {
 
                 }
             }
@@ -398,13 +398,14 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void gotoITopicListFragment(String id) {
-        Bundle bundle=new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("id", id);
         ResearchTopicListFragment researchTopicListFragment = new ResearchTopicListFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         researchTopicListFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, researchTopicListFragment, "researchTopicListFragment").addToBackStack(null);;
+        transaction.replace(R.id.main_acitivity_container, researchTopicListFragment, "researchTopicListFragment").addToBackStack(null);
+        ;
         transaction.commit();
     }
 

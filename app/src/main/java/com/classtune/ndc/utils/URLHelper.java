@@ -7,8 +7,8 @@ public class URLHelper {
 	public URLHelper() {
 	}
 
-	//public static final String BASE_URL = "http://teamworkbd.com/";
-	public static final String BASE_URL = "http://192.168.2.38/";
+	public static final String BASE_URL = "http://teamworkbd.com/";
+	//public static final String BASE_URL = "http://192.168.2.38/";
 	public static final String SUB_URL = "masterapi/";
 //	public final static String URL_BASE = "http://apimaster.classtune.com/api/";
 	public final static String ADD_FCM = "users/add_fcm";
@@ -40,6 +40,8 @@ public class URLHelper {
 
 	//Reasearch
 	public final static String GET_RESEARCH_WING_LIST = "research_wing/research_list";
+	public final static String GET_RESEARCH_TOPIC_LIST = "research_wing/select";
+	public final static String GET_RESEARCH_CM_LIST = "research/research_list";
 
     //Course calendar
     public final static String GET_PROGRAM_WHITE_ROUTINE_LIST = "program_white/routine_list";

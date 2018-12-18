@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/itemLayout"
@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/size_5dp"
     android:layout_marginBottom="@dimen/size_5dp">
+
 
     <!--<android.support.v7.widget.CardView-->
     <!--android:layout_width="match_parent"-->
@@ -16,12 +17,12 @@
     <!--card_view:cardBackgroundColor="@android:color/white"-->
     <!--card_view:cardElevation="3dp"-->
     <!--card_view:cardUseCompatPadding="true">-->
+    <!--app:cardCornerRadius="@dimen/size_10dp"-->
+    <!--card_view:cardElevation="3dp"-->
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/size_10dp"
         card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true">
 
 
@@ -32,6 +33,7 @@
             android:padding="@dimen/size_10dp">
 
             <TextView
+                android:id="@+id/head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/nav_header_desc"
@@ -39,6 +41,7 @@
                 android:textSize="@dimen/text_size_15_sp" />
 
             <TextView
+                android:id="@+id/subHead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/nav_header_desc"
@@ -47,16 +50,84 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="@dimen/size_10dp"
-                android:maxLines="5"
+                android:id="@+id/subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:maxLines="5"
                 android:text="@string/test_description"
                 android:textColor="@color/deep_ash"
                 android:textSize="@dimen/text_size_15_sp" />
+
+            <LinearLayout
+                android:id="@+id/bottomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Instructor"
+                        android:textSize="@dimen/text_size_14_sp" />
+
+                    <TextView
+                        android:id="@+id/instructorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kasparov Remerez"
+                        android:textAllCaps="false"
+                        android:textColor="@color/instructor_color"
+                        android:textSize="@dimen/text_size_17_sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Advisor"
+                        android:textSize="@dimen/text_size_14_sp" />
+
+                    <TextView
+                        android:id="@+id/advisorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Richard Markx"
+                        android:textAllCaps="false"
+                        android:textColor="@color/instructor_color"
+                        android:textSize="@dimen/text_size_17_sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/top_transparent_layout" />
 
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+
+</RelativeLayout>

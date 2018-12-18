@@ -1,6 +1,7 @@
 package com.classtune.ndc.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +15,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 //import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.apiresponse.research_api.UserResearchTopic;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
@@ -46,8 +49,8 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<PigeonholeDataModel> pigeonholeDataModelList;
-    private List<String> strList = new ArrayList<>();
+    private List<UserResearchTopic> userResearchTopicList;
+    private List<UserResearchTopic> strList = new ArrayList<>();
     private Context context;
 
     private boolean isLoadingAdded = false;
@@ -71,25 +74,25 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
     public ResearchTopicListAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        userResearchTopicList = new ArrayList<>();
         //this.mOrderProcessCallback = orderProcessCallback;
 
     }
 
     public ResearchTopicListAdapter(Context context) {
         this.context = context;
-        pigeonholeDataModelList = new ArrayList<>();
+        userResearchTopicList = new ArrayList<>();
     }
 
-    public ResearchTopicListAdapter(Context context, ArrayList<String> strList) {
+    public ResearchTopicListAdapter(Context context, ArrayList<UserResearchTopic> userResearchTopicList) {
         this.context = context;
         this.mCallback = mCallback;
-        this.strList = strList;
+        this.userResearchTopicList = userResearchTopicList;
 
     }
 
-    public List<PigeonholeDataModel> getMovies() {
-        return pigeonholeDataModelList;
+    public List<UserResearchTopic> getMovies() {
+        return userResearchTopicList;
     }
 
 //    public void setMovies(List<PigeonholeDataModel> orderList) {
@@ -133,6 +136,27 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
                 final PigeonholeListItem itemHolder = (PigeonholeListItem) holder;
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                if(userResearchTopicList.get(position).getHead()!=null)
+                    itemHolder.head.setText(userResearchTopicList.get(position).getHead());
+                if(userResearchTopicList.get(position).getSubhead()!=null)
+                    itemHolder.subHead.setText(userResearchTopicList.get(position).getSubhead());
+                if(userResearchTopicList.get(position).getSubject()!=null)
+                    itemHolder.subject.setText(userResearchTopicList.get(position).getSubject());
+                if(userResearchTopicList.get(position).getIsLocked().equals("1"))
+                {
+                    itemHolder.subHead.setTextColor(Color.parseColor("#FE5272"));
+                    itemHolder.bottomLayout.setVisibility(View.VISIBLE);
+                    itemHolder.view.setVisibility(View.GONE);
+                    if(userResearchTopicList.get(position).getInstructor()!=null)
+                        itemHolder.instructorName.setText(userResearchTopicList.get(position).getInstructor());
+                    if(userResearchTopicList.get(position).getAdvisor()!=null)
+                    itemHolder.advisorName.setText(userResearchTopicList.get(position).getAdvisor());
+
+                }
+                else {
+                    itemHolder.bottomLayout.setVisibility(View.GONE);
+                    itemHolder.view.setVisibility(View.VISIBLE);
+                }
 //                itemHolder.orderTitle.setText(strList.get(position));
 //                itemHolder.name.setText("Pizza");
 //                itemHolder.quantity.setText("Total ietm 10");
@@ -174,8 +198,8 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return strList == null ? 0 : strList.size();
-        //return pigeonholeDataModelList == null ? 0 : pigeonholeDataModelList.size();
+        //return strList == null ? 0 : strList.size();
+        return userResearchTopicList == null ? 0 : userResearchTopicList.size();
     }
 
     @Override
@@ -188,7 +212,7 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
 //            else
 //                return ADD;
 //        } else {
-//            return ITEM;
+            return ITEM;
 //        }
 
 //        if (position!= 24 && position%6 == 0 ) {
@@ -199,7 +223,7 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
 //            return ADD;
 //        }
 //        else {
-        return (position == strList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+//        return (position == strList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
 //        }
     }
 
@@ -229,33 +253,33 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
    _________________________________________________________________________________________________
     */
 
-    public void add(PigeonholeDataModel r) {
-        pigeonholeDataModelList.add(r);
-        notifyItemInserted(pigeonholeDataModelList.size() - 1);
+    public void add(UserResearchTopic r) {
+        userResearchTopicList.add(r);
+        notifyItemInserted(userResearchTopicList.size() - 1);
     }
 
-    public void addAllData(List<PigeonholeDataModel> moveResults) {
-        for (PigeonholeDataModel result : moveResults) {
+    public void addAllData(List<UserResearchTopic> moveResults) {
+        for (UserResearchTopic result : moveResults) {
             add(result);
         }
 
     }
 
-    public void addAllNewData(List<PigeonholeDataModel> moveResults) {
-        pigeonholeDataModelList.clear();
-        pigeonholeDataModelList.addAll(moveResults);
+    public void addAllNewData(List<UserResearchTopic> moveResults) {
+        userResearchTopicList.clear();
+        userResearchTopicList.addAll(moveResults);
         notifyDataSetChanged();
     }
 
     public void clearList() {
-        pigeonholeDataModelList.clear();
+        userResearchTopicList.clear();
     }
 
 
-    public void remove(PigeonholeDataModel r) {
-        int position = pigeonholeDataModelList.indexOf(r);
+    public void remove(UserResearchTopic r) {
+        int position = userResearchTopicList.indexOf(r);
         if (position > -1) {
-            pigeonholeDataModelList.remove(position);
+            userResearchTopicList.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -274,23 +298,23 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new PigeonholeDataModel());
+        add(new UserResearchTopic());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
-        int position = pigeonholeDataModelList.size() - 1;
-        PigeonholeDataModel result = getItem(position);
+        int position = userResearchTopicList.size() - 1;
+        UserResearchTopic result = getItem(position);
 
         if (result != null) {
-            pigeonholeDataModelList.remove(position);
+            userResearchTopicList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public PigeonholeDataModel getItem(int position) {
-        return pigeonholeDataModelList.get(position);
+    public UserResearchTopic getItem(int position) {
+        return userResearchTopicList.get(position);
     }
 
     /**
@@ -301,7 +325,7 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public void showRetry(boolean show, @Nullable String errorMsg) {
         retryPageLoad = show;
-        notifyItemChanged(pigeonholeDataModelList.size() - 1);
+        notifyItemChanged(userResearchTopicList.size() - 1);
 
         if (errorMsg != null) this.errorMsg = errorMsg;
     }
@@ -312,22 +336,28 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
 
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
-        private TextView orderTitle;
-        private TextView accepted;
-        private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
+        private TextView head;
+        private TextView subHead;
+        private TextView subject, instructorName, advisorName, totalPayText, orderDate; // displays "year | language"
         private ImageView itemImage;
         private ProgressBar mProgress;
         private TextView menuOption;
-        private LinearLayout itemLayout;
+        private LinearLayout bottomLayout;
+        RelativeLayout itemLayout;
         private LinearLayout itemNameLayout;
-        private TextView rejected;
-        private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
+        private View view;
 
         public PigeonholeListItem(View itemView) {
             super(itemView);
 
-            orderTitle = (TextView) itemView.findViewById(R.id.title);
-            itemLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+            head = (TextView) itemView.findViewById(R.id.head);
+            subHead = (TextView) itemView.findViewById(R.id.subHead);
+            subject = (TextView) itemView.findViewById(R.id.subject);
+            instructorName = (TextView) itemView.findViewById(R.id.instructorName);
+            advisorName = (TextView) itemView.findViewById(R.id.advisorName);
+            itemLayout = itemView.findViewById(R.id.itemLayout);
+            bottomLayout = (LinearLayout) itemView.findViewById(R.id.bottomLayout);
+            view = itemView.findViewById(R.id.view);
 
 
 
@@ -391,11 +421,11 @@ public class ResearchTopicListAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     private void gotoInstructorDetailsFragment() {
-        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
-        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
-        transaction.commit();
+//        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
+//        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);;
+//        transaction.commit();
     }
 
 }

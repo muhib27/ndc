@@ -27,6 +27,7 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.LoginApiModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.apiresponse.menu_api.UserMenu;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.model.LoginResponseModel;
 import com.classtune.ndc.model.Wrapper;
@@ -109,18 +110,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @AfterPermissionGranted(RC_PHONE_STATE)
     public void readPhoneStateTask() {
-        if (hasPhoneStatePermission()) {
+//        if (hasPhoneStatePermission()) {
             // Have permission, do the thing!
            // Toast.makeText(this, "TODO: Phone State things", Toast.LENGTH_LONG).show();
             validateFieldAndCallLogIn();
-        } else {
-            // Ask for one permission
-            EasyPermissions.requestPermissions(
-                    this,
-                    getString(R.string.rationale_camera),
-                    RC_PHONE_STATE,
-                    Manifest.permission.READ_PHONE_STATE);
-        }
+//        } else {
+//            // Ask for one permission
+//            EasyPermissions.requestPermissions(
+//                    this,
+//                    getString(R.string.rationale_camera),
+//                    RC_PHONE_STATE,
+//                    Manifest.permission.READ_PHONE_STATE);
+//        }
     }
     @Override
     public void onClick(View v) {
@@ -284,6 +285,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(menuApiResponse.getCode()==200) {
                             AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
                             setUpUserPermission(menuApiResponse.getMenuData().getMenus().getSubMenu());
+                            setUpUserMenu(menuApiResponse.getMenuData().getMenus().getMainMenu());
 
                          //   UserPermission u = AppSharedPreference.getUserPermission();
 
@@ -344,6 +346,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         AppSharedPreference.setUserPermission(userPermission);
+
+    }
+    private void setUpUserMenu(List<String> menu) {
+        UserMenu userMenu = new UserMenu();
+        for(int i=0; i<menu.size(); i++){
+            if(menu.get(i).equalsIgnoreCase("tasks"))
+                userMenu.setTasks(true);
+            else if(menu.get(i).equalsIgnoreCase("events"))
+                userMenu.setEvents(true);
+            else if(menu.get(i).equalsIgnoreCase("research"))
+                userMenu.setResearch(true);
+            else if(menu.get(i).equalsIgnoreCase("research_wing"))
+                userMenu.setResearch_wing(true);
+            else if(menu.get(i).equalsIgnoreCase("notice"))
+                userMenu.setNotice(true);
+            else if(menu.get(i).equalsIgnoreCase("routine"))
+                userMenu.setRoutine(true);
+            else if(menu.get(i).equalsIgnoreCase("reading_list"))
+                userMenu.setReading_list(true);
+
+        }
+
+        AppSharedPreference.setUserMenu(userMenu);
 
     }
 

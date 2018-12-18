@@ -20,7 +20,9 @@ import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.ResearchListAdapter;
 import com.classtune.ndc.adapter.ResearchTopicListAdapter;
 import com.classtune.ndc.apiresponse.research_api.Research;
+import com.classtune.ndc.apiresponse.research_api.ResearchTopicResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchWingResponseModel;
+import com.classtune.ndc.apiresponse.research_api.UserResearchTopic;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
@@ -44,7 +46,7 @@ public class ResearchTopicListFragment extends Fragment {
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<String> strList = new ArrayList<>();
+    ArrayList<UserResearchTopic> strList = new ArrayList<>();
     ResearchTopicListAdapter researchTopicListAdapter;
     UIHelper uiHelper;
     String id = "";
@@ -78,6 +80,9 @@ public class ResearchTopicListFragment extends Fragment {
         //initView(view);
         if (id != null && !id.isEmpty())
             callTopicListApi(id);
+        else {
+            callTopicListApi();
+        }
 //
 //        Bundle bundle = this.getArguments();
 //        if (bundle != null) {
@@ -85,7 +90,7 @@ public class ResearchTopicListFragment extends Fragment {
 //        }
 
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
-        strList = getStrList();
+        //strList = getStrList();
         researchTopicListAdapter = new ResearchTopicListAdapter(getContext(), strList);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
@@ -121,29 +126,30 @@ public class ResearchTopicListFragment extends Fragment {
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getResearchWingList(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getResearchTopicList(AppSharedPreference.getApiKey(), id)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<ResearchWingResponseModel>>() {
+                .subscribe(new Observer<Response<ResearchTopicResponseModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<ResearchWingResponseModel> value) {
+                    public void onNext(Response<ResearchTopicResponseModel> value) {
                         uiHelper.dismissLoadingDialog();
-                        ResearchWingResponseModel researchWingResponseModel = value.body();
+                        ResearchTopicResponseModel researchTopicResponseModel = value.body();
 
-                        if(researchWingResponseModel != null && researchWingResponseModel.getCode()!=null) {
-                            if (researchWingResponseModel.getCode() == 200) {
-                                Log.v("researchWingRespon", value.message());
-                                List<Research> researchList = researchWingResponseModel.getResearchWingData().getResearch();
-                                Collections.reverse(researchList);
-                                researchListAdapter.addAllData(researchList);
-                                Log.v("tt", researchList.toString());
-                            } else if (researchWingResponseModel.getCode() == 500) {
+                        if(researchTopicResponseModel != null && researchTopicResponseModel.getCode()!=null) {
+                            if (researchTopicResponseModel.getCode() == 200) {
+                                Log.v("researchTopicRespons", value.message());
+                                List<UserResearchTopic> userResearchTopics = researchTopicResponseModel.getResearchTopicData().getUserResearchTopics();
+                                Collections.reverse(userResearchTopics);
+                                researchTopicListAdapter.clear();
+                                researchTopicListAdapter.addAllData(userResearchTopics);
+                                Log.v("tt", userResearchTopics.toString());
+                            } else if (researchTopicResponseModel.getCode() == 500) {
                                 Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -174,6 +180,68 @@ public class ResearchTopicListFragment extends Fragment {
 
     }
 
+    private void callTopicListApi() {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().getCMResearch(AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<ResearchTopicResponseModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<ResearchTopicResponseModel> value) {
+                        uiHelper.dismissLoadingDialog();
+                        ResearchTopicResponseModel researchTopicResponseModel = value.body();
+
+                        if(researchTopicResponseModel != null && researchTopicResponseModel.getCode()!=null) {
+                            if (researchTopicResponseModel.getCode() == 200) {
+                                Log.v("researchTopicRespons", value.message());
+                                List<UserResearchTopic> userResearchTopics = researchTopicResponseModel.getResearchTopicData().getUserResearchTopics();
+                                Collections.reverse(userResearchTopics);
+                                researchTopicListAdapter.clear();
+                                researchTopicListAdapter.addAllData(userResearchTopics);
+                                Log.v("tt", userResearchTopics.toString());
+                            } else if (researchTopicResponseModel.getCode() == 500) {
+                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
 //    private void gotoPigeonholeFragment() {
 //        PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
 //        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

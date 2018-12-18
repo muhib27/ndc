@@ -12,6 +12,7 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.apiresponse.research_api.ResearchTopicResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchWingResponseModel;
 import com.classtune.ndc.fragment.CMTaskSubmitFragment;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
@@ -147,6 +148,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(URLHelper.GET_RESEARCH_WING_LIST)
     Observable<Response<ResearchWingResponseModel>> getResearchWingList(@Field("api_key") String api_key);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_RESEARCH_TOPIC_LIST + "/{id}")
+    Observable<Response<ResearchTopicResponseModel>> getResearchTopicList(@Field("api_key") String api_key, @Path("id") String id);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_RESEARCH_CM_LIST)
+    Observable<Response<ResearchTopicResponseModel>> getCMResearch(@Field("api_key") String api_key);
 
 
 

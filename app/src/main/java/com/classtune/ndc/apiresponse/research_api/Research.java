@@ -11,6 +11,9 @@ public class Research {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("image")
+    @Expose
+    private String image;
     @SerializedName("batch_name")
     @Expose
     private String batchName;
@@ -108,4 +111,11 @@ public class Research {
         this.isResearchLock = isResearchLock;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

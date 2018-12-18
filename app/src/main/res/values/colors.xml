@@ -12,6 +12,7 @@
 
     <color name="settings_grey_divider">#D5D9DB</color>
     <color name="white">#FFFFFF</color>
+    <color name="off_white">#99FFFFFF</color>
     <color name="user_selection_signin">#75a8bd</color>
     <!--<color name="ash">#ccedf5</color>-->
 
@@ -55,6 +56,8 @@
     <color name="event_color">#9c27b0</color>
     <color name="notice_color">#cddc39</color>
     <color name="yellow">#ffdf00</color>
+
+    <color name="instructor_color">#324055</color>
 
 
 </resources>
