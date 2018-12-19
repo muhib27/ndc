@@ -137,7 +137,7 @@ public class RoutineWhiteFragment extends Fragment {
                                 // ;
                             }
                             else {
-                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else {

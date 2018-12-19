@@ -9,6 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,10 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.AttachmentAdapterMain;
+import com.classtune.ndc.adapter.TaskAssignAdapter;
+import com.classtune.ndc.adapter.TaskSubmitAdapter;
+import com.classtune.ndc.apiresponse.pigeonhole_api.InstructorResponseModel;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeTaskAdd;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.model.AttachmentModel;
@@ -33,6 +40,7 @@ import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.utils.UserCourses;
+import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 import com.vincent.filepicker.Constant;
@@ -72,7 +80,7 @@ import static com.vincent.filepicker.activity.ImagePickActivity.IS_NEED_CAMERA;
 public class CMTaskSubmitFragment extends Fragment implements View.OnClickListener, EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
 
     public static CMTaskSubmitFragment instance;
-    TextView description;
+    TextView description, submitTo;
     Button attachFileBtn, submitBtn;
     ListView attachmentListMain;
     private ArrayList<String> listFiles;
@@ -81,6 +89,7 @@ public class CMTaskSubmitFragment extends Fragment implements View.OnClickListen
             {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     private static final int RC_STORAGE_CAMERA_PERM = 124;
     public static String phTaskSubmitId = "";
+    public static List<String> teacherSelectedList;
 
     public CMTaskSubmitFragment() {
         // Required empty public constructor
@@ -101,7 +110,9 @@ public class CMTaskSubmitFragment extends Fragment implements View.OnClickListen
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
+        teacherSelectedList = new ArrayList<>();
+        submitTo = view.findViewById(R.id.submitTo);
+        submitTo.setOnClickListener(this);
         submitBtn = view.findViewById(R.id.submit);
         submitBtn.setOnClickListener(this);
         uiHelper = new UIHelper(getActivity());
@@ -266,6 +277,9 @@ public class CMTaskSubmitFragment extends Fragment implements View.OnClickListen
             case R.id.attachFile:
                 readStorageStateTask();
                 break;
+            case R.id.submitTo:
+                callUserApi();
+                break;
             case R.id.btnBrowse:
                 browseFile(SELECTED_TYPE);
                 break;
@@ -418,6 +432,12 @@ public class CMTaskSubmitFragment extends Fragment implements View.OnClickListen
             File file = new File(attachmentModelList.get(i).getFilePath());
             builder.addFormDataPart("attachments[" + i + "]", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
         }
+        if(teacherSelectedList!=null && teacherSelectedList.size()>0) {
+            for (int t = 0; t<teacherSelectedList.size(); t++){
+                builder.addFormDataPart("instructors[" + t + "]", teacherSelectedList.get(t));
+
+            }
+        }
 
 
         MultipartBody requestBody = builder.build();
@@ -466,6 +486,113 @@ public class CMTaskSubmitFragment extends Fragment implements View.OnClickListen
                     }
                 });
 
+
+    }
+
+    private void callUserApi() {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().getInstructorList(AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<InstructorResponseModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<InstructorResponseModel> value) {
+                        uiHelper.dismissLoadingDialog();
+                        InstructorResponseModel instructorResponseModel = value.body();
+
+                        uiHelper.dismissLoadingDialog();
+
+
+                        if(instructorResponseModel!=null && instructorResponseModel.getCode()!=null) {
+                            if (instructorResponseModel.getCode() == 200) {
+                                Log.v("instructorResponseMo", value.message());
+                                teacherList = instructorResponseModel.getInstructorData().getInstructors();
+                                        showDialogAssignTo();
+                                //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
+
+//                            User user1 = AppSharedPreference.getUserBasicInfo();
+
+                            }
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+
+    }
+
+    RecyclerView listView;
+    TaskSubmitAdapter taskSubmitAdapter;
+    public ArrayList<String> courseList;
+    public List<Student> teacherList = new ArrayList<>();
+    public static ArrayList<String> selectedList;
+    ArrayList<String> editSelectedList = new ArrayList<>();
+
+    LinearLayoutManager linearLayoutManager;
+    private void showDialogAssignTo() {
+        UserCourses userCourses = AppSharedPreference.getUserCourse();
+
+        selectedList = new ArrayList<>();
+        courseList = new ArrayList<>();
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View assignToDialogView = factory.inflate(R.layout.dialog_instructor_submit_to, null);
+
+        listView = assignToDialogView.findViewById(R.id.list);
+
+        taskSubmitAdapter = new TaskSubmitAdapter(getActivity(), teacherList);
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        listView.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        listView.setLayoutManager(linearLayoutManager);
+        listView.setItemAnimator(new DefaultItemAnimator());
+        taskSubmitAdapter.notifyDataSetChanged();
+        listView.setAdapter(taskSubmitAdapter);
+
+//        userTaskAssignAdapter.clear();
+//        userTaskAssignAdapter.addAllData(teacherList);
+
+
+        batchDialog = new AlertDialog.Builder(getActivity()).create();
+        batchDialog.setView(assignToDialogView);
+        assignToDialogView.findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                batchDialog.dismiss();
+            }
+        });
+
+        batchDialog.show();
+        batchDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, 800);
 
     }
 

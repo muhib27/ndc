@@ -96,11 +96,29 @@
                     <!--android:textColor="@color/black"-->
                     <!--android:textSize="@dimen/text_size_16_sp" />-->
             <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:id="@+id/layoutAssignTo"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <TextView
+                    android:layout_below="@+id/description"
+                    android:padding="@dimen/size_10dp"
+                    android:id="@+id/submitTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/assign_to"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16_sp" />
+            <!--</LinearLayout>-->
 
 
             <TextView
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/description"
+                android:layout_below="@+id/submitTo"
                 android:id="@+id/attachmentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

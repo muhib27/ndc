@@ -55,6 +55,7 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
     DashboardNoticeAdapter dashboardNoticeAdapter;
     FloatingActionButton floatingActionButton;
     UIHelper uiHelper;
+    String id = "";
 
 
     public NoticeFragment() {
@@ -76,6 +77,8 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
             MainActivity.toggle.setDrawerIndicatorEnabled(true);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+
+
         uiHelper = new UIHelper(getActivity());
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -91,8 +94,30 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+        Bundle b = getArguments();
+        if (getArguments() != null) {
+            if (b.getString("id", "") != null)
+                id = b.getString("id", "");
+        }
         initNoticeView(view);
-        callNoticeListApi();
+        if(id!=null && !id.isEmpty()){
+            gotoNoticeDetailsFragment(id);
+        }
+        else {
+
+            callNoticeListApi();
+        }
+    }
+
+    private void gotoNoticeDetailsFragment(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+        NoticeDetailsFragment noticeDetailsFragment = new NoticeDetailsFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        noticeDetailsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, noticeDetailsFragment, "noticeDetailsFragment").addToBackStack(null);
+        transaction.commit();
     }
 
     private void initNoticeView(View view) {

@@ -7,8 +7,8 @@ public class URLHelper {
 	public URLHelper() {
 	}
 
-	public static final String BASE_URL = "http://teamworkbd.com/";
-	//public static final String BASE_URL = "http://192.168.2.38/";
+	//public static final String BASE_URL = "http://teamworkbd.com/";
+	public static final String BASE_URL = "http://192.168.2.38/";
 	public static final String SUB_URL = "masterapi/";
 //	public final static String URL_BASE = "http://apimaster.classtune.com/api/";
 	public final static String ADD_FCM = "users/add_fcm";
@@ -26,6 +26,7 @@ public class URLHelper {
 	public final static String GET_PIGEONHOLE_DETAILS= "tasks/view";
 	public final static String GET_PIGEONHOLE_TASK_VIEW_SUBITTED_TASK= "tasks/view_submitted_task";
 	public final static String GET_PIGEONHOLE_TASK_SUBMIT_TASK= "tasks/submit_task/";
+	public final static String GET_INSTRUCTOR_LIST= "tasks/get_course_teacher";
 
 	//cm box
     public final static String GET_CM_BOX_SUBMITTED_LIST = "cmbox/submitted_list";

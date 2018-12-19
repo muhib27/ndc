@@ -3,6 +3,7 @@ package com.classtune.ndc.activity;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -25,11 +26,16 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.adapter.MainViewPagerAdapter;
 import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.apiresponse.menu_api.UserMenu;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
+import com.classtune.ndc.apiresponse.pigeonhole_api.SubmittedTaskData;
 import com.classtune.ndc.fragment.CMBoxFragment;
+import com.classtune.ndc.fragment.CMSubmitTaskDetailsFragment;
 import com.classtune.ndc.fragment.CourseCalendarParentFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
 import com.classtune.ndc.fragment.EventsFragment_old;
 import com.classtune.ndc.fragment.HomeFragment;
+import com.classtune.ndc.fragment.InstructorDetailsFragment;
+import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.ProfileFragment;
@@ -62,11 +68,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TabLayout tabLayout;
     ViewPager viewPager;
     MainViewPagerAdapter mainViewPagerAdapter;
+    UserPermission userPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userPermission = AppSharedPreference.getUserPermission();
+
 
         AppSharedPreference.setUsingFirstTime(false);
         showToolbar();
@@ -108,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     gotoClassScheduleFragment();
                 } else if (tab.getTag().equals("notice")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                    gotoNoticeFragment();
+                    gotoNoticeFragment("");
                 } else if (tab.getTag().equals("reading_package")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
 
@@ -154,10 +164,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         loadImage();
 
-        gotoPigeonholeFragment();
+        Bundle extras = getIntent().getExtras();
 
+        String orderId = "";
+//        gotoPigeonholeFragment();
+        if (extras != null && !extras.isEmpty()) {
+
+            String type = "";
+            String id = "";
+            if(extras.getString("target_type")!=null)
+                type = extras.getString("target_type");
+            if(extras.getString("target_id")!=null)
+                id = extras.getString("target_id");
+
+            if(type.equals("3")) {
+                gotoNoticeDetailsFragment(id);
+            }
+            else if(type.equals("1"))
+            {
+                gotoInstructorDetailsFragment(id);
+            }
+            else if(type.equals("2")){
+                gotoCMSubmitTaskDetailsFragment(id);
+            }
+        } else
+            gotoPigeonholeFragment();
 
         // load();
+    }
+
+    private void gotoNoticeDetailsFragment(String id) {
+        TabLayout.Tab tab = tabLayout.getTabAt(3);
+        tab.select();
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+        NoticeDetailsFragment noticeDetailsFragment = new NoticeDetailsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        noticeDetailsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, noticeDetailsFragment, "noticeDetailsFragment");
+        transaction.commit();
+    }
+    private void gotoInstructorDetailsFragment(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+
+        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        instructorDetailsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);
+        transaction.commit();
+    }
+    private void gotoCMSubmitTaskDetailsFragment(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+        CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = new CMSubmitTaskDetailsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        cmSubmitTaskDetailsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, cmSubmitTaskDetailsFragment, "cmSubmitTaskDetailsFragment").addToBackStack(null);
+        transaction.commit();
     }
 
     private void loadImage() {
@@ -242,11 +309,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "fds", Toast.LENGTH_LONG).show();
 //                DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
-                HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("homeFragment");
-                if (homeFragment != null && homeFragment.isVisible())
+                PigeonholeFragment pigeonholeFragment = (PigeonholeFragment) getSupportFragmentManager().findFragmentByTag("pigeonholeFragment");
+                if (pigeonholeFragment != null && pigeonholeFragment.isVisible())
                     return;
                 else {
-                    gotoDashboardFragment();
+                    //gotoDashboardFragment();
+                    gotoPigeonholeFragment();
                     TabLayout.Tab tab = tabLayout.getTabAt(0);
                     tab.select();
                 }
@@ -298,6 +366,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 TabLayout.Tab tab = tabLayout.getTabAt(0);
                 tab.select();
+                InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
+                CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = (CMSubmitTaskDetailsFragment) getSupportFragmentManager().findFragmentByTag("cmSubmitTaskDetailsFragment");
+                if((instructorDetailsFragment!=null && instructorDetailsFragment.isVisible()) || cmSubmitTaskDetailsFragment!=null && cmSubmitTaskDetailsFragment.isVisible())
+                {
+                    getSupportFragmentManager().popBackStack();
+                    gotoPigeonholeFragment();
+                    return;
+                }
+
+
             }
             getSupportFragmentManager().popBackStack();
 //            DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
@@ -400,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gotoCMBoxFragment();
 
         } else if (id == R.id.nav_notice) {
-            gotoNoticeFragment();
+            gotoNoticeFragment("");
 
         } else if (id == R.id.nav_course_calendar) {
             gotoClassScheduleFragment();
@@ -496,13 +574,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        transaction.commit();
     }
 
-    private void gotoNoticeFragment() {
+    private void gotoNoticeFragment(String id) {
+        Bundle bundle = new Bundle();
+        if(id!=null) {
+            TabLayout.Tab tab = tabLayout.getTabAt(3);
+            tab.select();
+
+            bundle.putString("id", id);
+        }
+
         setUpBackStackCountToZero();
         NoticeFragment noticeFragment = new NoticeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        noticeFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, noticeFragment, "noticeFragment").addToBackStack(null);
-        ;
         transaction.commit();
     }
 
@@ -521,7 +607,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment");
-        ;
         transaction.commit();
     }
 

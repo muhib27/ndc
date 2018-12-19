@@ -7,10 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,27 +15,21 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.classtune.ndc.R;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.afwcCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.capstonCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.ndcCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
+import static com.classtune.ndc.fragment.CMTaskSubmitFragment.teacherSelectedList;
+
 
 //import com.bumptech.glide.DrawableRequestBuilder;
 
@@ -47,7 +38,7 @@ import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedLi
  * Created by Muhib on 20/11/18.
  */
 
-public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TaskSubmitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private String current;
@@ -86,32 +77,18 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 
-    public TaskAssignAdapter(Context context , String s) {
-        this.context = context;
-        pigeonholeDataModelList = new ArrayList<>();
-        current = s;
-    }
-
-    public TaskAssignAdapter(Context context) {
+    public TaskSubmitAdapter(Context context) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
     }
 
-    public TaskAssignAdapter(Context context, List<Student> strList) {
+    public TaskSubmitAdapter(Context context, List<Student> strList) {
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        this.pigeonholeDataModelList = strList;
 
     }
 
-    public TaskAssignAdapter(FragmentActivity activity, String current, List<String> editSelectedList, String SELECTED_TAB) {
-        this.context = activity;
-        this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
-        this.editSelectedList = editSelectedList;
-        this.SELECTED_TAB = SELECTED_TAB;
-        this.current = current;
-    }
 
 
     public List<Student> getMovies() {
@@ -159,17 +136,17 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             case ITEM:
                 itemHolder = (PigeonholeListItem) holder;
-                int total = phTasks.size();
+                int total = pigeonholeDataModelList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
-                if(SELECTED_TAB.isEmpty()) {
-                    if (selectedList.contains(pigeonholeDataModelList.get(position).getId()))
-                        itemHolder.selectCM.setChecked(true);
-                    else
-                        itemHolder.selectCM.setChecked(false);
-                }
-                else if(SELECTED_TAB.equals("custom") && pigeonholeDataModelList.get(position).isSelected())
+//                if(SELECTED_TAB.isEmpty()) {
+//                    if (selectedList.contains(pigeonholeDataModelList.get(position).getId()))
+//                        itemHolder.selectCM.setChecked(true);
+//                    else
+//                        itemHolder.selectCM.setChecked(false);
+//                }
+                if( pigeonholeDataModelList.get(position).isSelected())
                     itemHolder.selectCM.setChecked(true);
                 else
                     itemHolder.selectCM.setChecked(false);
@@ -181,14 +158,9 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         selectedPosition = itemHolder.getAdapterPosition();
                         itemHolder.selectCM.setChecked(b);
-                        if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
-                            selectedList.add(pigeonholeDataModelList.get(position).getId());
-                            if(current.equals("ndc"))
-                                ndcCount++;
-                            else if(current.equals("afwc"))
-                                afwcCount++;
-                            else if(current.equals("capston"))
-                                capstonCount++;
+                        if(!teacherSelectedList.contains(pigeonholeDataModelList.get(position).getId())) {
+                            teacherSelectedList.add(pigeonholeDataModelList.get(position).getId());
+
                             if(selectedPosition == position)
                                 itemHolder.selectCM.setChecked(true);
                             else
@@ -196,13 +168,8 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                         }
                         else {
-                            selectedList.remove(pigeonholeDataModelList.get(position).getId());
-                            if(current.equals("ndc"))
-                                ndcCount--;
-                            else if(current.equals("afwc"))
-                                afwcCount--;
-                            else if(current.equals("capston"))
-                                capstonCount--;
+                            teacherSelectedList.remove(pigeonholeDataModelList.get(position).getId());
+
                             //compoundButton.setChecked(false);
                         }
                     }
@@ -295,7 +262,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //            else
 //                return ADD;
 //        } else {
-//            return ITEM;
+            return ITEM;
 //        }
 
 //        if (position!= 24 && position%6 == 0 ) {
@@ -306,7 +273,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //            return ADD;
 //        }
 //        else {
-        return (position == pigeonholeDataModelList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+//        return (position == pigeonholeDataModelList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
 //        }
     }
 

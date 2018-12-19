@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/userImage"
                 android:src="@drawable/ndc_icon"
                 android:layout_width="@dimen/margin_0dp"
                 android:layout_height="60dp"

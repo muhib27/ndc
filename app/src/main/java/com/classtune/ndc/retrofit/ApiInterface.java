@@ -8,6 +8,7 @@ import com.classtune.ndc.apiresponse.NoticeApi.SingleNoticeResponseModel;
 import com.classtune.ndc.apiresponse.course_calendar_api.EventsResponseModel;
 import com.classtune.ndc.apiresponse.course_calendar_api.RoutineResponseModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
+import com.classtune.ndc.apiresponse.pigeonhole_api.InstructorResponseModel;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
@@ -157,9 +158,9 @@ public interface ApiInterface {
     @POST(URLHelper.GET_RESEARCH_CM_LIST)
     Observable<Response<ResearchTopicResponseModel>> getCMResearch(@Field("api_key") String api_key);
 
-
-
-
+    @FormUrlEncoded
+    @POST(URLHelper.GET_INSTRUCTOR_LIST)
+    Observable<Response<InstructorResponseModel>> getInstructorList(@Field("api_key") String api_key);
 
 
 

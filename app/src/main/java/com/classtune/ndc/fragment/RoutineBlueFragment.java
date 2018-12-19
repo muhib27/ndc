@@ -136,7 +136,7 @@ public class RoutineBlueFragment extends Fragment {
                                 blueRoutineAdapter.addAllData(routine);
                                 //Log.v("tt", cmBoxSubmittedTasks.toString());
                             } else if (routineResponseModel.getCode() == 500) {
-                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else {

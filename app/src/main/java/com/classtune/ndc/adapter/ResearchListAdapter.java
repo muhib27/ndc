@@ -1,6 +1,7 @@
 package com.classtune.ndc.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,11 @@ import android.widget.TextView;
 
 //import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.research_api.Research;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
@@ -27,6 +33,7 @@ import com.classtune.ndc.fragment.ResearchTopicListFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.model.ResearcherModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
+import com.classtune.ndc.utils.URLHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,6 +173,32 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     }
                 });
+
+                String st = URLHelper.BASE_URL + researcherModelList.get(position).getImage();
+                try {
+                    Glide.with(context)
+
+                            .load(URLHelper.BASE_URL + researcherModelList.get(position).getImage())
+                            //.placeholder(R.drawable.ndc_logo)
+                            //.error(R.drawable.ndc_logo)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    // log exception
+                                    Log.e("TAG", "Error loading image", e);
+                                    return false; // important to return false so the error placeholder can be placed
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
+                            .into(itemHolder.userImage);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
                 break;
 
 
@@ -214,6 +247,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return (position == researcherModelList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
 //        }
     }
+
 
 
 //
@@ -323,7 +357,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private TextView name;
         private TextView email;
         //  private TextView name, quantity, totalPay, totalPayText, orderDate; // displays "year | language"
-        private ImageView selected;
+        private ImageView selected, userImage;
         private ProgressBar mProgress;
         private TextView total;
         private LinearLayout itemLayout;
@@ -339,6 +373,7 @@ public class ResearchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             email = (TextView) itemView.findViewById(R.id.email);
             selected = itemView.findViewById(R.id.selected);
             total = itemView.findViewById(R.id.total);
+            userImage = itemView.findViewById(R.id.userImage);
 
 
         }

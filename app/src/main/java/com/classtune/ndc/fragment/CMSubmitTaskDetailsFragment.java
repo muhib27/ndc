@@ -22,6 +22,7 @@ import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.SubmittedTask;
@@ -59,6 +60,7 @@ public class CMSubmitTaskDetailsFragment extends Fragment implements View.OnClic
     SubmittedTaskData submittedTaskData;
 
 
+
     public CMSubmitTaskDetailsFragment() {
         // Required empty public constructor
     }
@@ -78,17 +80,26 @@ public class CMSubmitTaskDetailsFragment extends Fragment implements View.OnClic
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
         userPermission = AppSharedPreference.getUserPermission();
         submittedTaskData = new SubmittedTaskData();
 
-
+        initView(view);
+        uiHelper = new UIHelper(getActivity());
         Bundle b = getArguments();
         if (getArguments() != null) {
-            if (b.getSerializable("submittedTaskData") != null)
+            if (b.getSerializable("submittedTaskData") != null) {
                 submittedTaskData = (SubmittedTaskData) b.getSerializable("submittedTaskData");
+                populateData(submittedTaskData);
+            }
+            else if(b.getString("id")!=null && !b.getString("id").isEmpty())
+            {
+                callTaskApi(id);
+            }
         }
-        uiHelper = new UIHelper(getActivity());
-        initView(view);
+
+
+
 //        if (id != null && !id.isEmpty())
 //            callTaskListApi(id);
     }
@@ -99,17 +110,82 @@ public class CMSubmitTaskDetailsFragment extends Fragment implements View.OnClic
         assignDate = v.findViewById(R.id.assignDate);
         attachment_container = v.findViewById(R.id.attachment_container);
 
-        if(submittedTaskData.getSubmittedTask().getContent()!=null && !submittedTaskData.getSubmittedTask().getContent().isEmpty())
-            title.setText(submittedTaskData.getSubmittedTask().getContent());
-        if(submittedTaskData.getSubmittedTask().getCreatedAt()!=null && !submittedTaskData.getSubmittedTask().getCreatedAt().isEmpty())
-            assignDate.setText(AppUtility.getDateString(submittedTaskData.getSubmittedTask().getCreatedAt(),AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+        }
+    }
+
+    private void callTaskApi(final String id) {
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().getPHTaskViewSubmitTask(AppSharedPreference.getApiKey(), id)
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<PHTaskSubmitResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<PHTaskSubmitResponse> value) {
+                        uiHelper.dismissLoadingDialog();
+                        PHTaskSubmitResponse phTaskSubmitResponse = value.body();
+
+                        if (phTaskSubmitResponse!=null && phTaskSubmitResponse.getCode() == 200) {
+                            Log.v("PigeonholeFragment", value.message());
+                          populateData(phTaskSubmitResponse.getSubmittedTaskData());
+
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+//                        progressDialog.dismiss();
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+    }
+
+    private void populateData(SubmittedTaskData submittedTaskData){
+        if(this.submittedTaskData.getSubmittedTask().getContent()!=null && !this.submittedTaskData.getSubmittedTask().getContent().isEmpty())
+            title.setText(this.submittedTaskData.getSubmittedTask().getContent());
+        if(this.submittedTaskData.getSubmittedTask().getCreatedAt()!=null && !this.submittedTaskData.getSubmittedTask().getCreatedAt().isEmpty())
+            assignDate.setText(AppUtility.getDateString(this.submittedTaskData.getSubmittedTask().getCreatedAt(),AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
-        List<Attachment> attachmentList = submittedTaskData.getSubmittedTask().getAttachments();
+        List<Attachment> attachmentList = this.submittedTaskData.getSubmittedTask().getAttachments();
         if (attachmentList != null && attachmentList.size() > 0) {
 
-            for (int i = 0; i < submittedTaskData.getSubmittedTask().getAttachments().size(); i++) {
+            for (int i = 0; i < this.submittedTaskData.getSubmittedTask().getAttachments().size(); i++) {
                 // Add the text layout to the parent layout
                 view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
 
@@ -136,15 +212,6 @@ public class CMSubmitTaskDetailsFragment extends Fragment implements View.OnClic
                 // Add the text view to the parent layout
                 attachment_container.addView(attachmentImage);
             }
-        }
-
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
         }
     }
 
