@@ -165,7 +165,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(URLHelper.GET_READING_LIST)
-    Observable<Response<RPResponseModel>> getReadingList(@Field("api_key") String api_key, @Field("parent_id") String parent_id);
+    Observable<Response<RPResponseModel>> getReadingList(@Field("api_key") String api_key, @Field("parent_id") String parent_id, @Field("reading_content_id ") String reading_content_id);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_READING_CONTENT)

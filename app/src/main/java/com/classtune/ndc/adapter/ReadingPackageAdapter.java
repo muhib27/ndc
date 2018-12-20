@@ -241,7 +241,7 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         //bundle.putString("products", str);
 //                        bundle.putString("order_id", orderList.get(position).getId());
                         if (readingLists.get(position).getType().equals("0") || readingLists.get(position).getType().equals("1"))
-                            gotoReadingPackageFragment(readingLists.get(position).getType());
+                            gotoReadingPackageFragment(readingLists.get(position).getType(), readingLists.get(position).getId());
                         else if(readingLists.get(position).getType().equals("3"))
                             gotoReadingMaterialsFragment(readingLists.get(position).getId());
 
@@ -678,10 +678,11 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    private void gotoReadingPackageFragment(String type) {
+    private void gotoReadingPackageFragment(String type, String id) {
         Bundle bundle = new Bundle();
         if (type != null) {
             bundle.putString("type", type);
+            bundle.putString("id", id);
         }
         ReadingPackageFragment readingPackageFragment = new ReadingPackageFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();

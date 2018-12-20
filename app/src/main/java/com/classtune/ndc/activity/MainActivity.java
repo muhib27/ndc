@@ -596,6 +596,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void gotoReadingPackageFragment() {
         Bundle bundle = new Bundle();
         bundle.putString("type", "0");
+        bundle.putString("id", "0");
 //        if(id!=null) {
 //            TabLayout.Tab tab = tabLayout.getTabAt(3);
 //            tab.select();
