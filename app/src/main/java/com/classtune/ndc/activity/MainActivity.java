@@ -39,6 +39,7 @@ import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.ProfileFragment;
+import com.classtune.ndc.fragment.ReadingPackageFragment;
 import com.classtune.ndc.fragment.ResearchListFragment;
 import com.classtune.ndc.fragment.ResearchTopicListFragment;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     gotoNoticeFragment("");
                 } else if (tab.getTag().equals("reading_package")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-
+                    gotoReadingPackageFragment();
                 } else if (tab.getTag().equals("research_icon")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     UserMenu userMenu = AppSharedPreference.getUserMenu();
@@ -589,6 +590,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         noticeFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, noticeFragment, "noticeFragment").addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void gotoReadingPackageFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "0");
+//        if(id!=null) {
+//            TabLayout.Tab tab = tabLayout.getTabAt(3);
+//            tab.select();
+//
+//            bundle.putString("id", id);
+//        }
+
+        setUpBackStackCountToZero();
+        ReadingPackageFragment readingPackageFragment = new ReadingPackageFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        readingPackageFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, readingPackageFragment, "readingPackageFragment").addToBackStack(null);
         transaction.commit();
     }
 

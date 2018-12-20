@@ -13,6 +13,7 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.apiresponse.reading_package.RPResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchTopicResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchWingResponseModel;
 import com.classtune.ndc.fragment.CMTaskSubmitFragment;
@@ -162,6 +163,13 @@ public interface ApiInterface {
     @POST(URLHelper.GET_INSTRUCTOR_LIST)
     Observable<Response<InstructorResponseModel>> getInstructorList(@Field("api_key") String api_key);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_READING_LIST)
+    Observable<Response<RPResponseModel>> getReadingList(@Field("api_key") String api_key, @Field("parent_id") String parent_id);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_READING_CONTENT)
+    Observable<Response<JsonElement>> getReadingContent(@Field("api_key") String api_key, @Field("reading_content_id ") String reading_content_id );
 
 
 

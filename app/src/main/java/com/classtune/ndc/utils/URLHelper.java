@@ -29,7 +29,7 @@ public class URLHelper {
 	public final static String GET_INSTRUCTOR_LIST= "tasks/get_course_teacher";
 
 	//cm box
-    public final static String GET_CM_BOX_SUBMITTED_LIST = "cmbox/submitted_list";
+    public final static String GET_CM_BOX_SUBMITTED_LIST = "my_cmbox/submitted_list";
     public final static String GET_CM_BOX_DETAILS= "tasks/single_view";
 
     //Notice
@@ -49,6 +49,10 @@ public class URLHelper {
     public final static String GET_PROGRAM_YELLOW_ROUTINE_LIST = "program_yellow/routine_list";
 	public final static String GET_PROGRAM_BLUE_ROUTINE_LIST = "program_blue/routine_list";
 	public final static String GET_EVENTS_LIST = "events/event_list";
+
+	//
+	public final static String GET_READING_LIST = "readingpackage/reading_list";
+	public final static String GET_READING_CONTENT = "readingpackage/reading_content";
 	
 	public final static String URL_GCM_REGISTER = "freeuser/addgcm";
 

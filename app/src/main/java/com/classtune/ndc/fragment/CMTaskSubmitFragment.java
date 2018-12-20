@@ -471,7 +471,6 @@ public class CMTaskSubmitFragment extends Fragment implements View.OnClickListen
                             Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
                     }
 
-
                     @Override
                     public void onError(Throwable e) {
 
