@@ -72,4 +72,11 @@
 
     <!--humberger-->
 
+    <!--<style name="tab_bar">-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:tabStripEnabled">false</item>-->
+        <!--<item name="tabPaddingStart">0dp</item>-->
+        <!--<item name="tabPaddingEnd">0dp</item>-->
+    <!--</style>-->
+
 </resources>

@@ -21,6 +21,9 @@ public class EventList {
     @SerializedName("is_holiday")
     @Expose
     private String isHoliday;
+    @SerializedName("is_academic")
+    @Expose
+    private String isAcademid;
     @SerializedName("remote")
     @Expose
     private String remote;
@@ -95,4 +98,11 @@ public class EventList {
         this.className = className;
     }
 
+    public String getIsAcademid() {
+        return isAcademid;
+    }
+
+    public void setIsAcademid(String isAcademid) {
+        this.isAcademid = isAcademid;
+    }
 }

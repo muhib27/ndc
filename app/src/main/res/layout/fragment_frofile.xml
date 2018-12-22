@@ -30,14 +30,14 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_10dp">
 
-                    <ImageButton
-                        android:id="@+id/edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@null"
-                        android:src="@drawable/edit_icon" />
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/edit"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:background="@null"-->
+                        <!--android:src="@drawable/edit_icon" />-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -188,7 +188,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
-                                android:src="@drawable/bell_icon" />
+                                android:src="@drawable/commission" />
 
                             <LinearLayout
                                 android:layout_width="@dimen/margin_0dp"
@@ -236,7 +236,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/batch" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -283,7 +283,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/commission" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -299,6 +299,7 @@
                                 android:textSize="@dimen/text_size_13_sp" />
 
                             <EditText
+                                android:id="@+id/doc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#00000000"
@@ -328,7 +329,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/nationality" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -344,6 +345,7 @@
                                 android:textSize="@dimen/text_size_13_sp" />
 
                             <EditText
+                                android:id="@+id/nationality"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#00000000"
@@ -373,7 +375,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/course_calendar_tab" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -389,6 +391,7 @@
                                 android:textSize="@dimen/text_size_13_sp" />
 
                             <EditText
+                                android:id="@+id/dob"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#00000000"
@@ -418,7 +421,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/blood_gp" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -434,6 +437,7 @@
                                 android:textSize="@dimen/text_size_13_sp" />
 
                             <EditText
+                                android:id="@+id/bloodGp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#00000000"
@@ -463,7 +467,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/ms_icon" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -510,7 +514,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/cell" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"
@@ -557,7 +561,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:src="@drawable/bell_icon" />
+                            android:src="@drawable/cell" />
 
                         <LinearLayout
                             android:layout_width="@dimen/margin_0dp"

@@ -1,10 +1,9 @@
-package com.classtune.ndc.apiresponse.pigeonhole_api;
-
+package com.classtune.ndc.apiresponse.reading_package;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PHTaskListResponse {
+public class RMResponseModel {
 
     @SerializedName("code")
     @Expose
@@ -14,7 +13,7 @@ public class PHTaskListResponse {
     private String msg;
     @SerializedName("data")
     @Expose
-    private PHTaskData phTaskData;
+    private RMData data;
 
     public Integer getCode() {
         return code;
@@ -32,11 +31,11 @@ public class PHTaskListResponse {
         this.msg = msg;
     }
 
-    public PHTaskData getPhTaskData() {
-        return phTaskData;
+    public RMData getData() {
+        return data;
     }
 
-    public void setPhTaskData(PHTaskData phTaskData) {
-        this.phTaskData = phTaskData;
+    public void setData(RMData data) {
+        this.data = data;
     }
 }

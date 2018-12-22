@@ -13,6 +13,7 @@ public class URLHelper {
 //	public final static String URL_BASE = "http://apimaster.classtune.com/api/";
 	public final static String ADD_FCM = "users/add_fcm";
 	public final static String URL_LOGIN = "users/login";
+	public final static String URL_PROFILE = "users/profile";
 	public final static String GET_MENU = "users/get_menu";
 	public final static String GET_LOGOUT = "users/logout";
 

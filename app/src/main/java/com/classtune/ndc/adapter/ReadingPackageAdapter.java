@@ -688,7 +688,7 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         readingPackageFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, readingPackageFragment, "readingPackageFragment");
+        transaction.replace(R.id.main_acitivity_container, readingPackageFragment, "readingPackageFragment").addToBackStack(null);
         transaction.commit();
     }
 
@@ -701,7 +701,7 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         readingMaterialsFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, readingMaterialsFragment, "readingMaterialsFragment");
+        transaction.replace(R.id.main_acitivity_container, readingMaterialsFragment, "readingMaterialsFragment").addToBackStack(null);
         transaction.commit();
     }
 

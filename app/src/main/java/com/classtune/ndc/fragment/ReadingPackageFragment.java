@@ -107,7 +107,7 @@ public class ReadingPackageFragment extends Fragment implements PaginationAdapte
         initNoticeView(view);
         if((id!=null && !id.isEmpty() )&& (type!=null && !type.isEmpty())){
             //gotoNoticeDetailsFragment(id);
-            callNoticeListApi(type, id);
+            callApi(type, id);
         }
         else {
 
@@ -161,7 +161,7 @@ public class ReadingPackageFragment extends Fragment implements PaginationAdapte
 //                break;
         }
     }
-    private void callNoticeListApi( String parentId, String id) {
+    private void callApi( String parentId, String id) {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -170,7 +170,7 @@ public class ReadingPackageFragment extends Fragment implements PaginationAdapte
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getReadingList(AppSharedPreference.getApiKey(), parentId, id)
+        RetrofitApiClient.getApiInterface().getReadingList(AppSharedPreference.getApiKey(), id)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -156,6 +156,13 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
                 else
                     itemHolder.endDate.setVisibility(View.INVISIBLE);
+
+                if(eventLists.get(position).getIsAcademid()!=null){
+                    itemHolder.isAcademic.setVisibility(View.VISIBLE);
+                    itemHolder.colorView.setBackgroundColor(context.getResources().getColor(R.color.blue_color));
+                }
+                else
+                    itemHolder.isAcademic.setVisibility(View.GONE);
 //
 //                if(routineList.get(position).getMode()!=null)
 //                    itemHolder.mode.setText(routineList.get(position).getMode());
@@ -299,7 +306,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private LinearLayout itemLayout;
         private LinearLayout itemNameLayout;
         private TextView endDate;
-        View colorView;
+        View colorView, isAcademic;
         private TextView status, customerNameText, totalItemText, deliveryTime, delivery;
 
         public NoticeListItem(View itemView) {
@@ -313,6 +320,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mode = (TextView) itemView.findViewById(R.id.mode);
             endDate = (TextView) itemView.findViewById(R.id.endDate);
             colorView = (View) itemView.findViewById(R.id.isHolyday);
+            isAcademic = (View) itemView.findViewById(R.id.isAcademic);
 
 
 

@@ -1,6 +1,7 @@
 package com.classtune.ndc.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
@@ -93,37 +94,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
 //        viewPager.setAdapter(mainViewPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_tab_icon).setTag("pigeonhole"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_hole_tab_).setTag("pigeonhole"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box_tab).setTag("cm_box"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.course_calendar_tab).setTag("course_calendar"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab).setTag("notice"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cc_tab_).setTag("course_calendar"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab_).setTag("notice"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package_tab).setTag("reading_package"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_icon_tab).setTag("research_icon"));
-//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-//            TabLayout.Tab tab = tabLayout.getTabAt(i);
-//            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
-//        }
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_tab_).setTag("research_icon"));
 
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
+        }
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getTag().equals("pigeonhole")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     gotoPigeonholeFragment();
                 } else if (tab.getTag().equals("cm_box")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoCMBoxFragment();
                 } else if (tab.getTag().equals("course_calendar")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoClassScheduleFragment();
                 } else if (tab.getTag().equals("notice")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoNoticeFragment("");
                 } else if (tab.getTag().equals("reading_package")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoReadingPackageFragment();
                 } else if (tab.getTag().equals("research_icon")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     UserMenu userMenu = AppSharedPreference.getUserMenu();
                     if (userMenu.isResearch())
@@ -466,37 +474,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action
 //        } else
-        if (id == R.id.nav_home) {
-
-            gotoDashboardFragment();
-
-        } else if (id == R.id.nav_pigeonhole) {
-
-            gotoPigeonholeFragment();
-
-        } else if (id == R.id.nav_cm_box) {
-
-            gotoCMBoxFragment();
-
-        } else if (id == R.id.nav_notice) {
-            gotoNoticeFragment("");
-
-        } else if (id == R.id.nav_course_calendar) {
-            gotoClassScheduleFragment();
-
-        } else if (id == R.id.nav_events) {
-            gotoEventsFragment();
-
-        } else if (id == R.id.nav_research) {
-            gotoResearchListFragment();
-
-        } else if (id == R.id.nav_profile) {
+//        if (id == R.id.nav_home) {
+//
+//            gotoDashboardFragment();
+//
+//        } else if (id == R.id.nav_pigeonhole) {
+//
+//            gotoPigeonholeFragment();
+//
+//        } else if (id == R.id.nav_cm_box) {
+//
+//            gotoCMBoxFragment();
+//
+//        } else if (id == R.id.nav_notice) {
+//            gotoNoticeFragment("");
+//
+//        } else if (id == R.id.nav_course_calendar) {
+//            gotoClassScheduleFragment();
+//
+//        } else if (id == R.id.nav_events) {
+//            gotoEventsFragment();
+//
+//        } else if (id == R.id.nav_research) {
+//            gotoResearchListFragment();
+//
+//        } else
+            if (id == R.id.nav_profile) {
+                tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
             gotoProfileFragment();
         } else if (id == R.id.nav_logout) {
             callLogOutApi();
-        } else if (id == R.id.nav_reading_package) {
-            return false;
         }
+//        else if (id == R.id.nav_reading_package) {
+//            return false;
+//        }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

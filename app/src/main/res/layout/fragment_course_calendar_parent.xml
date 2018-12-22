@@ -6,11 +6,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.CourseCalendarParentFragment">
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
+    <LinearLayout
+        android:background="@drawable/side_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="@dimen/margin_0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/cc_tab_" />
+
+        <TextView
+            android:layout_width="@dimen/margin_0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:paddingLeft="@dimen/size_15dp"
+            android:text="Course Calendar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20_sp"
+            android:textStyle="normal" />
+
+        <!--<ImageView-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_width="@dimen/margin_0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/dot_menu_w" />-->
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        app:tabIndicatorHeight="40dp"
+        android:id="@+id/tabs"
+        app:tabIndicatorColor="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         app:tabGravity="fill"
         app:tabMode="fixed" />
 

@@ -1,18 +1,27 @@
 package com.classtune.ndc.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.activity.VideoPlayerActivity;
+import com.classtune.ndc.apiresponse.Attachment;
+import com.classtune.ndc.apiresponse.reading_package.RMAttachment;
+import com.classtune.ndc.apiresponse.reading_package.RMResponseModel;
 import com.classtune.ndc.apiresponse.reading_package.RPResponseModel;
 import com.classtune.ndc.apiresponse.reading_package.ReadingList;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
@@ -21,6 +30,7 @@ import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -35,7 +45,11 @@ import retrofit2.Response;
 public class ReadingMaterialsFragment extends Fragment {
     UIHelper uiHelper;
     WebView webView;
-    String id ="";
+    TextView title;
+    String id = "";
+    LinearLayout attachment_container;
+    ImageView attachmentImage;
+    List<ImageView> list = new ArrayList<ImageView>();
 
     public ReadingMaterialsFragment() {
         // Required empty public constructor
@@ -62,12 +76,14 @@ public class ReadingMaterialsFragment extends Fragment {
         }
         uiHelper = new UIHelper(getActivity());
         webView = view.findViewById(R.id.webView);
+        attachment_container = view.findViewById(R.id.attachment_container);
+        title = view.findViewById(R.id.title);
 
         callReadingApi(id);
     }
 
 
-    private void callReadingApi( String id) {
+    private void callReadingApi(String id) {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -80,31 +96,32 @@ public class ReadingMaterialsFragment extends Fragment {
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<JsonElement>>() {
+                .subscribe(new Observer<Response<RMResponseModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<JsonElement> value) {
+                    public void onNext(Response<RMResponseModel> value) {
                         uiHelper.dismissLoadingDialog();
-                       // RPResponseModel rpResponseModel = value.body();
+                        RMResponseModel rmResponseModel = value.body();
 
-//                        if(rpResponseModel != null && rpResponseModel.getCode()!=null) {
-//                            if (rpResponseModel.getCode() == 200) {
-////                                Log.v("noticeResponseModel", value.message());
-//                                List<ReadingList> readingList = rpResponseModel.getReadingPackageData().getReadingList();
-////                                Collections.reverse(readingList);
+                        if (rmResponseModel != null && rmResponseModel.getCode() != null) {
+                            if (rmResponseModel.getCode() == 200) {
+//                                Log.v("noticeResponseModel", value.message());
+//                                List<ReadingList> readingList = rmResponseModel.getReadingPackageData().getReadingList();
+//                                Collections.reverse(readingList);
 //                                readingPackageAdapter.addAllData(readingList);
 //                                Log.v("tt", readingList.toString());
-//                            } else if (rpResponseModel.getCode() == 500) {
-//                                //Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                        else {
-//                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
-//                        }
+                                populateData(rmResponseModel);
+
+                            } else if (rmResponseModel.getCode() == 500) {
+                                //Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
@@ -127,5 +144,63 @@ public class ReadingMaterialsFragment extends Fragment {
                 });
 
 
+    }
+
+    private void populateData(RMResponseModel rmResponseModel){
+
+        try {
+            if (rmResponseModel.getData().getReadingContent().getContentDetails().getTitle() != null)
+                title.setText(rmResponseModel.getData().getReadingContent().getContentDetails().getTitle());
+            if (rmResponseModel.getData().getReadingContent().getContentDetails().getContent() != null) {
+                String contentStr = String.valueOf(Html
+                        .fromHtml("<![CDATA[<body style=\"text-align:justify;color:#222222; \">"
+                                + rmResponseModel.getData().getReadingContent().getContentDetails().getContent()
+                                + "</body>]]>"));
+                webView.loadData("<style>figure{height: auto;width: 100% !important; padding:0px !important;margin:0px !important;} img{height: auto;width: 100% !important;} </style>" + contentStr, "text/html", "UTF-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view;
+        if(rmResponseModel.getData().getReadingContent().getAttachments()!=null) {
+            List<RMAttachment> attachmentList = rmResponseModel.getData().getReadingContent().getAttachments();
+            if (attachmentList != null && attachmentList.size() > 0) {
+
+                for (int i = 0; i < rmResponseModel.getData().getReadingContent().getAttachments().size(); i++) {
+                    // Add the text layout to the parent layout
+                    view = layoutInflater.inflate(R.layout.attachment_layout, attachment_container, false);
+
+                    // In order to get the view we have to use the new view with text_layout in it
+                    attachmentImage = view.findViewById(R.id.attachmentImage);
+                    attachmentImage.setTag(attachmentList.get(i).getFileName());
+                    attachmentImage.setId(i + 1);
+                    list.add(attachmentImage);
+                    for (final ImageView imageView : list) {
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
+                                if (imageView.getTag().toString().contains(".mp4")) {
+                                    Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                                    intent.putExtra("url", imageView.getTag().toString());
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+//            textView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(getApplicationContext(), textView.getTag().toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+
+                    // Add the text view to the parent layout
+                    attachment_container.addView(attachmentImage);
+                }
+            }
+        }
     }
 }

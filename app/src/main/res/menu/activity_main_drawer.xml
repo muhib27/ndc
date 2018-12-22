@@ -9,46 +9,46 @@
             <!--android:id="@+id/nav_camera"-->
             <!--android:icon="@drawable/ic_menu_camera"-->
             <!--android:title="Import" />-->
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_home"
-            android:icon="@drawable/home_nav"
-            android:title="Home" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_pigeonhole"
-            android:icon="@drawable/pigeohole_nav"
-            android:title="Pigeonhole" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_cm_box"
-            android:icon="@drawable/pigenhole_icon"
-            android:title="CM Box" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_notice"
-            android:icon="@drawable/notice_nav"
-            android:title="Notice" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_course_calendar"
-            android:icon="@drawable/class_schedule_nav"
-            android:title="@string/course_calendar_text" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_events"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/events_text" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_research"
-            android:icon="@drawable/research_nav"
-            android:title="@string/research_text" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_reading_package"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/reading_package_text" />
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_home"-->
+            <!--android:icon="@drawable/home_nav"-->
+            <!--android:title="Home" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_pigeonhole"-->
+            <!--android:icon="@drawable/pigeohole_nav"-->
+            <!--android:title="Pigeonhole" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_cm_box"-->
+            <!--android:icon="@drawable/pigenhole_icon"-->
+            <!--android:title="CM Box" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_notice"-->
+            <!--android:icon="@drawable/notice_nav"-->
+            <!--android:title="Notice" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_course_calendar"-->
+            <!--android:icon="@drawable/class_schedule_nav"-->
+            <!--android:title="@string/course_calendar_text" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_events"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="@string/events_text" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_research"-->
+            <!--android:icon="@drawable/research_nav"-->
+            <!--android:title="@string/research_text" />-->
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_reading_package"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="@string/reading_package_text" />-->
         <item
             app:itemTextColor="#676767"
             android:id="@+id/nav_profile"

@@ -13,6 +13,7 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.apiresponse.reading_package.RMResponseModel;
 import com.classtune.ndc.apiresponse.reading_package.RPResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchTopicResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchWingResponseModel;
@@ -52,6 +53,11 @@ public interface ApiInterface {
     @POST(URLHelper.URL_LOGIN)
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
     Observable<Response<LoginApiModel>> userLogin(@Field("email") String userId, @Field("password") String password, @Field("fcm_id") String gcm_id);
+
+    @FormUrlEncoded
+    @POST(URLHelper.URL_PROFILE)
+//    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
+    Observable<Response<JsonElement>> userProfile(@Field("api_key") String api_key);
 
     @FormUrlEncoded
     @POST(URLHelper.ADD_FCM)
@@ -165,11 +171,11 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(URLHelper.GET_READING_LIST)
-    Observable<Response<RPResponseModel>> getReadingList(@Field("api_key") String api_key, @Field("parent_id") String parent_id, @Field("reading_content_id ") String reading_content_id);
+    Observable<Response<RPResponseModel>> getReadingList(@Field("api_key") String api_key, @Field("parent_id") String parent_id);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_READING_CONTENT)
-    Observable<Response<JsonElement>> getReadingContent(@Field("api_key") String api_key, @Field("reading_content_id ") String reading_content_id );
+    Observable<Response<RMResponseModel>> getReadingContent(@Field("api_key") String api_key, @Field("reading_content_id") String reading_content_id );
 
 
 

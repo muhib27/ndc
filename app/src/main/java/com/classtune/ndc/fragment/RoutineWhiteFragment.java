@@ -127,7 +127,7 @@ public class RoutineWhiteFragment extends Fragment {
                         uiHelper.dismissLoadingDialog();
                         RoutineResponseModel routineResponseModel = value.body();
 
-                        if (whiteRoutineAdapter != null && routineResponseModel.getCode() != null) {
+                        if (routineResponseModel != null && routineResponseModel.getCode() != null) {
                             if(routineResponseModel.getCode()==200) {
                                 Log.v("routineResponseModel", value.message());
                                 List<Routine> routine = routineResponseModel.getRoutineData().getRoutine();

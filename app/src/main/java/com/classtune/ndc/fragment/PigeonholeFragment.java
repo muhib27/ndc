@@ -147,16 +147,19 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 //                        MenuApiResponse menuApiResponse = value.body();
 
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
-
-                        if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
-                            Log.v("PigeonholeFragment", value.message());
-                            List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
-                            Collections.reverse(phTaskList);
-                            pigeonholeAdapter.addAllData(phTaskList);
-                            Log.v("tt", phTaskList.toString());
+                        if(phTaskListResponse != null && phTaskListResponse.getCode()!=null) {
+                            if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
+                                Log.v("PigeonholeFragment", value.message());
+                                List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
+                                Collections.reverse(phTaskList);
+                                pigeonholeAdapter.addAllData(phTaskList);
+                                Log.v("tt", phTaskList.toString());
+                            } else if (phTaskListResponse.getCode() == 500) {
+                                Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else if(phTaskListResponse.getCode()==500){
-                            Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
                         }
 
                     }

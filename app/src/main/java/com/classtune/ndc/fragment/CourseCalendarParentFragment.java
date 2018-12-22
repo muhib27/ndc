@@ -1,6 +1,7 @@
 package com.classtune.ndc.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,8 @@ public class CourseCalendarParentFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
     CCViewPagerAdapter ccViewPagerAdapter;
+    View view;
+
 
     public CourseCalendarParentFragment() {
         // Required empty public constructor
@@ -39,15 +42,53 @@ public class CourseCalendarParentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            MainActivity.toggle.setDrawerIndicatorEnabled(false);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+//            MainActivity.toggle.setDrawerIndicatorEnabled(false);
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
         int back = getActivity().getSupportFragmentManager().getBackStackEntryCount();
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         ccViewPagerAdapter = new CCViewPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(ccViewPagerAdapter);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()== 0) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
+//                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
+                    tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#727272"));
+                }
+                else if(tab.getPosition()== 1) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#DFE1E2"));
+//                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
+                    tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#727272"));
+                }
+               else if(tab.getPosition()== 2) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffdf00"));
+//                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
+                    tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#324055"));
+                }
+                else if(tab.getPosition()== 3) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#007894"));
+//                    tabLayout.setBackgroundColor(getResources().getColor(R.color.yellow));
+                    tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#ffffff"));
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }
