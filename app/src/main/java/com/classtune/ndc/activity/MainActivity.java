@@ -95,17 +95,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        viewPager.setAdapter(mainViewPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_hole_tab_).setTag("pigeonhole"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box_tab).setTag("cm_box"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box).setTag("cm_box"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cc_tab_).setTag("course_calendar"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab_).setTag("notice"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package_tab).setTag("reading_package"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_tab_).setTag("research_icon"));
 
 
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
-        }
+//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+//            TabLayout.Tab tab = tabLayout.getTabAt(i);
+//            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
+//        }
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -530,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             return;
         }
-//        uiHelper.showLoadingDialog("Authenticating...");
+        uiHelper.showLoadingDialog("Please wait...");
 
 
         RetrofitApiClient.getApiInterface().getLogout(AppSharedPreference.getApiKey(), AppSharedPreference.getFcm())

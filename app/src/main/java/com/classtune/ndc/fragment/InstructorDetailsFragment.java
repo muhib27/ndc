@@ -3,6 +3,7 @@ package com.classtune.ndc.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.activity.PlayerActivity;
 import com.classtune.ndc.activity.VideoPlayerActivity;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
@@ -39,6 +41,7 @@ import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
@@ -307,7 +310,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
 
     }
-
+    List<Attachment> attachmentList;
     private void setPageData(PHTaskViewData phTaskViewData) {
         if (!phTaskViewData.getPhSingleTask().getTitle().isEmpty())
             title.setText(phTaskViewData.getPhSingleTask().getTitle());
@@ -328,7 +331,7 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
-        List<Attachment> attachmentList = phTaskViewData.getPhSingleTask().getAttachments();
+         attachmentList = phTaskViewData.getPhSingleTask().getAttachments();
         if (attachmentList != null && attachmentList.size() > 0) {
 
             for (int i = 0; i < phTaskViewData.getPhSingleTask().getAttachments().size(); i++) {
@@ -337,7 +340,14 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
 
                 // In order to get the view we have to use the new view with text_layout in it
                 attachmentImage = view.findViewById(R.id.attachmentImage);
-                attachmentImage.setTag(attachmentList.get(i).getName());
+                if(attachmentList.get(i).getFileType().contains("mp4"))
+                {
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_mp));
+                }
+                else {
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_file));
+                }
+                attachmentImage.setTag(i);
                 attachmentImage.setId(i + 1);
                 list.add(attachmentImage);
                 for (final ImageView imageView : list) {
@@ -345,10 +355,19 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
                         @Override
                         public void onClick(View view) {
                            // Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
-                            if(imageView.getTag().toString().contains(".mp4")) {
-                                Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
-                                intent.putExtra("url", imageView.getTag().toString());
+                            if (attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName().contains("mp4")) {
+                                Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                                intent.putExtra("url", attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName());
                                 startActivity(intent);
+                            }
+                            else if(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName().contains("png"))
+                            {
+
+                            }
+                            else {
+
+                                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                                        .parse(URLHelper.BASE_URL+ attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName() )));
                             }
                         }
                     });

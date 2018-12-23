@@ -2,6 +2,7 @@ package com.classtune.ndc.fragment;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.activity.PlayerActivity;
 import com.classtune.ndc.activity.VideoPlayerActivity;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.reading_package.RMAttachment;
@@ -27,6 +29,7 @@ import com.classtune.ndc.apiresponse.reading_package.ReadingList;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
@@ -146,6 +149,7 @@ public class ReadingMaterialsFragment extends Fragment {
 
     }
 
+    List<RMAttachment> attachmentList;
     private void populateData(RMResponseModel rmResponseModel){
 
         try {
@@ -165,7 +169,7 @@ public class ReadingMaterialsFragment extends Fragment {
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
         if(rmResponseModel.getData().getReadingContent().getAttachments()!=null) {
-            List<RMAttachment> attachmentList = rmResponseModel.getData().getReadingContent().getAttachments();
+           attachmentList = rmResponseModel.getData().getReadingContent().getAttachments();
             if (attachmentList != null && attachmentList.size() > 0) {
 
                 for (int i = 0; i < rmResponseModel.getData().getReadingContent().getAttachments().size(); i++) {
@@ -174,18 +178,34 @@ public class ReadingMaterialsFragment extends Fragment {
 
                     // In order to get the view we have to use the new view with text_layout in it
                     attachmentImage = view.findViewById(R.id.attachmentImage);
-                    attachmentImage.setTag(attachmentList.get(i).getFileName());
-                    attachmentImage.setId(i + 1);
+                    if(attachmentList.get(i).getFileType().contains("mp4"))
+                    {
+                        attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_mp));
+                    }
+                    else {
+                        attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_file));
+                    }
+                    attachmentImage.setTag(i);
+                    attachmentImage.setId(i);
                     list.add(attachmentImage);
                     for (final ImageView imageView : list) {
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 // Toast.makeText(getActivity(), imageView.getTag().toString(), Toast.LENGTH_SHORT).show();
-                                if (imageView.getTag().toString().contains(".mp4")) {
-                                    Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                                if (attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileExt().equals("mp4")) {
+                                    Intent intent = new Intent(getActivity(), PlayerActivity.class);
                                     intent.putExtra("url", imageView.getTag().toString());
                                     startActivity(intent);
+                                }
+                                else if(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileExt().equals("png"))
+                                {
+
+                                }
+                                else {
+
+                                    getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                                            .parse(URLHelper.BASE_URL+ attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFilePath() )));
                                 }
                             }
                         });

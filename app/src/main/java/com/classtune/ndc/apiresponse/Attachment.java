@@ -8,6 +8,10 @@ public class Attachment {
     @SerializedName("file_name")
     @Expose
     private String fileName;
+
+    @SerializedName("file_type")
+    @Expose
+    private String fileType;
     @SerializedName("id")
     @Expose
     private String id;
@@ -39,4 +43,11 @@ public class Attachment {
         this.name = name;
     }
 
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
 }

@@ -1,6 +1,8 @@
 package com.classtune.ndc.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
+import com.classtune.ndc.activity.PlayerActivity;
+import com.classtune.ndc.activity.VideoPlayerActivity;
 import com.classtune.ndc.apiresponse.NoticeApi.Notice;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.reading_package.ReadingList;
@@ -35,6 +39,7 @@ import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
+import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
@@ -244,6 +249,24 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             gotoReadingPackageFragment(readingLists.get(position).getType(), readingLists.get(position).getId());
                         else if(readingLists.get(position).getType().equals("3"))
                             gotoReadingMaterialsFragment(readingLists.get(position).getId());
+                        else if(readingLists.get(position).getType().equals("2"))
+                        {
+                            if(readingLists.get(position).getTypeExt().equals("mp4")) {
+                                Intent intent = new Intent(context, PlayerActivity.class);
+                                intent.putExtra("url", "assets/uploads/reading_file/"+readingLists.get(position).getName());
+                                context.startActivity(intent);
+                            }
+                            else if(readingLists.get(position).getTypeExt().equals("png")){
+
+                            }
+                            else {
+//                                Intent intentFile = new Intent(Intent.ACTION_VIEW, Uri.parse(URLHelper.BASE_URL + readingLists.get(position).getFileDetails().getFilePath()));
+//                                context.startActivities(intentFile);
+                                String st = URLHelper.BASE_URL + readingLists.get(position).getFileDetails().getFilePath();
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                                        .parse(URLHelper.BASE_URL + readingLists.get(position).getFileDetails().getFilePath())));
+                            }
+                        }
 
                     }
                 });

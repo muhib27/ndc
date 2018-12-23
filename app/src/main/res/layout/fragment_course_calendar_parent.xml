@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:context=".fragment.CourseCalendarParentFragment">
     <LinearLayout
-        android:background="@drawable/side_nav_bar"
+        android:layout_marginTop="@dimen/size_10dp"
+        android:background="@color/top_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -18,7 +19,7 @@
             android:layout_width="@dimen/margin_0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/cc_tab_" />
+            android:src="@drawable/cc_w" />
 
         <TextView
             android:layout_width="@dimen/margin_0dp"

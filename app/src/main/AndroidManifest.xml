@@ -71,7 +71,13 @@
         <activity
             android:name=".activity.VideoPlayerActivity"
             android:label="@string/title_activity_video_player"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.PlayerActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_player"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

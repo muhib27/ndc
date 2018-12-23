@@ -77,8 +77,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements VideoRende
 //        Uri mp4VideoUri =Uri.parse("http://cbsnewshd-lh.akamaihd.net/i/CBSNHD_7@199302/index_700_av-p.m3u8"); //CNBC
 
         String u = URLHelper.BASE_URL  + url;
-        Uri mp4VideoUri = Uri.parse(URLHelper.BASE_URL + url); //ABC NEWS
-////        Uri mp4VideoUri =Uri.parse("FIND A WORKING LINK ABD PLUg INTO HERE"); //PLUG INTO HERE<------------------------------------------
+//        Uri mp4VideoUri = Uri.parse(URLHelper.BASE_URL + url); //ABC NEWS
+        Uri mp4VideoUri =Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"); //PLUG INTO HERE<------------------------------------------
 //
 //
 ////VIDEO FROM SD CARD: (2 steps. set up file and path, then change videoSource to get the file)

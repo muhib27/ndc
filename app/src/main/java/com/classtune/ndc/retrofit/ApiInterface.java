@@ -13,6 +13,7 @@ import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PigeonholeGetCourseApiResponse;
+import com.classtune.ndc.apiresponse.profile_api.ProfileResponseModel;
 import com.classtune.ndc.apiresponse.reading_package.RMResponseModel;
 import com.classtune.ndc.apiresponse.reading_package.RPResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchTopicResponseModel;
@@ -57,7 +58,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(URLHelper.URL_PROFILE)
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
-    Observable<Response<JsonElement>> userProfile(@Field("api_key") String api_key);
+    Observable<Response<ProfileResponseModel>> userProfile(@Field("api_key") String api_key);
 
     @FormUrlEncoded
     @POST(URLHelper.ADD_FCM)

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.BlueRoutineAdapter;
 import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
 import com.classtune.ndc.adapter.RoutineAdapter;
@@ -67,6 +69,10 @@ public class RoutineBlueFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            MainActivity.toggle.setDrawerIndicatorEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
         initRoutineView(view);
         callRoutineApi();
     }

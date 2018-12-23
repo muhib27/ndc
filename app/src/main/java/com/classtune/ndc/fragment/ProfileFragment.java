@@ -23,9 +23,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.menu_api.User;
+import com.classtune.ndc.apiresponse.profile_api.ProfileResponseModel;
 import com.classtune.ndc.apiresponse.reading_package.RMResponseModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
+import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.viewhelpers.UIHelper;
@@ -44,8 +46,9 @@ import retrofit2.Response;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     ImageButton edit;
     EditText courseNo, marritalStatus, bdContact, countryContact, rank, bloodGp, dob, nationality, doc;
+    TextView name, email;
     FloatingActionButton save;
-    LinearLayout rankLayout;
+    LinearLayout rankLayout, batchLayout, cellBDll, cellOwnll;
     CircleImageView profileImage;
     User user;
     UIHelper uiHelper;
@@ -72,22 +75,27 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         user = AppSharedPreference.getUserBasicInfo();
         uiHelper = new UIHelper(getActivity());
         initView(view);
-        //callProfileApi();
+        callProfileApi();
 
         loadImage();
     }
 
     private void initView(View view) {
         //edit = view.findViewById(R.id.edit);
+        name = view.findViewById(R.id.name);
+        email = view.findViewById(R.id.email);
         rankLayout = view.findViewById(R.id.rankLayout);
+//        cellBDll = view.findViewById(R.id.cellBdll);
+//        cellOwnll = view.findViewById(R.id.cellownll);
+        batchLayout = view.findViewById(R.id.batchLayout);
         rank = view.findViewById(R.id.rank);
         courseNo = view.findViewById(R.id.courseNo);
         marritalStatus = view.findViewById(R.id.marritalStatus);
         bloodGp = view.findViewById(R.id.bloodGp);
         dob = view.findViewById(R.id.dob);
         doc = view.findViewById(R.id.doc);
-        bdContact = view.findViewById(R.id.bdContact);
-        countryContact = view.findViewById(R.id.countryContact);
+//        bdContact = view.findViewById(R.id.bdContact);
+//        countryContact = view.findViewById(R.id.countryContact);
         nationality = view.findViewById(R.id.nationality);
         save = view.findViewById(R.id.save_fab);
         profileImage = view.findViewById(R.id.profile_image);
@@ -115,15 +123,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void enableEditOption() {
 
         save.setVisibility(View.VISIBLE);
-        edit.setVisibility(View.GONE);
+       // edit.setVisibility(View.GONE);
         rankLayout.setVisibility(View.VISIBLE);
 
         rank.setEnabled(true);
         rank.requestFocus();
         courseNo.setEnabled(true);
         marritalStatus.setEnabled(true);
-        bdContact.setEnabled(true);
-        countryContact.setEnabled(true);
+//        bdContact.setEnabled(true);
+//        countryContact.setEnabled(true);
 
     }
     private void disableEditOption() {
@@ -134,8 +142,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         courseNo.setEnabled(false);
         marritalStatus.setEnabled(false);
-        bdContact.setEnabled(false);
-        countryContact.setEnabled(false);
+//        bdContact.setEnabled(false);
+//        countryContact.setEnabled(false);
         rank.setEnabled(false);
     }
 
@@ -164,32 +172,32 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<JsonElement>>() {
+                .subscribe(new Observer<Response<ProfileResponseModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<JsonElement> value) {
+                    public void onNext(Response<ProfileResponseModel> value) {
                         uiHelper.dismissLoadingDialog();
-//                        RMResponseModel rmResponseModel = value.body();
-//
-//                        if (rmResponseModel != null && rmResponseModel.getCode() != null) {
-//                            if (rmResponseModel.getCode() == 200) {
-////                                Log.v("noticeResponseModel", value.message());
-////                                List<ReadingList> readingList = rmResponseModel.getReadingPackageData().getReadingList();
-////                                Collections.reverse(readingList);
-////                                readingPackageAdapter.addAllData(readingList);
-////                                Log.v("tt", readingList.toString());
-//                                //populateData(rmResponseModel);
-//
-//                            } else if (rmResponseModel.getCode() == 500) {
-//                                //Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
-//                        }
+                        ProfileResponseModel profileResponseModel = value.body();
+
+                        if (profileResponseModel != null && profileResponseModel.getCode() != null) {
+                            if (profileResponseModel.getCode() == 200) {
+//                                Log.v("noticeResponseModel", value.message());
+//                                List<ReadingList> readingList = rmResponseModel.getReadingPackageData().getReadingList();
+//                                Collections.reverse(readingList);
+//                                readingPackageAdapter.addAllData(readingList);
+//                                Log.v("tt", readingList.toString());
+                                populateData(profileResponseModel);
+
+                            } else if (profileResponseModel.getCode() == 500) {
+                                //Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
@@ -211,6 +219,42 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     }
                 });
 
+
+    }
+
+    private void populateData(ProfileResponseModel profileResponseModel) {
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBatchCourseName()!=null)
+        {
+            batchLayout.setVisibility(View.VISIBLE);
+            courseNo.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBatchCourseName());
+        }
+        else
+            batchLayout.setVisibility(View.GONE);
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getName()!=null)
+            name.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getName());
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getEmail()!=null)
+            email.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getEmail());
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBloodGroupName()!=null)
+            bloodGp.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBloodGroupName());
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfBirth()!=null)
+            dob.setText(AppUtility.getDateString(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfBirth(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfService()!=null)
+            doc.setText(AppUtility.getDateString(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfService(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getCountry()!=null)
+            nationality.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getCountry());
+
+        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getMaritalStatus()!=null)
+            marritalStatus.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getMaritalStatus());
+
+//        if(profileResponseModel.getProfileData().getProfile().getAddress()!=null && profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress()
+//                != null && profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress().)
+//            marritalStatus.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getMaritalStatus());
 
     }
 

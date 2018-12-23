@@ -42,10 +42,10 @@ public class CourseCalendarParentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-//            MainActivity.toggle.setDrawerIndicatorEnabled(false);
-//            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        }
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            MainActivity.toggle.setDrawerIndicatorEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
         int back = getActivity().getSupportFragmentManager().getBackStackEntryCount();
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         ccViewPagerAdapter = new CCViewPagerAdapter(getActivity().getSupportFragmentManager());

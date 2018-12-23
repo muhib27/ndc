@@ -7,8 +7,8 @@ public class URLHelper {
 	public URLHelper() {
 	}
 
-	//public static final String BASE_URL = "http://teamworkbd.com/";
-	public static final String BASE_URL = "http://192.168.2.38/";
+	public static final String BASE_URL = "http://teamworkbd.com/";
+	//public static final String BASE_URL = "http://192.168.2.38/";
 	public static final String SUB_URL = "masterapi/";
 //	public final static String URL_BASE = "http://apimaster.classtune.com/api/";
 	public final static String ADD_FCM = "users/add_fcm";
@@ -30,7 +30,7 @@ public class URLHelper {
 	public final static String GET_INSTRUCTOR_LIST= "tasks/get_course_teacher";
 
 	//cm box
-    public final static String GET_CM_BOX_SUBMITTED_LIST = "my_cmbox/submitted_list";
+    public final static String GET_CM_BOX_SUBMITTED_LIST = "mycmbox/submitted_list";
     public final static String GET_CM_BOX_DETAILS= "tasks/single_view";
 
     //Notice

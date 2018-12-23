@@ -72,8 +72,8 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            MainActivity.toggle.setDrawerIndicatorEnabled(false);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            MainActivity.toggle.setDrawerIndicatorEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         initRoutineView(view);
         callRoutineApi();
