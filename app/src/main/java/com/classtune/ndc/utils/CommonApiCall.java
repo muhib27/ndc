@@ -1,8 +1,15 @@
 package com.classtune.ndc.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.classtune.ndc.R;
 import com.classtune.ndc.activity.LoginActivity;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
@@ -121,4 +128,40 @@ public class CommonApiCall {
 //        }
 //    });
 //}
+
+    AlertDialog ImageViewDialog;
+    ImageView imageView;
+    public void showImage(String fileName) {
+        LayoutInflater factory = LayoutInflater.from(context);
+        final View fileImageDialogView = factory.inflate(R.layout.dialog_image_view, null);
+
+        imageView = fileImageDialogView.findViewById(R.id.imageView);
+        loadImage(fileName);
+//        text.setText(st);
+        ImageViewDialog = new AlertDialog.Builder(context).create();
+        ImageViewDialog.setCancelable(false);
+        ImageViewDialog.setView(fileImageDialogView);
+        fileImageDialogView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                ImageViewDialog.dismiss();
+            }
+        });
+
+        ImageViewDialog.show();
+
+    }
+
+    private void loadImage(String fileName) {
+        Glide
+                .with(context)
+                .load(URLHelper.BASE_URL + fileName)
+                .apply(new RequestOptions()
+                        .placeholder(R.mipmap.ic_launcher_round)
+                        .fitCenter())
+                .into(imageView);
+
+    }
 }

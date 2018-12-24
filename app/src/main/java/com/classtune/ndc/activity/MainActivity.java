@@ -29,10 +29,12 @@ import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.apiresponse.menu_api.UserMenu;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.SubmittedTaskData;
+import com.classtune.ndc.fragment.CMBoxDetailsFragment;
 import com.classtune.ndc.fragment.CMBoxFragment;
 import com.classtune.ndc.fragment.CMSubmitTaskDetailsFragment;
 import com.classtune.ndc.fragment.CourseCalendarParentFragment;
 import com.classtune.ndc.fragment.DashBoardFragment;
+import com.classtune.ndc.fragment.EventsFragment;
 import com.classtune.ndc.fragment.EventsFragment_old;
 import com.classtune.ndc.fragment.HomeFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box).setTag("cm_box"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cc_tab_).setTag("course_calendar"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab_).setTag("notice"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.social_event).setTag("events"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_tab_).setTag("research_icon"));
 
@@ -126,11 +129,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else if (tab.getTag().equals("notice")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoNoticeFragment("");
-                } else if (tab.getTag().equals("reading_package")) {
+                }
+                else if (tab.getTag().equals("reading_package")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoReadingPackageFragment();
-                } else if (tab.getTag().equals("research_icon")) {
+                }
+                else if (tab.getTag().equals("events")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
+                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    gotoEventsFragment();
+                }
+                else if (tab.getTag().equals("research_icon")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     UserMenu userMenu = AppSharedPreference.getUserMenu();
@@ -196,6 +206,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else if(type.equals("2")){
                 gotoCMSubmitTaskDetailsFragment(id);
             }
+            else if(type.equals("4")) {
+                gotoReadingPackageFragmentNotify(id);
+            }
         } else
             gotoPigeonholeFragment();
 
@@ -214,6 +227,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.replace(R.id.main_acitivity_container, noticeDetailsFragment, "noticeDetailsFragment");
         transaction.commit();
     }
+
+    private void gotoReadingPackageFragmentNotify(String id) {
+        Bundle bundle = new Bundle();
+        if(id!=null) {
+            TabLayout.Tab tab = tabLayout.getTabAt(4);
+            tab.select();
+
+            bundle.putString("id", id);
+        }
+
+        setUpBackStackCountToZero();
+        ReadingPackageFragment readingPackageFragment = new ReadingPackageFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        readingPackageFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, readingPackageFragment, "readingPackageFragment");
+        transaction.commit();
+    }
     private void gotoInstructorDetailsFragment(String id) {
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
@@ -227,12 +258,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     private void gotoCMSubmitTaskDetailsFragment(String id) {
         Bundle bundle = new Bundle();
-        bundle.putString("id", id);
-        CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = new CMSubmitTaskDetailsFragment();
+        if(id!=null) {
+            TabLayout.Tab tab = tabLayout.getTabAt(1);
+            tab.select();
+
+            bundle.putString("id", id);
+        }
+        CMBoxDetailsFragment cmBoxDetailsFragment = new CMBoxDetailsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        cmSubmitTaskDetailsFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, cmSubmitTaskDetailsFragment, "cmSubmitTaskDetailsFragment").addToBackStack(null);
+        cmBoxDetailsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, cmBoxDetailsFragment, "cmBoxDetailsFragment").addToBackStack(null);
         transaction.commit();
     }
 
@@ -663,11 +699,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void gotoEventsFragment() {
         setUpBackStackCountToZero();
-        EventsFragment_old eventsFragment = new EventsFragment_old();
+        EventsFragment eventsFragment = new EventsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, eventsFragment, "eventsFragment").addToBackStack(null);
-        ;
         transaction.commit();
     }
 

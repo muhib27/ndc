@@ -123,7 +123,7 @@ public class EventsFragment extends Fragment {
         String end = "2030-02-03";
         String start = "2018-12-12";
 
-        RetrofitApiClient.getApiInterface().getEvents(AppSharedPreference.getApiKey(), start, end)
+        RetrofitApiClient.getApiInterface().getEvents(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

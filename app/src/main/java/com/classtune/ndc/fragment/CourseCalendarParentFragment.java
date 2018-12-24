@@ -57,22 +57,23 @@ public class CourseCalendarParentFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition()== 0) {
-                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
-//                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
-                    tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#727272"));
-                }
-                else if(tab.getPosition()== 1) {
+//                if(tab.getPosition()== 0) {
+//                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
+////                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
+//                    tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#727272"));
+//                }
+//                else
+                    if(tab.getPosition()== 0) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#DFE1E2"));
 //                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
                     tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#727272"));
                 }
-               else if(tab.getPosition()== 2) {
+               else if(tab.getPosition()== 1) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffdf00"));
 //                    tabLayout.setBackgroundColor(getResources().getColor(R.color.blue_color));
                     tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#324055"));
                 }
-                else if(tab.getPosition()== 3) {
+                else if(tab.getPosition()== 2) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#007894"));
 //                    tabLayout.setBackgroundColor(getResources().getColor(R.color.yellow));
                     tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#ffffff"));

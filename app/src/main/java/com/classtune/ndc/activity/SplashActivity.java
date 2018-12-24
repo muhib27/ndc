@@ -86,8 +86,10 @@ public class SplashActivity extends AppCompatActivity {
                 if (token != null) {
                     Log.e("firebase", String.valueOf(token));
                     regid = token;
-                    AppSharedPreference.setFcm(regid);
-                    sendRegistrationIdToBackend(regid);
+                    if(AppSharedPreference.getFcm()!=null) {
+                        AppSharedPreference.setFcm(regid);
+                        sendRegistrationIdToBackend(regid);
+                    }
 
                     // send token to your server
                 }
@@ -106,8 +108,10 @@ public class SplashActivity extends AppCompatActivity {
             sendRegistrationIdToBackend(regid);
         } else {
             String token = FirebaseInstanceId.getInstance().getToken();
-            AppSharedPreference.setFcm(token);
-            sendRegistrationIdToBackend(regid);
+            if(token!=null) {
+                AppSharedPreference.setFcm(token);
+                sendRegistrationIdToBackend(regid);
+            }
         }
 
 

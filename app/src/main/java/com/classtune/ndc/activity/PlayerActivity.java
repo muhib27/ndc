@@ -13,7 +13,7 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.classtune.ndc.R;
 import com.classtune.ndc.utils.URLHelper;
-import com.marcinmoskala.videoplayview.VideoPlayView;
+//import com.marcinmoskala.videoplayview.VideoPlayView;
 
 public class PlayerActivity extends AppCompatActivity {
     private Button btnonce, btncontinuously, btnstop, btnplay;

@@ -30,14 +30,18 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
+import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.model.PigeonholeDataModel;
+import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.CommonApiCall;
+import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
+import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -48,6 +52,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 
 /**
@@ -70,6 +80,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<PHTask> phTasks = new ArrayList<>();
     private Context context;
     PHTask editPHTask;
+    UIHelper uiHelper;
 
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
@@ -101,6 +112,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public PigeonholeAdapter(Context context) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
+        uiHelper = new UIHelper((MainActivity)context);
     }
 
     public PigeonholeAdapter(Context context, ArrayList<PHTask> strList) {
@@ -317,14 +329,68 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         initEditApi(pigeonholeDataModelList.get(position).getId(), position);
                         break;
                     case R.id.delete:
-                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                        CommonApiCall commonApiCall = new CommonApiCall(context);
-                        boolean b = commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
+                        //Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                        callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId(),position);
+                        //CommonApiCall commonApiCall = new CommonApiCall(context);
+                        //boolean b = commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
                         break;
                 }
                 return false;
             }
         });
+    }
+
+
+    public void callPigeonholeDeleteApi(String id, final int position) {
+
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            Toast.makeText(context, "No Connectivity", Toast.LENGTH_SHORT).show();
+
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().pigeonholeDelete(id, AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+
+
+                        if(value.code() ==200) {
+                            pigeonholeDataModelList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                        else{
+                            Toast.makeText(context, "Something went wrong. Please try later", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+        return;
     }
 
     private void initEditApi(String id, int pos) {

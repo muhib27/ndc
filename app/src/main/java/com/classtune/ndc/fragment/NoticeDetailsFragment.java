@@ -214,8 +214,42 @@ public class NoticeDetailsFragment extends Fragment {
                 {
                     attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_mp));
                 }
+                else if(attachmentList.get(i).getFileType().contains("3gp")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.three_gp_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("doc")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.doc_attachment));
+                } else if(attachmentList.get(i).getFileType().contains("docx")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.docs_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("gif")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.gif_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("mp3")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.mp_three_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("pdf")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.pdf_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("psd")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.psd_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("rar")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.rar_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("txt")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.txt_attachment));
+                } else if(attachmentList.get(i).getFileType().contains("xls")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.xls_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("zip")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.zip_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("png") || attachmentList.get(i).getFileType().contains("jpg")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.photo_attachment));
+                }
                 else {
-                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_file));
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.no_image_attachment));
                 }
                 attachmentImage.setTag(i);
                 attachmentImage.setId(i + 1);
@@ -232,7 +266,8 @@ public class NoticeDetailsFragment extends Fragment {
                             }
                             else if(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName().contains("png"))
                             {
-
+                                CommonApiCall commonApiCall = new CommonApiCall(getActivity());
+                                commonApiCall.showImage(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName());
                             }
                             else {
 

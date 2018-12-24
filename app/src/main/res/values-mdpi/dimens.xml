@@ -21,5 +21,7 @@
     <dimen name="common_gap_land">1dp</dimen>
     <dimen name="tab_icon_size">36dp</dimen>
 
+    <dimen name="size_60dp">110dp</dimen>
+
 
 </resources>

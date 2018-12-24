@@ -131,7 +131,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(URLHelper.GET_EVENTS_LIST)
-    Observable<Response<EventsResponseModel>> getEvents(@Field("api_key") String api_key, @Field("start") String start, @Field("end") String end);
+    Observable<Response<EventsResponseModel>> getEvents(@Field("api_key") String api_key);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_NOTICE_LIST)

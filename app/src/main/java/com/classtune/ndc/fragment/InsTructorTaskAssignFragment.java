@@ -990,6 +990,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         if (value.code() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             Toast.makeText(getActivity(), "Your task successfully submitted", Toast.LENGTH_SHORT).show();
+                            clearForm();
                         } else
                             Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
 
@@ -1077,14 +1078,14 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     private void parseCourseData(List<Course> courses) {
         UserCourses userCourses = new UserCourses();
         for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).getName().equalsIgnoreCase("ndc")) {
+            if (courses.get(i).getName().equalsIgnoreCase("ND COURSE")) {
 
                 ndcStList = courses.get(i).getStudents();
                 userCourses.setNdc(true);
-            } else if (courses.get(i).getName().equalsIgnoreCase("afwc")) {
+            } else if (courses.get(i).getName().equalsIgnoreCase("AFW COURSE")) {
                 afwcStList = courses.get(i).getStudents();
                 userCourses.setAfwc(true);
-            } else if (courses.get(i).getName().equalsIgnoreCase("capston")) {
+            } else if (courses.get(i).getName().equalsIgnoreCase("CAPSTON")) {
                 capstonStList = courses.get(i).getStudents();
                 userCourses.setCapston(true);
             }
@@ -1503,6 +1504,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         if (value.code() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             Toast.makeText(getActivity(), "Your task successfully submitted", Toast.LENGTH_SHORT).show();
+                            clearForm();
                         } else
                             Toast.makeText(getActivity(), "Task Submission failed", Toast.LENGTH_SHORT).show();
 
@@ -1523,6 +1525,18 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     }
                 });
 
+
+    }
+
+    private void clearForm() {
+        title.setText("");
+        description.setText("");
+        dueDate.setText("Due Date");
+        selectedList.clear();
+        courseList.clear();
+        attachmentModelList.clear();
+        attachmentAdapterMain.notifyDataSetChanged();
+        attachmentModelsEdit.clear();
 
     }
 }

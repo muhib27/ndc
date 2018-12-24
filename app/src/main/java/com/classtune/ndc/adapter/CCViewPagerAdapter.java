@@ -19,19 +19,20 @@ public class CCViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
+//        if (position == 0)
+//        {
+//            fragment = new EventsFragment();
+//        }
+//        else
         if (position == 0)
-        {
-            fragment = new EventsFragment();
-        }
-        else if (position == 1)
         {
             fragment = new RoutineWhiteFragment();
         }
-        else if (position == 2)
+        else if (position == 1)
         {
             fragment = new RoutineYellowFragment();
         }
-        else if (position == 3)
+        else if (position == 2)
         {
             fragment = new RoutineBlueFragment();
         }
@@ -40,25 +41,26 @@ public class CCViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         String title = null;
+//        if (position == 0)
+//        {
+//            title = "Event";
+//        }
+//        else
         if (position == 0)
-        {
-            title = "Event";
-        }
-        else if (position == 1)
         {
             title = "White";
         }
-        else if (position == 2)
+        else if (position == 1)
         {
             title = "Yellow";
         }
-        else if (position == 3)
+        else if (position == 2)
         {
             title = "Blue";
         }

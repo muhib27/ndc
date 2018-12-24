@@ -1,8 +1,12 @@
 package com.classtune.ndc.fragment;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,14 +21,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.activity.PlayerActivity;
@@ -344,9 +352,45 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
                 {
                     attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_mp));
                 }
-                else {
-                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.attachment_file));
+                else if(attachmentList.get(i).getFileType().contains("3gp")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.three_gp_attachment));
                 }
+                else if(attachmentList.get(i).getFileType().contains("doc")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.doc_attachment));
+                } else if(attachmentList.get(i).getFileType().contains("docx")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.docs_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("gif")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.gif_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("mp3")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.mp_three_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("pdf")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.pdf_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("psd")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.psd_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("rar")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.rar_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("txt")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.txt_attachment));
+                } else if(attachmentList.get(i).getFileType().contains("xls")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.xls_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("zip")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.zip_attachment));
+                }
+                else if(attachmentList.get(i).getFileType().contains("png") || attachmentList.get(i).getFileType().contains("jpg")){
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.photo_attachment));
+                }
+                else {
+                    attachmentImage.setImageDrawable(getResources().getDrawable(R.drawable.no_image_attachment));
+                }
+
+
                 attachmentImage.setTag(i);
                 attachmentImage.setId(i + 1);
                 list.add(attachmentImage);
@@ -360,9 +404,10 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
                                 intent.putExtra("url", attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName());
                                 startActivity(intent);
                             }
-                            else if(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName().contains("png"))
+                            else if(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName().contains("png") || attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName().contains("jpg"))
                             {
-
+                                CommonApiCall commonApiCall = new CommonApiCall(getActivity());
+                                commonApiCall.showImage(attachmentList.get(Integer.parseInt(imageView.getTag().toString())).getFileName());
                             }
                             else {
 
@@ -422,21 +467,75 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
                         gotoInstructorTaskAssignFragment(id);
                         break;
                     case R.id.delete:
+                        callPigeonholeDeleteApi(id);
 //                        Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
-                        CommonApiCall commonApiCall = new CommonApiCall(getActivity());
-                        boolean b = commonApiCall.callPigeonholeDeleteApi(id);
-                        if(b){
-                            int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-                            getActivity().getSupportFragmentManager().popBackStack();
-                            int count1 = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-                            Log.v("tag", count1+"");
-                        }
+//                        CommonApiCall commonApiCall = new CommonApiCall(getActivity());
+//                        boolean b = commonApiCall.callPigeonholeDeleteApi(id);
+//                        if(b){
+//                            int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+//                            getActivity().getSupportFragmentManager().popBackStack();
+//                            int count1 = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+//                            Log.v("tag", count1+"");
+//                        }
                         break;
                 }
                 return false;
             }
         });
     }
+
+    public void callPigeonholeDeleteApi(String id) {
+
+
+        if (!NetworkConnection.getInstance().isNetworkAvailable()) {
+            Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
+
+        }
+        uiHelper.showLoadingDialog("Please wait...");
+
+
+        RetrofitApiClient.getApiInterface().pigeonholeDelete(id, AppSharedPreference.getApiKey())
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<JsonElement>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<JsonElement> value) {
+                        uiHelper.dismissLoadingDialog();
+
+
+                        if(value.code() ==200) {
+                            if(getActivity()!=null)
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "Something went wrong. Please try later", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        uiHelper.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        uiHelper.dismissLoadingDialog();
+                    }
+                });
+
+        return;
+    }
+
 
 
     private void gotoInstructorTaskAssignFragment(String id) {

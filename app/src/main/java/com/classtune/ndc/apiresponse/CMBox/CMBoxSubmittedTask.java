@@ -14,9 +14,14 @@ public class CMBoxSubmittedTask {
     @SerializedName("user_name")
     @Expose
     private String userName;
+    @SerializedName("content")
+    @Expose
+    private String description;
+
     @SerializedName("title")
     @Expose
     private String title;
+
     @SerializedName("assigned_by")
     @Expose
     private String assignedBy;
@@ -85,5 +90,13 @@ public class CMBoxSubmittedTask {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

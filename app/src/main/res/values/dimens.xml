@@ -31,6 +31,7 @@
     <dimen name="margin_0dp">0dp</dimen>
     <dimen name="size_5dp">5dp</dimen>
     <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="text_size_27_sp">27sp</dimen>
     <dimen name="text_size_16_sp">16sp</dimen>
     <dimen name="text_size_19_sp">19sp</dimen>
     <dimen name="size_40dp">40dp</dimen>

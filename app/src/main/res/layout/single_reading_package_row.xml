@@ -57,7 +57,7 @@
                 android:layout_marginTop="@dimen/size_20dp"
                 android:padding="@dimen/size_5dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_15_sp" />
+                android:textSize="@dimen/text_size_20_sp" />
 
             <TextView
                 android:id="@+id/sub_title"
@@ -90,7 +90,7 @@
                 android:paddingBottom="@dimen/size_5dp"
                 android:text="ttt"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_17_sp"
+                android:textSize="@dimen/text_size_15_sp"
                 android:textStyle="bold" />
             <!--</LinearLayout>-->
         </RelativeLayout>
