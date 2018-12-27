@@ -146,6 +146,8 @@
                     android:orientation="horizontal"
                     android:padding="10dp">
                     <CheckBox
+                        android:id="@+id/rememberMe"
+                        android:buttonTint="@color/ndc_color"
                         android:textColor="@color/ash"
                         android:paddingTop="7dp"
                         android:layout_gravity="center_vertical"

@@ -45,6 +45,7 @@ import com.classtune.ndc.fragment.ProfileFragment;
 import com.classtune.ndc.fragment.ReadingPackageFragment;
 import com.classtune.ndc.fragment.ResearchListFragment;
 import com.classtune.ndc.fragment.ResearchTopicListFragment;
+import com.classtune.ndc.fragment.RoutineWhiteFragment;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.DrawerLocker;
@@ -553,7 +554,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void userLogout() {
         User user = new User("", "", "", "");
         AppSharedPreference.setUserBasicInfo(user);
-        AppSharedPreference.setUserNameAndPassword("", "", "");
+        if(AppSharedPreference.getRememberMe()) {
+            AppSharedPreference.setUserNameAndPassword(AppSharedPreference.getUserName(), AppSharedPreference.getUserPassword(), "", true);
+
+        }
+        else {
+            AppSharedPreference.setUserNameAndPassword("", "", "", false);
+        }
         AppSharedPreference.setUsingFirstTime(true);
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
@@ -662,11 +669,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void gotoClassScheduleFragment() {
         setUpBackStackCountToZero();
-        CourseCalendarParentFragment courseCalendarParentFragment = new CourseCalendarParentFragment();
+
+        RoutineWhiteFragment routineWhiteFragment = new RoutineWhiteFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, courseCalendarParentFragment, "courseCalendarParentFragment").addToBackStack(null);
+        transaction.replace(R.id.main_acitivity_container, routineWhiteFragment, "routineWhiteFragment").addToBackStack(null);
         transaction.commit();
+//        CourseCalendarParentFragment courseCalendarParentFragment = new CourseCalendarParentFragment();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.main_acitivity_container, courseCalendarParentFragment, "courseCalendarParentFragment").addToBackStack(null);
+//        transaction.commit();
     }
 
     private void gotoPigeonholeFragment() {

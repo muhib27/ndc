@@ -26,6 +26,7 @@ import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
 import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.apiresponse.NoticeApi.Notice;
 import com.classtune.ndc.apiresponse.NoticeApi.NoticeResponseModel;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.model.NoticeModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
@@ -100,6 +101,14 @@ public class NoticeFragment extends Fragment implements PaginationAdapterCallbac
                 id = b.getString("id", "");
         }
         initNoticeView(view);
+
+        UserPermission userPermission = AppSharedPreference.getUserPermission();
+        if(userPermission.isTasksAdd())
+            floatingActionButton.show();
+        else
+            floatingActionButton.hide();
+
+
         if(id!=null && !id.isEmpty()){
             gotoNoticeDetailsFragment(id);
         }

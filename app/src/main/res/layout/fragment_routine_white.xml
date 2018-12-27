@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.RoutineWhiteFragment">
+    <LinearLayout
+        android:layout_marginTop="@dimen/size_10dp"
+        android:background="@color/top_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="@dimen/margin_0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/cc_w" />
+
+        <TextView
+            android:layout_width="@dimen/margin_0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:paddingLeft="@dimen/size_15dp"
+            android:text="Academic Program"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20_sp"
+            android:textStyle="normal" />
+
+
+    </LinearLayout>
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
@@ -12,4 +41,4 @@
         android:layout_height="match_parent"
         android:clipToPadding="false" />
 
-</RelativeLayout>
+</LinearLayout>

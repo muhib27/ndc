@@ -43,6 +43,7 @@ import retrofit2.Response;
 public class SplashActivity extends AppCompatActivity {
     int SPLASH_TIME_OUT = 3000;
     boolean flag = false;
+    boolean liveApp = true;
 
     @Override
     protected void onStart() {
@@ -206,34 +207,43 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (flag)
+        if (flag) {
             super.onBackPressed();
+            liveApp =false;
+        }
     }
 
 
     private void navigateToNextPage() {
-        Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
+            Handler handler = new Handler();
 
-            @Override
-            public void run() {
+            handler.postDelayed(new Runnable() {
 
-                // make sure we close the splash screen so the user won't come back when it presses back key
+                @Override
+                public void run() {
+
+                    // make sure we close the splash screen so the user won't come back when it presses back key
 
 //                finish();
 
 //                if (!mIsBackButtonPressed) {
-                boolean isFirstTime = AppSharedPreference.getUsingFirstTime();
-                Intent intent;
-                flag = true;
-                if (isFirstTime) {
-                    intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else {
-                    intent = new Intent(SplashActivity.this, MainActivity.class);
-                }
-                startActivity(intent);
-                finish();
+                    boolean isFirstTime = AppSharedPreference.getUsingFirstTime();
+                    Intent intent;
+                    if(liveApp) {
+                        flag = true;
+                        if (isFirstTime) {
+                            intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        } else {
+                            intent = new Intent(SplashActivity.this, MainActivity.class);
+                        }
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        finish();
+                    }
+                    else {
+                       finish();
+                    }
 
 					/*intent= new Intent(SplashScreenActivity.this, SingleItemShowFragmentActivity.class);
                 	intent= new Intent(SplashScreenActivity.this, HomePageFreeVersion.class);
@@ -244,9 +254,9 @@ public class SplashActivity extends AppCompatActivity {
 
 //                }
 
-            }
+                }
 
-        }, SPLASH_TIME_OUT);// time in milliseconds (1 second = 1000 milliseconds) until the run() method will be called
+            }, SPLASH_TIME_OUT);// time in milliseconds (1 second = 1000 milliseconds) until the run() method will be called
 
-    }
+        }
 }

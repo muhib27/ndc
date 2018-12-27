@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks,EasyPermissions.RationaleCallbacks {
     EditText etUserName;
     EditText etPassword;
+    CheckBox rememberMe;
     Button btnLogin;
     UIHelper uiHelper;
 
@@ -97,10 +99,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvForgetPassword = (TextView) findViewById(R.id.tv_forget_password);
         tvForgetPassword.setOnClickListener(this);
         //etUserName.setText("ovi@gmail.com");
+        rememberMe = findViewById(R.id.rememberMe);
         etPassword = (EditText) findViewById(R.id.et_password);
         //etPassword.setText("123456");
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
+
+        if(AppSharedPreference.getRememberMe())
+        {
+            if(!AppSharedPreference.getUserName().isEmpty())
+                etUserName.setText(AppSharedPreference.getUserName());
+            if(!AppSharedPreference.getUserPassword().isEmpty())
+                etPassword.setText(AppSharedPreference.getUserPassword());
+            rememberMe.setChecked(true);
+        }
 
     }
 
@@ -216,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                                value.body());
 
                         if (loginApiModel.getCode()!= null && loginApiModel.getCode() == 200) {
-                            AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+                            AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey(), rememberMe.isChecked());
                             callMenuApi();
                         }
                         else
@@ -292,6 +304,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                            User user1 = AppSharedPreference.getUserBasicInfo();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
                         }
 

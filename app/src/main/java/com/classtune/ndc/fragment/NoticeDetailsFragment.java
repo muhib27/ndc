@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
@@ -371,9 +372,11 @@ public class NoticeDetailsFragment extends Fragment {
 
 
                         if(value.code() ==200) {
-
-//                            noticeModelList.remove(pos);
-//                            notifyDataSetChanged();
+                            if(getActivity()!=null)
+                                getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "Something went wrong. Please try later", Toast.LENGTH_SHORT).show();
                         }
 
 

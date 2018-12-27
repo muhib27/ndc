@@ -73,7 +73,7 @@
                         android:layout_width="@dimen/margin_0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
-                        android:text="@string/publish_date"
+                        android:text="Publish_date :"
                         android:textSize="@dimen/text_size_17_sp" />
 
                     <TextView
@@ -111,7 +111,7 @@
                         android:layout_alignParentLeft="true"
                         android:background="@color/list_background"
                         android:padding="@dimen/size_10dp"
-                        android:text="@string/test_description"
+                        android:text=""
                         android:textSize="@dimen/text_size_15_sp" />
                 </android.support.v7.widget.CardView>
 
