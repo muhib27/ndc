@@ -16,5 +16,4 @@ public class ProfileData {
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
-
 }

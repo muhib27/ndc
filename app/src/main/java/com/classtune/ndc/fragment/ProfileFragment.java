@@ -85,8 +85,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
         rankLayout = view.findViewById(R.id.rankLayout);
-//        cellBDll = view.findViewById(R.id.cellBdll);
-//        cellOwnll = view.findViewById(R.id.cellownll);
+        cellBDll = view.findViewById(R.id.cellBdll);
+        cellOwnll = view.findViewById(R.id.cellownll);
         batchLayout = view.findViewById(R.id.batchLayout);
         rank = view.findViewById(R.id.rank);
         courseNo = view.findViewById(R.id.courseNo);
@@ -94,8 +94,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         bloodGp = view.findViewById(R.id.bloodGp);
         dob = view.findViewById(R.id.dob);
         doc = view.findViewById(R.id.doc);
-//        bdContact = view.findViewById(R.id.bdContact);
-//        countryContact = view.findViewById(R.id.countryContact);
+        bdContact = view.findViewById(R.id.bdContact);
+        countryContact = view.findViewById(R.id.countryContact);
         nationality = view.findViewById(R.id.nationality);
         save = view.findViewById(R.id.save_fab);
         profileImage = view.findViewById(R.id.profile_image);
@@ -130,8 +130,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         rank.requestFocus();
         courseNo.setEnabled(true);
         marritalStatus.setEnabled(true);
-//        bdContact.setEnabled(true);
-//        countryContact.setEnabled(true);
+        bdContact.setEnabled(true);
+        countryContact.setEnabled(true);
 
     }
     private void disableEditOption() {
@@ -142,8 +142,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         courseNo.setEnabled(false);
         marritalStatus.setEnabled(false);
-//        bdContact.setEnabled(false);
-//        countryContact.setEnabled(false);
+        bdContact.setEnabled(false);
+        countryContact.setEnabled(false);
         rank.setEnabled(false);
     }
 
@@ -223,34 +223,40 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void populateData(ProfileResponseModel profileResponseModel) {
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBatchCourseName()!=null)
+        if(profileResponseModel.getProfileData().getProfile().getBatchCourseName()!=null)
         {
             batchLayout.setVisibility(View.VISIBLE);
-            courseNo.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBatchCourseName());
+            courseNo.setText(profileResponseModel.getProfileData().getProfile().getBatchCourseName());
         }
         else
             batchLayout.setVisibility(View.GONE);
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getName()!=null)
-            name.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getName());
+        if(profileResponseModel.getProfileData().getProfile().getName()!=null)
+            name.setText(profileResponseModel.getProfileData().getProfile().getName());
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getEmail()!=null)
-            email.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getEmail());
+        if(profileResponseModel.getProfileData().getProfile().getEmail()!=null)
+            email.setText(profileResponseModel.getProfileData().getProfile().getEmail());
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBloodGroupName()!=null)
-            bloodGp.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getBloodGroupName());
+        if(profileResponseModel.getProfileData().getProfile().getBloodGroupName()!=null)
+            bloodGp.setText(profileResponseModel.getProfileData().getProfile().getBloodGroupName());
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfBirth()!=null)
-            dob.setText(AppUtility.getDateString(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfBirth(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+        if(profileResponseModel.getProfileData().getProfile().getDateOfBirth()!=null)
+            dob.setText(AppUtility.getDateString(profileResponseModel.getProfileData().getProfile().getDateOfBirth(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfService()!=null)
-            doc.setText(AppUtility.getDateString(profileResponseModel.getProfileData().getProfile().getUserProfileData().getDateOfService(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
+        if(profileResponseModel.getProfileData().getProfile().getDateOfService()!=null)
+            doc.setText(AppUtility.getDateString(profileResponseModel.getProfileData().getProfile().getDateOfService(), AppUtility.DATE_FORMAT_APP, AppUtility.DATE_FORMAT_SERVER));
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getCountry()!=null)
-            nationality.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getCountry());
+        if(profileResponseModel.getProfileData().getProfile().getNationality()!=null)
+            nationality.setText(profileResponseModel.getProfileData().getProfile().getNationality());
 
-        if(profileResponseModel.getProfileData().getProfile().getUserProfileData().getMaritalStatus()!=null)
-            marritalStatus.setText(profileResponseModel.getProfileData().getProfile().getUserProfileData().getMaritalStatus());
+        if(profileResponseModel.getProfileData().getProfile().getMaritalStatus()!=null)
+            marritalStatus.setText(profileResponseModel.getProfileData().getProfile().getMaritalStatus());
+
+        if(profileResponseModel.getProfileData().getProfile().getAddress()!=null && profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress()!=null && profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress().getMobile1()!=null)
+            bdContact.setText(profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress().getMobile1());
+
+        if(profileResponseModel.getProfileData().getProfile().getAddress()!=null && profileResponseModel.getProfileData().getProfile().getAddress().getPermanentAddress()!=null && profileResponseModel.getProfileData().getProfile().getAddress().getPermanentAddress().getMobile1()!=null)
+            bdContact.setText(profileResponseModel.getProfileData().getProfile().getAddress().getPermanentAddress().getMobile1());
 
 //        if(profileResponseModel.getProfileData().getProfile().getAddress()!=null && profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress()
 //                != null && profileResponseModel.getProfileData().getProfile().getAddress().getPresentAddress().)

@@ -48,6 +48,7 @@ import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.AppUtility;
 import com.classtune.ndc.utils.NetworkConnection;
+import com.classtune.ndc.utils.SmallVerticalSpaceItemDecoration;
 import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.utils.UserCourses;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
@@ -587,9 +588,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 if (checkedId == R.id.ndc) {
-
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc", editSelectedList, SELECTED_TAB);
-                    userTaskAssignAdapter.notifyDataSetChanged();
+                    //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList!=null) {
                         for (int i = 0; i < ndcStList.size(); i++) {
@@ -599,12 +599,13 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     }
 
                     userTaskAssignAdapter.clear();
+
                     userTaskAssignAdapter.addAllData(ndcStList);
                     //some code
                 } else if (checkedId == R.id.afwc) {
                     //some code
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc", editSelectedList, SELECTED_TAB);
-                    userTaskAssignAdapter.notifyDataSetChanged();
+                    //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
                         for (int i = 0; i < afwcStList.size(); i++) {
@@ -613,12 +614,14 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         }
                     }
                     userTaskAssignAdapter.clear();
-                    if (afwcStList.size() > 0)
+                    if (afwcStList.size() > 0) {
                         userTaskAssignAdapter.addAllData(afwcStList);
+                    }
 
                 } else if (checkedId == R.id.capston) {
+
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston", editSelectedList, SELECTED_TAB);
-                    userTaskAssignAdapter.notifyDataSetChanged();
+                    //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
                     if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList!=null) {
                         for (int i = 0; i < capstonStList.size(); i++) {
@@ -627,7 +630,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         }
                     }
                     userTaskAssignAdapter.clear();
-                    userTaskAssignAdapter.addAllData(capstonStList);
+                    {
+                        userTaskAssignAdapter.addAllData(capstonStList);
+                    }
 
                 }
 
@@ -654,7 +659,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         common.setTextColor(common.getContext().getResources().getColor(R.color.white));
         common.setBackgroundColor(common.getContext().getResources().getColor(R.color.ndc_color));
         custom.setBackgroundColor(custom.getContext().getResources().getColor(R.color.ash));
-        custom.setTextColor(custom.getContext().getResources().getColor(R.color.ndc_color));
+        custom.setTextColor(custom.getContext().getResources().getColor(R.color.black));
         commonTypeLayout.setVisibility(View.VISIBLE);
 
         instituteGroup.setVisibility(View.GONE);
@@ -685,12 +690,13 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     LinearLayoutManager linearLayoutManager;
 
     private void enableCustomSelection() {
+
         cmModelList = new ArrayList<>();
-        getCMData();
+        //getCMData();
         custom.setTextColor(custom.getContext().getResources().getColor(R.color.white));
         custom.setBackgroundColor(custom.getContext().getResources().getColor(R.color.ndc_color));
         common.setBackgroundColor(common.getContext().getResources().getColor(R.color.ash));
-        common.setTextColor(common.getContext().getResources().getColor(R.color.ndc_color));
+        common.setTextColor(common.getContext().getResources().getColor(R.color.black));
         commonTypeLayout.setVisibility(View.GONE);
         ndc.setChecked(true);
 
@@ -706,7 +712,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rv.getContext(),
 //                linearLayoutManager.getOrientation());
 //        rv.addItemDecoration(dividerItemDecoration);
-        listView.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
+        listView.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
         listView.setLayoutManager(linearLayoutManager);
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(userTaskAssignAdapter);

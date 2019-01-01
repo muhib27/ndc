@@ -2,6 +2,7 @@ package com.classtune.ndc.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.social_event).setTag("events"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_tab_).setTag("research_icon"));
+//        tabLayout.addTab(tabLayout.newTab().setTag("tab"));
 
 
 //        for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -113,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getTag().equals("pigeonhole")) {
@@ -160,8 +164,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+               // Toast.makeText(getApplicationContext(), tab.getPosition(), Toast.LENGTH_SHORT).show();
             }
         });
+
+//        tabLayout.removeTabAt(7);
 
 //        tabLayout.setupWithViewPager(viewPager);
 
@@ -412,6 +419,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 TabLayout.Tab tab = tabLayout.getTabAt(0);
                 tab.select();
+                tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                 InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
                 CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = (CMSubmitTaskDetailsFragment) getSupportFragmentManager().findFragmentByTag("cmSubmitTaskDetailsFragment");
                 if((instructorDetailsFragment!=null && instructorDetailsFragment.isVisible()) || cmSubmitTaskDetailsFragment!=null && cmSubmitTaskDetailsFragment.isVisible())
@@ -738,6 +746,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoProfileFragment() {
+//        View view=tabLayout.getTabAt(7).getCustomView();
+//        tabLayout.addTab(tabLayout.newTab().setCustomView(view));
+//        TabLayout.Tab tab = tabLayout.getTabAt(6);
+//        tab.select();
+
         setUpBackStackCountToZero();
         ProfileFragment profileFragment = new ProfileFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();

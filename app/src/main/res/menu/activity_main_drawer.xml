@@ -60,16 +60,16 @@
             android:icon="@drawable/logout_icon"
             android:title="Log out" />
     </group>
-    <group
-        android:id="@+id/second"
-        android:checkableBehavior="single">
-        <item xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/navi_item_create_notifications_sound"
-            android:title="Powered by"
-            app:actionLayout="@layout/powered_by"
-            app:showAsAction="always" />
+    <!--<group-->
+        <!--android:id="@+id/second"-->
+        <!--android:checkableBehavior="single">-->
+        <!--<item xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/navi_item_create_notifications_sound"-->
+            <!--android:title="Powered by"-->
+            <!--app:actionLayout="@layout/powered_by"-->
+            <!--app:showAsAction="always" />-->
 
-    </group>
+    <!--</group>-->
     <!--https://stackoverflow.com/questions/21796209/how-to-create-a-custom-navigation-drawer-in-android-->
     <!--<item android:title="Powered By:">-->
         <!--<menu>-->
