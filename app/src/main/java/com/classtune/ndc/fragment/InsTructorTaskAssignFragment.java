@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -33,6 +34,8 @@ import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.AttachmentAdapterMain;
 import com.classtune.ndc.adapter.TaskAssignAdapter;
+import com.classtune.ndc.adapter.TaskAssignAttachmentConfirmAdapter;
+import com.classtune.ndc.adapter.TaskAssignConfirmAdapter;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.Course;
 import com.classtune.ndc.apiresponse.menu_api.User;
@@ -299,23 +302,23 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
 
         UserCourses userCourses = AppSharedPreference.getUserCourse();
-        if (allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()) {
+        if ((allNdc!=null && allNdc.isChecked()) || (allAfwc !=null && allAfwc.isChecked()) || (allCapston != null && allCapston.isChecked())) {
             selectedList = new ArrayList<>();
-            if (allNdc.isChecked() && ndcStList.size() > 0) {
+            if (allNdc!=null && allNdc.isChecked() && ndcStList.size() > 0) {
                 if (userCourses.isNdc())
                     courseList.add("1");
                 for (Student list : ndcStList) {
                     selectedList.add(list.getId());
                 }
             }
-            if (allAfwc.isChecked() && afwcStList.size() > 0) {
+            if (allAfwc != null && allAfwc.isChecked() && afwcStList.size() > 0) {
                 if (userCourses.isAfwc())
                     courseList.add("2");
                 for (Student list : afwcStList) {
                     selectedList.add(list.getId());
                 }
             }
-            if (allCapston.isChecked() && capstonStList.size() > 0) {
+            if (allCapston != null && allCapston.isChecked() && capstonStList.size() > 0) {
                 if (userCourses.isCapston())
                     courseList.add("3");
                 for (Student list : capstonStList) {
@@ -347,8 +350,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 
 //        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
-
-        callTaskAddApi();
+        confirmDialog();
+//        callTaskAddApi();
 
     }
 
@@ -1531,6 +1534,80 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     }
                 });
 
+
+    }
+
+
+    AlertDialog confirmViewDialog;
+    TextView dialogTitle, dialogDescription, dialogDueDate;
+    TaskAssignConfirmAdapter taskAssignConfirmAdapter;
+    TaskAssignAttachmentConfirmAdapter taskAssignAttachmentConfirmAdapter;
+    RecyclerView selectedUserRv, attachmentConfirmRv;
+    public static ArrayList<Student> confirmList = new ArrayList<>();
+    public void confirmDialog() {
+//        if(selectedList!=null && selectedList.size()>0) {
+//            for (int i = 0; i < selectedList.size(); i++)
+//            {
+//                if(ndcStList.contains())
+//            }
+//        }
+
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View confirmView = factory.inflate(R.layout.dialog_task_assign_confirm, null);
+        dialogTitle = confirmView.findViewById(R.id.dialogTitle);
+        dialogDescription = confirmView.findViewById(R.id.dialogDescription);
+        dialogDueDate = confirmView.findViewById(R.id.dialogDueDate);
+        selectedUserRv = confirmView.findViewById(R.id.task_confirm_recycleview);
+
+        attachmentConfirmRv = confirmView.findViewById(R.id.attachment_confirm_rv);
+
+        taskAssignConfirmAdapter = new TaskAssignConfirmAdapter(getActivity(), confirmList);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        selectedUserRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
+        selectedUserRv.setLayoutManager(linearLayoutManager);
+        selectedUserRv.setItemAnimator(new DefaultItemAnimator());
+        selectedUserRv.setAdapter(taskAssignConfirmAdapter);
+        taskAssignConfirmAdapter.notifyDataSetChanged();
+
+
+        taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelList);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        attachmentConfirmRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
+        attachmentConfirmRv.setLayoutManager(linearLayoutManager);
+        attachmentConfirmRv.setItemAnimator(new DefaultItemAnimator());
+        attachmentConfirmRv.setAdapter(taskAssignAttachmentConfirmAdapter);
+        taskAssignConfirmAdapter.notifyDataSetChanged();
+
+        dialogTitle.setText(title.getText().toString());
+        dialogDescription.setText(description.getText().toString());
+        dialogDueDate.setText(dueDate.getText().toString());
+
+
+
+
+//        text.setText(st);
+        confirmViewDialog = new AlertDialog.Builder(getActivity()).create();
+        confirmViewDialog.setCancelable(false);
+        confirmViewDialog.setView(confirmView);
+        confirmView.findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callTaskAddApi();
+
+                confirmViewDialog.dismiss();
+            }
+        });
+        confirmView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                confirmViewDialog.dismiss();
+            }
+        });
+
+        confirmViewDialog.show();
 
     }
 

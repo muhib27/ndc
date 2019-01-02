@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.social_event).setTag("events"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_tab_).setTag("research_icon"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.profile_nav).setTag("profile"));
 //        tabLayout.addTab(tabLayout.newTab().setTag("tab"));
 
 
@@ -144,6 +145,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoEventsFragment();
+                }
+                else if (tab.getTag().equals("profile")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
+                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    gotoProfileFragment();
                 }
                 else if (tab.getTag().equals("research_icon")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
@@ -545,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //
 //        } else
             if (id == R.id.nav_profile) {
-                tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
+                //tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
             gotoProfileFragment();
         } else if (id == R.id.nav_logout) {
             callLogOutApi();
@@ -748,9 +754,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void gotoProfileFragment() {
 //        View view=tabLayout.getTabAt(7).getCustomView();
 //        tabLayout.addTab(tabLayout.newTab().setCustomView(view));
-//        TabLayout.Tab tab = tabLayout.getTabAt(6);
-//        tab.select();
-
+        TabLayout.Tab tab = tabLayout.getTabAt(7);
+        tab.select();
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
         setUpBackStackCountToZero();
         ProfileFragment profileFragment = new ProfileFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();

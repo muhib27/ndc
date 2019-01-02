@@ -7,10 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,18 +15,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.classtune.ndc.R;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +30,6 @@ import java.util.List;
 
 import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.afwcCount;
 import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.capstonCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.confirmList;
 import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.ndcCount;
 import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
 
@@ -48,7 +40,7 @@ import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedLi
  * Created by Muhib on 20/11/18.
  */
 
-public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TaskAssignConfirmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private String current;
@@ -61,7 +53,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
 
-    private List<Student> pigeonholeDataModelList;
+    private List<Student> pigeonholeDataModelList = new ArrayList<>();
     private List<Student> phTasks = new ArrayList<>();
     private List<String> editSelectedList = new ArrayList<>();
     private Context context;
@@ -80,39 +72,28 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private String errorMsg;
     //HomeFragment homeFragment;
 
-    String shippingAddressOne = "";
-    String shippingAddressTwo = "";
-    String billingAddressOne = "";
-    String billingAddressTwo = "";
 
 
 
-    public TaskAssignAdapter(Context context , String s) {
+    public TaskAssignConfirmAdapter(Context context , String s) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
         current = s;
     }
 
-    public TaskAssignAdapter(Context context) {
+    public TaskAssignConfirmAdapter(Context context) {
         this.context = context;
         pigeonholeDataModelList = new ArrayList<>();
     }
 
-    public TaskAssignAdapter(Context context, List<Student> strList) {
+    public TaskAssignConfirmAdapter(Context context, List<Student> strList) {
+
         this.context = context;
         this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
+        this.pigeonholeDataModelList = strList;
 
     }
 
-    public TaskAssignAdapter(FragmentActivity activity, String current, List<String> editSelectedList, String SELECTED_TAB) {
-        this.context = activity;
-        this.mCallback = mCallback;
-        pigeonholeDataModelList = new ArrayList<>();
-        this.editSelectedList = editSelectedList;
-        this.SELECTED_TAB = SELECTED_TAB;
-        this.current = current;
-    }
 
 
     public List<Student> getMovies() {
@@ -130,21 +111,10 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.task_user_selection_row, parent, false);
+                View viewItem = inflater.inflate(R.layout.task_user_selected_row, parent, false);
                 viewHolder = new PigeonholeListItem(viewItem);
                 break;
-            case LOADING:
-                View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
-                viewHolder = new LoadingVH(viewLoading);
-                break;
-//            case HERO:
-//                View viewHero = inflater.inflate(R.layout.item_hero, parent, false);
-//                viewHolder = new HeroVH(viewHero);
-//                break;
-//            case ADD:
-//                View viewAdd = inflater.inflate(R.layout.layout, parent, false);
-//                viewHolder = new HeroAdd(viewAdd);
-//                break;
+
         }
         return viewHolder;
     }
@@ -162,125 +132,15 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 itemHolder = (PigeonholeListItem) holder;
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
-                if(SELECTED_TAB.isEmpty()) {
-                    if (selectedList.contains(pigeonholeDataModelList.get(position).getId()))
-                        itemHolder.selectCM.setChecked(true);
-                    else
-                        itemHolder.selectCM.setChecked(false);
-                }
-                else if(SELECTED_TAB.equals("custom") && pigeonholeDataModelList.get(position).isSelected())
-                    itemHolder.selectCM.setChecked(true);
-                else
-                    itemHolder.selectCM.setChecked(false);
 
-
-
-                itemHolder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        selectedPosition = itemHolder.getAdapterPosition();
-                        itemHolder.selectCM.setChecked(b);
-                        if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
-                            selectedList.add(pigeonholeDataModelList.get(position).getId());
-                            confirmList.add(pigeonholeDataModelList.get(position));
-                            if(current.equals("ndc"))
-                                ndcCount++;
-                            else if(current.equals("afwc"))
-                                afwcCount++;
-                            else if(current.equals("capston"))
-                                capstonCount++;
-                            if(selectedPosition == position)
-                                itemHolder.selectCM.setChecked(true);
-                            else
-                                itemHolder.selectCM.setChecked(false);
-
-                        }
-                        else {
-                            selectedList.remove(pigeonholeDataModelList.get(position).getId());
-                            confirmList.remove(pigeonholeDataModelList.get(position));
-                            if(current.equals("ndc"))
-                                ndcCount--;
-                            else if(current.equals("afwc"))
-                                afwcCount--;
-                            else if(current.equals("capston"))
-                                capstonCount--;
-                            //compoundButton.setChecked(false);
-                        }
-                    }
-                });
-                break;
-            case LOADING:
-                LoadingVH loadingVH = (LoadingVH) holder;
-
-                if (retryPageLoad) {
-                    loadingVH.mErrorLayout.setVisibility(View.VISIBLE);
-                    loadingVH.mProgressBar.setVisibility(View.GONE);
-
-                    loadingVH.mErrorTxt.setText(
-                            errorMsg != null ?
-                                    errorMsg :
-                                    context.getString(R.string.error_msg_unknown));
-
-                } else {
-                    loadingVH.mErrorLayout.setVisibility(View.GONE);
-                    loadingVH.mProgressBar.setVisibility(View.VISIBLE);
-                }
                 break;
 
 
         }
     }
 
-//    myTextView.setText(Html.fromHtml(stringB + "<font color=red>" + stringA + "</font>);
 
-
-//    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-//
-//        private int position;
-//        public MyMenuItemClickListener(int positon) {
-//            this.position=positon;
-//        }
-//
-//        @Override
-//        public boolean onMenuItemClick(MenuItem menuItem) {
-//            switch (menuItem.getItemId()) {
-//
-////            case R.id.Not_interasted_catugury:
-////                String RemoveCategory=mDataSet.get(position).getCategory();
-////                // mDataSet.remove(position);
-////                //notifyItemRemoved(position);
-////                // notifyItemRangeChanged(position,mDataSet.size());
-////
-////                mySharedPreferences.saveStringPrefs(Constants.REMOVE_CTAGURY,RemoveCategory,MainActivity.context);
-////                Toast.makeText(MainActivity.context, "Add to favourite", Toast.LENGTH_SHORT).show();
-////                return true;
-//                case R.id.edit:
-////                mDataSet.remove(position);
-////                notifyItemRemoved(position);
-////                notifyItemRangeChanged(position,mDataSet.size());
-//                Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show();
-//                    return true;
-//                case R.id.delete:
-//                    Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
-////                mySharedPreferences.deletePrefs(Constants.REMOVE_CTAGURY,MainActivity.context);
-//                default:
-//            }
-//            return false;
-//        }
-//    }
-
-    private void gotoOrderDetailsFragment(Bundle bundle) {
-
-
-//        OrderDetailsFragment orderDetailsFragment = new OrderDetailsFragment();
-//        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        orderDetailsFragment.setArguments(bundle);
-//        transaction.add(R.id.container, orderDetailsFragment, "orderDetailsFragment").addToBackStack(null);
-//        transaction.commit();
-    }
 
     @Override
     public int getItemCount() {
@@ -290,47 +150,10 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-//        if (position % 6 == 0) {
-//            return HERO;
-//        } else if ((position % 6) == 5) {
-//            if (position == 23 && isLoadingAdded)
-//                return LOADING;
-//            else
-//                return ADD;
-//        } else {
-//            return ITEM;
-//        }
+        return ITEM;
 
-//        if (position!= 24 && position%6 == 0 ) {
-//            return HERO;
-//        }
-//        else if((position%6) == 5)
-//        {
-//            return ADD;
-//        }
-//        else {
-        return (position == pigeonholeDataModelList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
-//        }
     }
 
-
-//    private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
-//        return Glide
-//                .with(context)
-//                .load(posterPath)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
-////                .centerCrop()
-//                .crossFade();
-//    }
-//
-//    private DrawableRequestBuilder<String> loadThumbImage(@NonNull String posterPath) {
-//        return Glide
-//                .with(context)
-//                .load(posterPath)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
-//                .centerCrop()
-//                .crossFade();
-//    }
 
 
     /*
@@ -532,46 +355,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    private void gotoInstructorDetailsFragment() {
-        InstructorDetailsFragment instructorDetailsFragment = new InstructorDetailsFragment();
-        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);
-        ;
-        transaction.commit();
-    }
 
 
-    protected class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ProgressBar mProgressBar;
-        private ImageButton mRetryBtn;
-        private TextView mErrorTxt;
-        private LinearLayout mErrorLayout;
-
-        public LoadingVH(View itemView) {
-            super(itemView);
-
-            mProgressBar = (ProgressBar) itemView.findViewById(R.id.loadmore_progress);
-            mRetryBtn = (ImageButton) itemView.findViewById(R.id.loadmore_retry);
-            mErrorTxt = (TextView) itemView.findViewById(R.id.loadmore_errortxt);
-            mErrorLayout = (LinearLayout) itemView.findViewById(R.id.loadmore_errorlayout);
-
-            mRetryBtn.setOnClickListener(this);
-            mErrorLayout.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.loadmore_retry:
-                case R.id.loadmore_errorlayout:
-
-                    showRetry(false, null);
-                    mCallback.retryPageLoad();
-
-                    break;
-            }
-        }
-    }
 
 }

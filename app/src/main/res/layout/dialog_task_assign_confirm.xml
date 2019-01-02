@@ -1,0 +1,162 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_shape_background_task_assign"
+    android:orientation="vertical"
+    android:padding="@dimen/size_5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/llTitle"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/size_5dp"
+            android:textSize="@dimen/text_size_17_sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Title:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:padding="@dimen/size_5dp"
+            android:textSize="@dimen/text_size_16_sp"
+            android:textColor="@color/deep_ash"
+            android:textStyle="normal"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/llTitle"
+        android:id="@+id/llDescription"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/size_5dp"
+            android:textSize="@dimen/text_size_17_sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Description:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/dialogDescription"
+            android:padding="@dimen/size_5dp"
+            android:textSize="@dimen/text_size_16_sp"
+            android:textColor="@color/deep_ash"
+            android:textStyle="normal"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llDueDate"
+        android:layout_below="@+id/llDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_2dp"
+            android:lineSpacingExtra="@dimen/size_5dp"
+            android:text="Due Date : "
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16_sp" />
+
+        <TextView
+            android:id="@+id/dialogDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_2dp"
+            android:lineSpacingExtra="@dimen/size_5dp"
+            android:text="01-02-2019"
+            android:textColor="@color/deep_ash"
+            android:textSize="@dimen/text_size_16_sp" />
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="@dimen/size_10dp"
+        android:gravity="center"
+        android:id="@+id/assign_to"
+        android:layout_below="@+id/llDueDate"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_17_sp"
+        android:textStyle="bold"
+        android:text="Assign To"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/assign_to"
+        android:id="@+id/task_confirm_recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10dp"
+        android:clipToPadding="false" />
+    <TextView
+        android:layout_marginTop="@dimen/size_10dp"
+        android:gravity="center"
+        android:id="@+id/attachment_text"
+        android:layout_below="@+id/task_confirm_recycleview"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_17_sp"
+        android:textStyle="bold"
+        android:text="Attachment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/attachment_text"
+        android:id="@+id/attachment_confirm_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10dp"
+        android:clipToPadding="false" />
+
+    <RelativeLayout
+        android:layout_below="@+id/attachment_confirm_rv"
+        android:layout_marginTop="@dimen/size_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/btn_cancel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:layout_marginBottom="@dimen/size_10dp"
+            android:clickable="true"
+            android:text="Ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_15_sp" />
+    </RelativeLayout>
+    </RelativeLayout>
+
+
+</ScrollView>
