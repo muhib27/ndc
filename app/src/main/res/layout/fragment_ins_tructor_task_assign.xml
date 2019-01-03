@@ -47,8 +47,7 @@
             android:layout_marginTop="@dimen/size_10dp"
             android:background="@drawable/round_shape_background_task_assign"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10dp">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/layoutAssignTo"
@@ -57,9 +56,10 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:padding="@dimen/size_10dp"
                     android:id="@+id/assign_to"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -67,6 +67,12 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16_sp" />
             </LinearLayout>
+            <View
+                android:layout_marginTop="@dimen/size_5dp"
+                android:layout_marginBottom="@dimen/size_5dp"
+                android:background="@color/ndc_color"
+                android:layout_width="@dimen/margin_1dp"
+                android:layout_height="match_parent"/>
 
             <LinearLayout
                 android:id="@+id/layoutDueDate"
@@ -75,6 +81,7 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:padding="@dimen/size_10dp"
                     android:id="@+id/due_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

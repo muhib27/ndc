@@ -22,31 +22,31 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer">
 
-        <LinearLayout
-            android:layout_marginBottom="@dimen/size_10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="bottom"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_marginBottom="@dimen/size_10dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:orientation="vertical">-->
 
-            <TextView
+            <!--<TextView-->
 
-                android:paddingLeft="@dimen/size_10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Powered By : "
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_14_sp" />
+                <!--android:paddingLeft="@dimen/size_10dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Powered By : "-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textSize="@dimen/text_size_14_sp" />-->
 
-            <ImageView
-                android:layout_marginTop="@dimen/size_10dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/classtune_icon" />
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--android:layout_marginTop="@dimen/size_10dp"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/classtune_icon" />-->
+        <!--</LinearLayout>-->
 
     </android.support.design.widget.NavigationView>
 

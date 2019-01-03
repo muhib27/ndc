@@ -14,45 +14,46 @@
             <!--android:id="@+id/nav_home"-->
             <!--android:icon="@drawable/home_nav"-->
             <!--android:title="Home" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_pigeonhole"-->
-            <!--android:icon="@drawable/pigeohole_nav"-->
-            <!--android:title="Pigeonhole" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_cm_box"-->
-            <!--android:icon="@drawable/pigenhole_icon"-->
-            <!--android:title="CM Box" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_notice"-->
-            <!--android:icon="@drawable/notice_nav"-->
-            <!--android:title="Notice" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_course_calendar"-->
-            <!--android:icon="@drawable/class_schedule_nav"-->
-            <!--android:title="@string/course_calendar_text" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_events"-->
-            <!--android:icon="@drawable/ic_menu_manage"-->
-            <!--android:title="@string/events_text" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_research"-->
-            <!--android:icon="@drawable/research_nav"-->
-            <!--android:title="@string/research_text" />-->
-        <!--<item-->
-            <!--app:itemTextColor="#676767"-->
-            <!--android:id="@+id/nav_reading_package"-->
-            <!--android:icon="@drawable/ic_menu_manage"-->
-            <!--android:title="@string/reading_package_text" />-->
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_pigeonhole"
+            android:icon="@drawable/pigeon_hole_tab_"
+            android:title="Pigeonhole" />
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_cm_box"
+            android:icon="@drawable/cm_box_tab"
+            android:title="CM Box" />
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_course_calendar"
+            android:icon="@drawable/cc_tab_"
+            android:title="Academic Program" />
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_notice"
+            android:icon="@drawable/notice_tab_"
+            android:title="Notice" />
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_events"
+            android:icon="@drawable/social_event"
+            android:title="Social Events" />
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_reading_package"
+            android:icon="@drawable/reading_package"
+            android:title="@string/reading_package_text" />
+        <item
+            app:itemTextColor="#676767"
+            android:id="@+id/nav_research"
+            android:icon="@drawable/research_tab_"
+            android:title="@string/research_text" />
+
         <item
             app:itemTextColor="#676767"
             android:id="@+id/nav_profile"
-            android:icon="@drawable/profile_nav"
+            android:icon="@drawable/profile_tab_"
             android:title="@string/profile_text" />
         <item
             app:itemTextColor="#676767"
@@ -60,16 +61,16 @@
             android:icon="@drawable/logout_icon"
             android:title="Log out" />
     </group>
-    <!--<group-->
-        <!--android:id="@+id/second"-->
-        <!--android:checkableBehavior="single">-->
-        <!--<item xmlns:app="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/navi_item_create_notifications_sound"-->
-            <!--android:title="Powered by"-->
-            <!--app:actionLayout="@layout/powered_by"-->
-            <!--app:showAsAction="always" />-->
+    <group
+        android:id="@+id/second"
+        android:checkableBehavior="single">
+        <item xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navi_item_create_notifications_sound"
+            android:title="Powered by"
+            app:actionLayout="@layout/powered_by"
+            app:showAsAction="always" />
 
-    <!--</group>-->
+    </group>
     <!--https://stackoverflow.com/questions/21796209/how-to-create-a-custom-navigation-drawer-in-android-->
     <!--<item android:title="Powered By:">-->
         <!--<menu>-->

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/round_shape_background_task_assign"
     android:orientation="vertical"
-    android:padding="@dimen/size_5dp">
+    android:padding="@dimen/size_10dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,14 +17,14 @@
         <TextView
             android:padding="@dimen/size_5dp"
             android:textSize="@dimen/text_size_17_sp"
-            android:textColor="@color/black"
+            android:textColor="@color/ndc_color"
             android:textStyle="bold"
             android:text="Title:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:paddingLeft="@dimen/size_5dp"
             android:id="@+id/dialogTitle"
-            android:padding="@dimen/size_5dp"
             android:textSize="@dimen/text_size_16_sp"
             android:textColor="@color/deep_ash"
             android:textStyle="normal"
@@ -42,14 +42,14 @@
         <TextView
             android:padding="@dimen/size_5dp"
             android:textSize="@dimen/text_size_17_sp"
-            android:textColor="@color/black"
+            android:textColor="@color/ndc_color"
             android:textStyle="bold"
             android:text="Description:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:paddingLeft="@dimen/size_5dp"
             android:id="@+id/dialogDescription"
-            android:padding="@dimen/size_5dp"
             android:textSize="@dimen/text_size_16_sp"
             android:textColor="@color/deep_ash"
             android:textStyle="normal"
@@ -59,6 +59,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:paddingLeft="@dimen/size_5dp"
         android:id="@+id/llDueDate"
         android:layout_below="@+id/llDescription"
         android:layout_width="match_parent"
@@ -72,7 +73,7 @@
             android:layout_marginTop="@dimen/margin_2dp"
             android:lineSpacingExtra="@dimen/size_5dp"
             android:text="Due Date : "
-            android:textColor="@color/black"
+            android:textColor="@color/ndc_color"
             android:textSize="@dimen/text_size_16_sp" />
 
         <TextView
@@ -90,7 +91,7 @@
         android:gravity="center"
         android:id="@+id/assign_to"
         android:layout_below="@+id/llDueDate"
-        android:textColor="@color/black"
+        android:textColor="@color/ndc_color"
         android:textSize="@dimen/text_size_17_sp"
         android:textStyle="bold"
         android:text="Assign To"
@@ -102,14 +103,14 @@
         android:id="@+id/task_confirm_recycleview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_10dp"
+        android:layout_margin="2dp"
         android:clipToPadding="false" />
     <TextView
         android:layout_marginTop="@dimen/size_10dp"
         android:gravity="center"
         android:id="@+id/attachment_text"
         android:layout_below="@+id/task_confirm_recycleview"
-        android:textColor="@color/black"
+        android:textColor="@color/ndc_color"
         android:textSize="@dimen/text_size_17_sp"
         android:textStyle="bold"
         android:text="Attachment"
@@ -121,7 +122,7 @@
         android:id="@+id/attachment_confirm_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_10dp"
+        android:layout_margin="2dp"
         android:clipToPadding="false" />
 
     <RelativeLayout
@@ -134,18 +135,19 @@
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:text="@string/btn_cancel"
             android:textAllCaps="false" />
 
         <Button
+            android:background="@color/ndc_color"
             android:id="@+id/ok"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/size_10dp"

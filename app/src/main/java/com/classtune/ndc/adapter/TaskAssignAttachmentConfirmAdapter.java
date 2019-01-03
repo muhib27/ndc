@@ -123,8 +123,50 @@ public class TaskAssignAttachmentConfirmAdapter extends RecyclerView.Adapter<Rec
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getFileName());
-                int pos = position + 1;
-                itemHolder.serial.setText("" + pos);
+
+                if(pigeonholeDataModelList.get(position).getFileName().contains("mp4"))
+                {
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.mp_four_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("3gp")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.three_gp_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("doc")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.doc_attachment_mini));
+                } else if(pigeonholeDataModelList.get(position).getFileName().contains("docx")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.docs_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("gif")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.gif_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("mp3")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.mp_three_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("pdf")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.pdf_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("psd")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.psd_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("rar")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.rar_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("txt")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.txt_attachment_mini));
+                } else if(pigeonholeDataModelList.get(position).getFileName().contains("xls")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.xls_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("zip")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.zip_attachment_mini));
+                }
+                else if(pigeonholeDataModelList.get(position).getFileName().contains("png") || pigeonholeDataModelList.get(position).getFileName().contains("jpg")){
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.photo_attachment_mini));
+                }
+                else {
+                    itemHolder.attachment.setImageDrawable(context.getResources().getDrawable(R.drawable.no_image_attachment_mini));
+                }
+//                int pos = position + 1;
+//                itemHolder.serial.setText("" + pos);
 
                 break;
 
@@ -246,7 +288,7 @@ public class TaskAssignAttachmentConfirmAdapter extends RecyclerView.Adapter<Rec
             super(itemView);
 
             title = (TextView) itemView.findViewById(R.id.cmName);
-            serial = itemView.findViewById(R.id.serial);
+            attachment = itemView.findViewById(R.id.serial);
 
         }
     }

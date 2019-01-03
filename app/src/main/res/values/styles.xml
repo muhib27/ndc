@@ -81,6 +81,7 @@
 
     <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/ndc_color</item> <!--Also available: @drawable:launcher_screen_with_background-->
+        <item name="colorAccent">@color/ndc_color</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>

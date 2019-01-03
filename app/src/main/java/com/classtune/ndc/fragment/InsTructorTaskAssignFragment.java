@@ -12,9 +12,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -270,6 +272,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 readStorageStateTask();
                 break;
             case R.id.layoutAssignTo:
+                //assignToPopupMenu();
                 callPigeonholeGetCourseApi();
 
                 break;
@@ -289,6 +292,28 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 browseFile(SELECTED_TYPE);
                 break;
         }
+    }
+
+    private void assignToPopupMenu() {
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(getActivity(), assignTo);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.popup_assign_to, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+//                Toast.makeText(
+//                        getActivity(),
+//                        "You Clicked : " + item.getTitle(),
+//                        Toast.LENGTH_SHORT
+//                ).show();
+                return true;
+            }
+        });
+
+        popup.show(); //showing popup menu
     }
 
     private void initTaskAssignApi() {
@@ -1564,7 +1589,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         taskAssignConfirmAdapter = new TaskAssignConfirmAdapter(getActivity(), confirmList);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        selectedUserRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
+//        selectedUserRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
         selectedUserRv.setLayoutManager(linearLayoutManager);
         selectedUserRv.setItemAnimator(new DefaultItemAnimator());
         selectedUserRv.setAdapter(taskAssignConfirmAdapter);
@@ -1574,7 +1599,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelList);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        attachmentConfirmRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
+//        attachmentConfirmRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
         attachmentConfirmRv.setLayoutManager(linearLayoutManager);
         attachmentConfirmRv.setItemAnimator(new DefaultItemAnimator());
         attachmentConfirmRv.setAdapter(taskAssignAttachmentConfirmAdapter);
@@ -1583,7 +1608,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         dialogTitle.setText(title.getText().toString());
         dialogDescription.setText(description.getText().toString());
         dialogDueDate.setText(dueDate.getText().toString());
-
 
 
 

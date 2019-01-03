@@ -5,4 +5,8 @@
     <dimen name="activity_horizontal_margin">64dp</dimen>
     <dimen name="tab_icon_size">36dp</dimen>
     <dimen name="size_60dp">180dp</dimen>
+
+    <dimen name="user_name_width">600dp</dimen>
+
+    <dimen name="user_name_width_margin">100dp</dimen>
 </resources>

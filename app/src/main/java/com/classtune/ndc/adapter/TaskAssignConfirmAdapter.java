@@ -133,6 +133,8 @@ public class TaskAssignConfirmAdapter extends RecyclerView.Adapter<RecyclerView.
                 int total = phTasks.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
+                int pos = position + 1;
+                itemHolder.serial.setText(""+pos);
 
                 break;
 
@@ -241,7 +243,7 @@ public class TaskAssignConfirmAdapter extends RecyclerView.Adapter<RecyclerView.
 
 
     protected class PigeonholeListItem extends RecyclerView.ViewHolder {
-        private TextView title;
+        private TextView title, serial;
         public CheckBox selectCM;
         private ImageView attachment;
 
@@ -255,7 +257,7 @@ public class TaskAssignConfirmAdapter extends RecyclerView.Adapter<RecyclerView.
             super(itemView);
 
             title = (TextView) itemView.findViewById(R.id.cmName);
-            selectCM = itemView.findViewById(R.id.selectCM);
+            serial = itemView.findViewById(R.id.serial);
 
 
 
