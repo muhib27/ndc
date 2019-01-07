@@ -3,35 +3,24 @@ package com.classtune.ndc.adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
-import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.afwcCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.capstonCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.ndcCount;
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
 
 //import com.bumptech.glide.DrawableRequestBuilder;
 

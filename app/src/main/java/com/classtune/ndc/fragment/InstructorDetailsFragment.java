@@ -1,17 +1,12 @@
 package com.classtune.ndc.fragment;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -21,26 +16,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.activity.PlayerActivity;
-import com.classtune.ndc.activity.VideoPlayerActivity;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskSubmitResponse;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewData;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskViewResponse;

@@ -525,30 +525,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        } else
         if (id == R.id.nav_pigeonhole) {
 
-            gotoPigeonholeFragment();
+            //gotoPigeonholeFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(0);
+            tab.select();
 
         } else if (id == R.id.nav_cm_box) {
 
-            gotoCMBoxFragment();
+            //gotoCMBoxFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(1);
+            tab.select();
 
         } else if (id == R.id.nav_notice) {
-            gotoNoticeFragment("");
+            //gotoNoticeFragment("");
+            TabLayout.Tab tab = tabLayout.getTabAt(3);
+            tab.select();
 
         } else if (id == R.id.nav_course_calendar) {
-            gotoClassScheduleFragment();
+            //gotoClassScheduleFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(2);
+            tab.select();
 
         } else if (id == R.id.nav_events) {
-            gotoEventsFragment();
+            //gotoEventsFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(4);
+            tab.select();
 
         } else if (id == R.id.nav_reading_package) {
-            gotoReadingPackageFragment();
+            //gotoReadingPackageFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(5);
+            tab.select();
 
         } else if (id == R.id.nav_research) {
-            gotoResearchListFragment();
+            //gotoResearchListFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(6);
+            tab.select();
 
         } else if (id == R.id.nav_profile) {
             //tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
-            gotoProfileFragment();
+            //gotoProfileFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(7);
+            tab.select();
         } else if (id == R.id.nav_logout) {
             callLogOutApi();
         }
@@ -639,8 +655,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoNoticeFragment(String id) {
-        TabLayout.Tab tab = tabLayout.getTabAt(3);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(3);
+//        tab.select();
         Bundle bundle = new Bundle();
         if (id != null) {
             bundle.putString("id", id);
@@ -656,8 +672,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoReadingPackageFragment() {
-        TabLayout.Tab tab = tabLayout.getTabAt(5);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(5);
+//        tab.select();
         Bundle bundle = new Bundle();
         bundle.putString("type", "0");
         bundle.putString("id", "0");
@@ -678,8 +694,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoClassScheduleFragment() {
-        TabLayout.Tab tab = tabLayout.getTabAt(2);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(2);
+//        tab.select();
         setUpBackStackCountToZero();
 
         RoutineWhiteFragment routineWhiteFragment = new RoutineWhiteFragment();
@@ -695,8 +711,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoPigeonholeFragment() {
-        TabLayout.Tab tab = tabLayout.getTabAt(0);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(0);
+//        tab.select();
         setUpBackStackCountToZero();
         PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -706,8 +722,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoCMBoxFragment() {
-        TabLayout.Tab tab = tabLayout.getTabAt(1);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(1);
+//        tab.select();
         setUpBackStackCountToZero();
         CMBoxFragment cmBoxFragment = new CMBoxFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -727,8 +743,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoEventsFragment() {
-        TabLayout.Tab tab = tabLayout.getTabAt(4);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(4);
+//        tab.select();
         setUpBackStackCountToZero();
         EventsFragment eventsFragment = new EventsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -738,8 +754,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void gotoResearchListFragment() {
-        TabLayout.Tab tab = tabLayout.getTabAt(6);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(6);
+//        tab.select();
         setUpBackStackCountToZero();
         ResearchListFragment researchListFragment = new ResearchListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -760,8 +776,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void gotoProfileFragment() {
 //        View view=tabLayout.getTabAt(7).getCustomView();
 //        tabLayout.addTab(tabLayout.newTab().setCustomView(view));
-        TabLayout.Tab tab = tabLayout.getTabAt(7);
-        tab.select();
+//        TabLayout.Tab tab = tabLayout.getTabAt(7);
+//        tab.select();
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
         setUpBackStackCountToZero();
         ProfileFragment profileFragment = new ProfileFragment();

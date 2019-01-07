@@ -1,20 +1,15 @@
 package com.classtune.ndc.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,23 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
 import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
-import com.classtune.ndc.model.PigeonholeDataModel;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
-import com.classtune.ndc.utils.CommonApiCall;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.classtune.ndc.viewhelpers.UIHelper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 

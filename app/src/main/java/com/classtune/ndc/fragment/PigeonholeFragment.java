@@ -95,9 +95,9 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 
         UserPermission userPermission = AppSharedPreference.getUserPermission();
         if(userPermission.isTasksAdd())
-            pigeonholeFab.setVisibility(View.VISIBLE);
+            pigeonholeFab.show();
         else
-            pigeonholeFab.setVisibility(View.INVISIBLE);
+            pigeonholeFab.hide();
 
         strList = getStrList();
 
@@ -151,7 +151,7 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
                             if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
                                 Log.v("PigeonholeFragment", value.message());
                                 List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
-                                Collections.reverse(phTaskList);
+                                //Collections.reverse(phTaskList);
                                 pigeonholeAdapter.addAllData(phTaskList);
                                 Log.v("tt", phTaskList.toString());
                             } else if (phTaskListResponse.getCode() == 500) {

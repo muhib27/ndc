@@ -4,12 +4,12 @@
 
     <item
         android:title="Common"
-        android:id="@+id/edit"
+        android:id="@+id/common"
         android:icon="@drawable/edit_icon"
         app:showAsAction="always" />
     <item
         android:title="Custom"
-        android:id="@+id/delete"
+        android:id="@+id/custom"
         android:icon="@drawable/delete_icon"
         app:showAsAction="always" />
 

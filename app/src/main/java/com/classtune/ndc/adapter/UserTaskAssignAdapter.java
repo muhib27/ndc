@@ -10,19 +10,15 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
-import com.classtune.ndc.model.CMModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static com.classtune.ndc.fragment.InsTructorTaskAssignFragment.selectedList;
 
 /**
  * Created by RR on 14-Nov-17.

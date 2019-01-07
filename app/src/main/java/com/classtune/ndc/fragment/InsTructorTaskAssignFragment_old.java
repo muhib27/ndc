@@ -93,7 +93,7 @@ import static com.vincent.filepicker.activity.ImagePickActivity.IS_NEED_CAMERA;
  * A simple {@link Fragment} subclass.
  */
 //, IAttachFile
-public class InsTructorTaskAssignFragment extends Fragment implements View.OnClickListener, EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
+public class InsTructorTaskAssignFragment_old extends Fragment implements View.OnClickListener, EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     LinearLayout layoutDueDate, layoutAssignTo, commonTypeLayout;
     Button attachFileBtn, assignBtn;
     TextView dueDate, assignTo;
@@ -110,7 +110,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     List<Student> capstonStList;
 
     public ArrayList<String> courseList;
-    public static List<String> selectedList;
+    public static ArrayList<String> selectedList;
 
     UIHelper uiHelper;
 
@@ -127,11 +127,11 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     private static final int RC_CAMERA_PERM = 125;
     private static final int RC_STORAGE_CAMERA_PERM = 124;
     private ArrayList<String> listFiles;
-    public static InsTructorTaskAssignFragment instance;
+    public static InsTructorTaskAssignFragment_old instance;
     ListView attachmentListMain;
     public static String id = "";
 
-    public InsTructorTaskAssignFragment() {
+    public InsTructorTaskAssignFragment_old() {
         // Required empty public constructor
     }
 
@@ -152,7 +152,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         }
 
 
-        id = "";
         ndcStList = new ArrayList<>();
         afwcStList = new ArrayList<>();
         capstonStList = new ArrayList<>();
@@ -189,6 +188,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             }
         });
 
+        id = "";
 
         Bundle b = getArguments();
         if (getArguments() != null) {
@@ -269,15 +269,15 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 readStorageStateTask();
                 break;
             case R.id.layoutAssignTo:
-                assignToPopupMenu();
-                //callPigeonholeGetCourseApi();
+                //assignToPopupMenu();
+                callPigeonholeGetCourseApi();
 
                 break;
             case R.id.assignBtn:
-                if (assignBtn.getText().toString().equalsIgnoreCase("Update"))
+                if(assignBtn.getText().toString().equalsIgnoreCase("Update"))
                     initTaskEditApi();
                 else
-                    initTaskAssignApi();
+                initTaskAssignApi();
                 break;
             case R.id.common:
                 enableCommonSelection();
@@ -291,8 +291,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         }
     }
 
-    private String CURRENT_SELECTION = "";
-
     private void assignToPopupMenu() {
         //Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(getActivity(), assignTo);
@@ -303,17 +301,14 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.common:
-                        CURRENT_SELECTION = "common";
-                        callPigeonholeGetCourseApi("common");
-                        break;
-                    case R.id.custom:
-                        confirmList = new ArrayList<>();
-                        CURRENT_SELECTION = "custom";
-                        callPigeonholeGetCourseApi("custom");
-                        break;
-                }
+//                switch (item.getItemId()){
+//                    case R.id.common:
+//                        //callPigeonholeGetCourseApi("common");
+//                        break;
+//                    case R.id.custom:
+//                        callPigeonholeGetCourseApi("custom");
+//                        break;
+//                }
 //                Toast.makeText(
 //                        getActivity(),
 //                        "You Clicked : " + item.getTitle(),
@@ -328,7 +323,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     private void initTaskAssignApi() {
 
-
         pigeonholeTaskAdd = new PigeonholeTaskAdd();
         if (!title.getText().toString().trim().isEmpty())
             pigeonholeTaskAdd.setTitle(title.getText().toString());
@@ -338,10 +332,9 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
 
         UserCourses userCourses = AppSharedPreference.getUserCourse();
-        if ((allNdc != null && allNdc.isChecked()) || (allAfwc != null && allAfwc.isChecked()) || (allCapston != null && allCapston.isChecked())) {
-
-            selectedList.clear();
-            if (allNdc != null && allNdc.isChecked() && ndcStList.size() > 0) {
+        if ((allNdc!=null && allNdc.isChecked()) || (allAfwc !=null && allAfwc.isChecked()) || (allCapston != null && allCapston.isChecked())) {
+            selectedList = new ArrayList<>();
+            if (allNdc!=null && allNdc.isChecked() && ndcStList.size() > 0) {
                 if (userCourses.isNdc())
                     courseList.add("1");
                 for (Student list : ndcStList) {
@@ -530,7 +523,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                 attachmentAdapterMain.setData(attachmentModelList);
                 attachmentAdapterMain.notifyDataSetChanged();
 
-                if (!id.isEmpty() && attachmentModelsEdit != null && attachmentModelsEdit.size() > 0) {
+                if(!id.isEmpty() && attachmentModelsEdit!=null && attachmentModelsEdit.size()>0)
+                {
                     attachmentAdapterMain.AddData(attachmentModelsEdit);
                 }
                 fileAttachDialog.dismiss();
@@ -630,7 +624,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc", editSelectedList, SELECTED_TAB);
                     //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
-                    if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList != null) {
+                    if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList!=null) {
                         for (int i = 0; i < ndcStList.size(); i++) {
                             if (editSelectedList.contains(ndcStList.get(i).getId()))
                                 ndcStList.get(i).setSelected(true);
@@ -646,7 +640,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc", editSelectedList, SELECTED_TAB);
                     //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
-                    if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList != null) {
+                    if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
                         for (int i = 0; i < afwcStList.size(); i++) {
                             if (editSelectedList.contains(afwcStList.get(i).getId()))
                                 afwcStList.get(i).setSelected(true);
@@ -662,7 +656,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston", editSelectedList, SELECTED_TAB);
                     //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
-                    if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList != null) {
+                    if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList!=null) {
                         for (int i = 0; i < capstonStList.size(); i++) {
                             if (editSelectedList.contains(capstonStList.get(i).getId()))
                                 capstonStList.get(i).setSelected(true);
@@ -706,6 +700,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         final View assignToDialogView = factory.inflate(R.layout.dialog_instructor_assign_to_common, null);
 
 
+
         allNdc = assignToDialogView.findViewById(R.id.all_ndc);
         allCapston = assignToDialogView.findViewById(R.id.all_capston);
         allAfwc = assignToDialogView.findViewById(R.id.all_afwc);
@@ -736,13 +731,14 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //            capston.setVisibility(View.INVISIBLE);
         }
 
-        if (SELECTED_TAB != null && SELECTED_TAB.equalsIgnoreCase("common") && editCourseList != null && editCourseList.size() > 0) {
-            for (int i = 0; i < editCourseList.size(); i++) {
-                if (editCourseList.get(i).equals("1"))
+        if(SELECTED_TAB != null && SELECTED_TAB.equalsIgnoreCase("common") && editCourseListSt!=null && editCourseListSt.size()>0)
+        {
+            for(int i=0; i< editCourseListSt.size(); i++){
+                if(editCourseListSt.get(i).equals("1"))
                     allNdc.setChecked(true);
-                else if (editCourseList.get(i).equals("2"))
+                else if(editCourseListSt.get(i).equals("2"))
                     allAfwc.setChecked(true);
-                else if (editCourseList.get(i).equals("3"))
+                else if(editCourseListSt.get(i).equals("3"))
                     allCapston.setChecked(true);
 
             }
@@ -761,10 +757,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         batchDialog.show();
 
     }
-
-    boolean editNdcFlag = false;
-    boolean editAfwcFlag = false;
-    boolean editCapstonFlag = false;
 
     private void showDialogAssignToCustom() {
         UserCourses userCourses = AppSharedPreference.getUserCourse();
@@ -802,65 +794,13 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(userTaskAssignAdapter);
 
-        if (ndcStList != null && ndcStList.size() > 0)
-            ndc.setVisibility(View.VISIBLE);
-        else
-            ndc.setVisibility(View.GONE);
-
-        if (afwcStList != null && afwcStList.size() > 0)
-            afwc.setVisibility(View.VISIBLE);
-        else
-            afwc.setVisibility(View.GONE);
-
-
-        if (capstonStList != null && capstonStList.size() > 0)
-            capston.setVisibility(View.VISIBLE);
-        else
-            capston.setVisibility(View.GONE);
-
-
-        if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList != null) {
-            for (int i = 0; i < ndcStList.size(); i++) {
-                if (editSelectedList.contains(ndcStList.get(i).getId())) {
-                    ndcStList.get(i).setSelected(true);
-                    // editSelectedList.remove(ndcStList.get(i).getId());
-                    editNdcFlag = true;
-                }
-
-            }
-        }
-        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList != null) {
-            for (int i = 0; i < afwcStList.size(); i++) {
-                if (editSelectedList.contains(afwcStList.get(i).getId())) {
-                    afwcStList.get(i).setSelected(true);
-                    // editSelectedList.remove(afwcStList.get(i).getId());
-                    editAfwcFlag = true;
-                }
-            }
-        }
-        if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList != null) {
-            for (int i = 0; i < capstonStList.size(); i++) {
-                if (editSelectedList.contains(capstonStList.get(i).getId()))
-                    capstonStList.get(i).setSelected(true);
-                //editSelectedList.remove(capstonStList.get(i).getId());
-                editCapstonFlag = true;
-            }
-        }
-        if (editNdcFlag || editAfwcFlag || editCapstonFlag) {
-            if (editNdcFlag) {
-                userTaskAssignAdapter.clear();
-                userTaskAssignAdapter.addAllData(ndcStList);
-            } else if (editAfwcFlag) {
-                userTaskAssignAdapter.clear();
-                userTaskAssignAdapter.addAllData(afwcStList);
-            } else if (editCapstonFlag) {
-                userTaskAssignAdapter.clear();
-                userTaskAssignAdapter.addAllData(capstonStList);
-            }
-        } else {
-            if (ndcStList != null && ndcStList.size() > 0)
-                userTaskAssignAdapter.addAllData(ndcStList);
-        }
+//        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
+//            for (int i = 0; i < afwcStList.size(); i++) {
+//                if (editSelectedList.contains(afwcStList.get(i).getId()))
+//                    afwcStList.get(i).setSelected(true);
+//            }
+//        }
+        userTaskAssignAdapter.addAllData(ndcStList);
 
 
 //        commonTypeLayout = assignToDialogView.findViewById(R.id.commonTypeLayout);
@@ -877,7 +817,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "ndc", editSelectedList, SELECTED_TAB);
                     //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
-                    if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList != null) {
+                    if (editSelectedList != null && editSelectedList.size() > 0 && ndcStList!=null) {
                         for (int i = 0; i < ndcStList.size(); i++) {
                             if (editSelectedList.contains(ndcStList.get(i).getId()))
                                 ndcStList.get(i).setSelected(true);
@@ -893,7 +833,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "afwc", editSelectedList, SELECTED_TAB);
                     //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
-                    if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList != null) {
+                    if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
                         for (int i = 0; i < afwcStList.size(); i++) {
                             if (editSelectedList.contains(afwcStList.get(i).getId()))
                                 afwcStList.get(i).setSelected(true);
@@ -909,7 +849,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     userTaskAssignAdapter = new TaskAssignAdapter(getActivity(), "capston", editSelectedList, SELECTED_TAB);
                     //userTaskAssignAdapter.notifyDataSetChanged();
                     listView.setAdapter(userTaskAssignAdapter);
-                    if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList != null) {
+                    if (editSelectedList != null && editSelectedList.size() > 0 && capstonStList!=null) {
                         for (int i = 0; i < capstonStList.size(); i++) {
                             if (editSelectedList.contains(capstonStList.get(i).getId()))
                                 capstonStList.get(i).setSelected(true);
@@ -1003,7 +943,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(userTaskAssignAdapter);
 
-        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList != null) {
+        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
             for (int i = 0; i < afwcStList.size(); i++) {
                 if (editSelectedList.contains(afwcStList.get(i).getId()))
                     afwcStList.get(i).setSelected(true);
@@ -1306,8 +1246,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     }
 
-    //final String selectedType
-    private void callPigeonholeGetCourseApi(final String selectedType) {
+//final String selectedType
+    private void callPigeonholeGetCourseApi() {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -1337,11 +1277,11 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                         if (pigeonholeGetCourseApiResponse.getCode() == 200) {
                             Log.v("PigeonholeFragment", value.message());
                             parseCourseData(pigeonholeGetCourseApiResponse.getCourseData().getCourses());
-                            if (selectedType.equalsIgnoreCase("common"))
-                                showDialogAssignToCommon();
-                            else if (selectedType.equalsIgnoreCase("custom"))
-                                showDialogAssignToCustom();
-                            // showDialogAssignTo();
+//                            if(selectedType.equalsIgnoreCase("common"))
+//                            showDialogAssignToCommon();
+//                            else if(selectedType.equalsIgnoreCase("custom"))
+//                                showDialogAssignToCustom();
+                            showDialogAssignTo();
                             //  AppSharedPreference.setUserBasicInfo(menuApiResponse.getMenuData().getUser());
 
 //                            User user1 = AppSharedPreference.getUserBasicInfo();
@@ -1448,8 +1388,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
     }
 
-    List<String> editCourseList = new ArrayList<>();
-    List<String> editSelectedList = new ArrayList<>();
+    List<Course> editCourseList = new ArrayList<>();
+    ArrayList<String> editSelectedList = new ArrayList<>();
     ArrayList<String> editCourseListSt = new ArrayList<>();
     ArrayList<AttachmentModel> attachmentModelsEdit = new ArrayList<>();
     private static String SELECTED_TAB = "";
@@ -1485,20 +1425,15 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         String total = phSingleTask.getTotal();
         int totalSt = 0;
         if (phTaskViewData.getCourses() != null) {
-            editCourseList = phSingleTask.getCourse();
-            editSelectedList = phSingleTask.getUsers();
+            editCourseList = phTaskViewData.getCourses();
             for (int j = 0; j < editCourseList.size(); j++) {
-                totalSt = phTaskViewData.getCourses().get(j).getStudents().size();
+                totalSt = editCourseList.get(j).getStudents().size();
+                if (editCourseList.get(j).getStudents() != null) {
+                    for (int st_id = 0; st_id < editCourseList.get(j).getStudents().size(); st_id++)
+                        editSelectedList.add(editCourseList.get(j).getStudents().get(st_id).getId());
+                }
+                editCourseListSt.add(editCourseList.get(j).getId());
             }
-
-//            for (int j = 0; j < editCourseList.size(); j++) {
-//                totalSt = editCourseList.get(j).getStudents().size();
-//                if (editCourseList.get(j).getStudents() != null) {
-//                    for (int st_id = 0; st_id < editCourseList.get(j).getStudents().size(); st_id++)
-//                        editSelectedList.add(editCourseList.get(j).getStudents().get(st_id).getId());
-//                }
-//                editCourseListSt.add(editCourseList.get(j).getId());
-//            }
             if (total != null) {
                 if (Integer.parseInt(total) == totalSt) {
                     SELECTED_TAB = "common";
@@ -1508,26 +1443,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             }
 
         }
-//
-//        if (phTaskViewData.getCourses() != null) {
-//            editCourseList = phTaskViewData.getCourses();
-//            for (int j = 0; j < editCourseList.size(); j++) {
-//                totalSt = editCourseList.get(j).getStudents().size();
-//                if (editCourseList.get(j).getStudents() != null) {
-//                    for (int st_id = 0; st_id < editCourseList.get(j).getStudents().size(); st_id++)
-//                        editSelectedList.add(editCourseList.get(j).getStudents().get(st_id).getId());
-//                }
-//                editCourseListSt.add(editCourseList.get(j).getId());
-//            }
-//            if (total != null) {
-//                if (Integer.parseInt(total) == totalSt) {
-//                    SELECTED_TAB = "common";
-//                } else {
-//                    SELECTED_TAB = "custom";
-//                }
-//            }
-//
-//        }
 
 
         assignBtn.setText("Update");
@@ -1662,11 +1577,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             pigeonholeTaskAdd.setTitle(dueDate.getText().toString());
 
         UserCourses userCourses = AppSharedPreference.getUserCourse();
-        if (allNdc == null || allAfwc == null || allCapston == null) {
+        if(allNdc==null || allAfwc ==null || allCapston==null) {
 
-            selectedList = editSelectedList;
-            courseList = editCourseListSt;
-        } else {
+           selectedList = editSelectedList;
+           courseList = editCourseListSt;
+        }
+        else {
             if (allNdc.isChecked() || allAfwc.isChecked() || allCapston.isChecked()) {
                 selectedList = new ArrayList<>();
                 if (allNdc.isChecked() && ndcStList.size() > 0) {
@@ -1717,15 +1633,13 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 //        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
 
-        ///callTaskEditApi();
-        confirmDialog();
+        callTaskEditApi();
 
     }
-
     private void callTaskEditApi() {
 
 
-        int m = 0;
+        int m =0;
 
 //        MultipartBody.Builder builder = new MultipartBody.Builder();
 //        builder.setType(MultipartBody.FORM);
@@ -1763,7 +1677,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         for (int k = 0; k < courseList.size(); k++) {
             builder.addFormDataPart("course[" + k + "]", courseList.get(k));
         }
-        if (attachmentModelList != null && attachmentModelList.size() > 0) {
+        if(attachmentModelList!=null && attachmentModelList.size()>0) {
             for (int i = 0; i < attachmentModelList.size(); i++) {
                 if (attachmentModelList.get(i).getFilePath() != null) {
                     File file = new File(attachmentModelList.get(i).getFilePath());
@@ -1773,7 +1687,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
                     m++;
                 }
             }
-        } else if (attachmentModelsEdit != null && attachmentModelsEdit.size() > 0) {
+        }
+        else if(attachmentModelsEdit!=null && attachmentModelsEdit.size()>0 ) {
             for (int p = 0; p < attachmentModelsEdit.size(); p++) {
                 builder.addFormDataPart("attachments_edit[" + p + "]", attachmentModelsEdit.get(p).getFileName());
             }
@@ -1856,9 +1771,6 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     TaskAssignAttachmentConfirmAdapter taskAssignAttachmentConfirmAdapter;
     RecyclerView selectedUserRv, attachmentConfirmRv;
     public static ArrayList<Student> confirmList = new ArrayList<>();
-    LinearLayout llCommon;
-    TextView commonList;
-
     public void confirmDialog() {
 //        if(selectedList!=null && selectedList.size()>0) {
 //            for (int i = 0; i < selectedList.size(); i++)
@@ -1867,50 +1779,23 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 //            }
 //        }
 
-        String txt = "";
-        int Count = 0;
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View confirmView = factory.inflate(R.layout.dialog_task_assign_confirm, null);
         dialogTitle = confirmView.findViewById(R.id.dialogTitle);
         dialogDescription = confirmView.findViewById(R.id.dialogDescription);
         dialogDueDate = confirmView.findViewById(R.id.dialogDueDate);
-        llCommon = confirmView.findViewById(R.id.llCommon);
         selectedUserRv = confirmView.findViewById(R.id.task_confirm_recycleview);
-
-        commonList = confirmView.findViewById(R.id.commonList);
-
 
         attachmentConfirmRv = confirmView.findViewById(R.id.attachment_confirm_rv);
 
-        if (CURRENT_SELECTION.equals("custom")) {
-            llCommon.setVisibility(View.GONE);
-            selectedUserRv.setVisibility(View.VISIBLE);
-            taskAssignConfirmAdapter = new TaskAssignConfirmAdapter(getActivity(), confirmList);
+        taskAssignConfirmAdapter = new TaskAssignConfirmAdapter(getActivity(), confirmList);
 
-            linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        selectedUserRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
-            selectedUserRv.setLayoutManager(linearLayoutManager);
-            selectedUserRv.setItemAnimator(new DefaultItemAnimator());
-            selectedUserRv.setAdapter(taskAssignConfirmAdapter);
-            taskAssignConfirmAdapter.notifyDataSetChanged();
-        } else {
-            if (allNdc.isChecked()) {
-                Count++;
-                txt = txt + Count + ". " + "All NDC" + "\n";
-
-            }
-            if (allAfwc.isChecked()) {
-                Count++;
-                txt = txt + Count + ". " + "All AFWC" + "\n";
-            }
-            if (allCapston.isChecked()) {
-                Count++;
-                txt = txt + Count + ". " + "All Capston";
-            }
-            llCommon.setVisibility(View.VISIBLE);
-            commonList.setText(txt);
-            selectedUserRv.setVisibility(View.GONE);
-        }
+        selectedUserRv.setLayoutManager(linearLayoutManager);
+        selectedUserRv.setItemAnimator(new DefaultItemAnimator());
+        selectedUserRv.setAdapter(taskAssignConfirmAdapter);
+        taskAssignConfirmAdapter.notifyDataSetChanged();
 
 
         taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelList);
@@ -1920,11 +1805,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         attachmentConfirmRv.setLayoutManager(linearLayoutManager);
         attachmentConfirmRv.setItemAnimator(new DefaultItemAnimator());
         attachmentConfirmRv.setAdapter(taskAssignAttachmentConfirmAdapter);
-        taskAssignAttachmentConfirmAdapter.notifyDataSetChanged();
+        taskAssignConfirmAdapter.notifyDataSetChanged();
 
         dialogTitle.setText(title.getText().toString());
         dialogDescription.setText(description.getText().toString());
         dialogDueDate.setText(dueDate.getText().toString());
+
 
 
 //        text.setText(st);
@@ -1934,10 +1820,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         confirmView.findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (assignBtn.getText().toString().equalsIgnoreCase("Update"))
-                    callTaskEditApi();
-                else
-                    callTaskAddApi();
+                callTaskAddApi();
 
                 confirmViewDialog.dismiss();
             }

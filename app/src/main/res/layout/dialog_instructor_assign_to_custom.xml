@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_shape_background_task_assign"
+    android:padding="@dimen/size_10dp">
+
+    <LinearLayout
+        android:id="@+id/assignType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
+
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/custom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10dp"
+            android:layout_weight="1"
+            android:text="Select Institute and Student"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textColor="@color/ndc_color"
+            android:textSize="@dimen/text_size_17_sp" />
+    </LinearLayout>
+
+
+    <RadioGroup
+        android:id="@+id/instituteGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/assignType"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/ndc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="NDC"
+            android:textSize="@dimen/text_size_14_sp" />
+
+        <RadioButton
+            android:id="@+id/afwc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="AFWC"
+            android:textSize="@dimen/text_size_14_sp" />
+
+        <RadioButton
+            android:id="@+id/capston"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Capston"
+            android:textSize="@dimen/text_size_14_sp" />
+
+
+    </RadioGroup>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/instituteGroup"
+        android:layout_above="@+id/ll"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/list"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:layout_marginBottom="@dimen/size_10dp"
+            android:background="@drawable/round_shape_background_done"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/btn_done"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_15_sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

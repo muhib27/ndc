@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.DashboardClassScheduleAdapter;
-import com.classtune.ndc.adapter.DashboardNoticeAdapter;
 import com.classtune.ndc.model.ClassScheduleModel;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 import com.classtune.ndc.utils.VerticalSpaceItemDecoration;

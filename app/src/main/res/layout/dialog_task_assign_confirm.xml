@@ -97,9 +97,27 @@
         android:text="Assign To"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/llCommon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/assign_to"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginBottom="@dimen/size_10dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:id="@+id/commonList"
+                android:textSize="@dimen/text_size_17_sp"
+                android:text="tt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/assign_to"
+        android:layout_below="@+id/llCommon"
         android:id="@+id/task_confirm_recycleview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

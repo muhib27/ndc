@@ -22,7 +22,7 @@
         <item
             app:itemTextColor="#676767"
             android:id="@+id/nav_cm_box"
-            android:icon="@drawable/cm_box_tab"
+            android:icon="@drawable/cm_box"
             android:title="CM Box" />
         <item
             app:itemTextColor="#676767"

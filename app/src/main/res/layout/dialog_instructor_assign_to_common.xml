@@ -1,0 +1,121 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_shape_background_task_assign"
+    android:padding="@dimen/size_10dp">
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--<ScrollView-->
+    <!--android:id="@+id/scrollView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<ListView-->
+    <!--android:id="@+id/listView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="300dp"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:background="@color/white"-->
+    <!--android:cacheColorHint="@android:color/transparent"-->
+    <!--android:divider="@color/gray_bg"-->
+    <!--android:dividerHeight="5dp" />-->
+    <!--</ScrollView>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+
+    <LinearLayout
+        android:id="@+id/assignType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10dp">
+        <!--<RadioGroup-->
+        <!--android:id="@+id/typeGroup"-->
+        <!--android:layout_width="match_parent"-->
+
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/common"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Select Institute"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textColor="@color/ndc_color"
+            android:textSize="@dimen/text_size_17_sp" />
+    </LinearLayout>
+
+
+    <!--</RadioGroup>-->
+    <LinearLayout
+        android:id="@+id/commonTypeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/assignType"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/all_ndc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_ndc" />
+
+        <CheckBox
+            android:id="@+id/all_afwc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_afwc" />
+
+        <CheckBox
+            android:id="@+id/all_capston"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_capston" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/commonTypeLayout"
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/list"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:layout_marginBottom="@dimen/size_10dp"
+            android:background="@drawable/round_shape_background_done"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/btn_done"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_15_sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

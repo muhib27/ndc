@@ -7,10 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.view.ContextThemeWrapper;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,18 +16,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.classtune.ndc.R;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
 import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.utils.PaginationAdapterCallback;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,6 +60,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<String> editSelectedList = new ArrayList<>();
     private Context context;
     private String SELECTED_TAB = "";
+    private SparseBooleanArray itemStateArray= new SparseBooleanArray();
 
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
@@ -112,6 +107,7 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.editSelectedList = editSelectedList;
         this.SELECTED_TAB = SELECTED_TAB;
         this.current = current;
+
     }
 
 
@@ -150,7 +146,8 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     PigeonholeListItem itemHolder;
-    int selectedPosition = -1;
+    int selectedPosition = 0;
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 //        OrderListModel result = orderList.get(position); // Movie
@@ -164,24 +161,112 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 itemHolder.title.setText(pigeonholeDataModelList.get(position).getName());
-                if(SELECTED_TAB.isEmpty()) {
-                    if (selectedList.contains(pigeonholeDataModelList.get(position).getId()))
-                        itemHolder.selectCM.setChecked(true);
-                    else
-                        itemHolder.selectCM.setChecked(false);
-                }
-                else if(SELECTED_TAB.equals("custom") && pigeonholeDataModelList.get(position).isSelected())
-                    itemHolder.selectCM.setChecked(true);
+//                if(SELECTED_TAB.isEmpty()) {
+//                    if (selectedList.contains(pigeonholeDataModelList.get(position).getId()))
+//                        itemHolder.selectCM.setChecked(true);
+//                    else
+//                        itemHolder.selectCM.setChecked(false);
+//                }
+//                else
+//                    if(pigeonholeDataModelList.get(position).isSelected())
+//                    itemHolder.selectCM.setChecked(true);
+//                else
+//                    itemHolder.selectCM.setChecked(false);
+
+
+//                itemHolder.selectCM.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                       int selectedPosition = itemHolder.getAdapterPosition();
+//
+//                        if (!itemStateArray.get(selectedPosition, false)) {
+//                            itemHolder.selectCM.setChecked(true);
+//                            itemStateArray.put(selectedPosition, true);
+//                        }
+//                        else  {
+//                            itemHolder.selectCM.setChecked(false);
+//                            itemStateArray.put(selectedPosition, false);
+//                        }
+
+//                        if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
+//                            selectedList.add(pigeonholeDataModelList.get(position).getId());
+//                            confirmList.add(pigeonholeDataModelList.get(position));
+//                            if(current.equals("ndc"))
+//                                ndcCount++;
+//                            else if(current.equals("afwc"))
+//                                afwcCount++;
+//                            else if(current.equals("capston"))
+//                                capstonCount++;
+////                            if(selectedPosition == position)
+////                                itemHolder.selectCM.setChecked(true);
+////                            else
+////                                itemHolder.selectCM.setChecked(false);
+//
+//                        }
+//                        else {
+//                            selectedList.remove(pigeonholeDataModelList.get(position).getId());
+//                            confirmList.remove(pigeonholeDataModelList.get(position));
+//                            if(current.equals("ndc"))
+//                                ndcCount--;
+//                            else if(current.equals("afwc"))
+//                                afwcCount--;
+//                            else if(current.equals("capston"))
+//                                capstonCount--;
+//                            //compoundButton.setChecked(false);
+//                        }
+//                    }
+//                });
+
+//                itemHolder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                        selectedPosition = itemHolder.getAdapterPosition();
+//                        itemHolder.selectCM.setChecked(b);
+//                        if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
+//                            selectedList.add(pigeonholeDataModelList.get(position).getId());
+//                            confirmList.add(pigeonholeDataModelList.get(position));
+//                            if(current.equals("ndc"))
+//                                ndcCount++;
+//                            else if(current.equals("afwc"))
+//                                afwcCount++;
+//                            else if(current.equals("capston"))
+//                                capstonCount++;
+//                            if(selectedPosition == position)
+//                                itemHolder.selectCM.setChecked(true);
+//                            else
+//                                itemHolder.selectCM.setChecked(false);
+//
+//                        }
+//                        else {
+//                            selectedList.remove(pigeonholeDataModelList.get(position).getId());
+//                            confirmList.remove(pigeonholeDataModelList.get(position));
+//                            if(current.equals("ndc"))
+//                                ndcCount--;
+//                            else if(current.equals("afwc"))
+//                                afwcCount--;
+//                            else if(current.equals("capston"))
+//                                capstonCount--;
+//                            //compoundButton.setChecked(false);
+//                        }
+//                    }
+//                });
+
+                //in some cases, it will prevent unwanted situations
+                itemHolder.selectCM.setOnCheckedChangeListener(null);
+
+                //if true, your checkbox will be selected, else unselected
+                //itemHolder.selectCM.setChecked(pigeonholeDataModelList.get(position).isSelected());
+                if(pigeonholeDataModelList.get(position).isSelected() && selectedList.contains(pigeonholeDataModelList.get(position).getId()))
+                itemHolder.selectCM.setChecked(true);
                 else
                     itemHolder.selectCM.setChecked(false);
 
-
-
                 itemHolder.selectCM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        selectedPosition = itemHolder.getAdapterPosition();
-                        itemHolder.selectCM.setChecked(b);
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        //set your object's last status
+//                        objIncome.setSelected(isChecked);
+                        pigeonholeDataModelList.get(position).setSelected(isChecked);
                         if(!selectedList.contains(pigeonholeDataModelList.get(position).getId())) {
                             selectedList.add(pigeonholeDataModelList.get(position).getId());
                             confirmList.add(pigeonholeDataModelList.get(position));
@@ -191,10 +276,6 @@ public class TaskAssignAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 afwcCount++;
                             else if(current.equals("capston"))
                                 capstonCount++;
-                            if(selectedPosition == position)
-                                itemHolder.selectCM.setChecked(true);
-                            else
-                                itemHolder.selectCM.setChecked(false);
 
                         }
                         else {

@@ -19,25 +19,17 @@ import com.classtune.ndc.apiresponse.reading_package.RPResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchTopicResponseModel;
 import com.classtune.ndc.apiresponse.research_api.ResearchWingResponseModel;
 import com.classtune.ndc.fragment.CMTaskSubmitFragment;
-import com.classtune.ndc.fragment.InsTructorTaskAssignFragment;
 import com.classtune.ndc.utils.URLHelper;
 import com.google.gson.JsonElement;
 
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
-
-import static com.classtune.ndc.fragment.CMTaskSubmitFragment.phTaskSubmitId;
 
 
 //import io.reactivex.Observable;

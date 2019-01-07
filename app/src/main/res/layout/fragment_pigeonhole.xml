@@ -37,7 +37,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="8"
                 android:paddingLeft="@dimen/size_15dp"
-                android:text="CM Busket"
+                android:text="Pigeon Hole"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_20_sp"
                 android:textStyle="normal" />

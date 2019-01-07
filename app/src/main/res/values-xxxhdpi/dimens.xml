@@ -17,5 +17,6 @@
 
     <dimen name="size_60dp">60dp</dimen>
 
-    <dimen name="user_name_width_margin">20dp</dimen>
+    <!--<dimen name="user_name_width_margin">20dp</dimen>-->
+    <dimen name="user_name_width_margin">1dp</dimen>
 </resources>
