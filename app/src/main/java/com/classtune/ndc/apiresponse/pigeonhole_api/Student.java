@@ -14,6 +14,15 @@ public class Student {
 
     public boolean selected;
 
+    public Student(String name, String id, boolean selected) {
+        this.name = name;
+        this.id = id;
+        this.selected = selected;
+    }
+
+    public Student() {
+    }
+
     public boolean isSelected() {
         return selected;
     }

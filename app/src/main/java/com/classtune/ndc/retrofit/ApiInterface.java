@@ -45,7 +45,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(URLHelper.URL_LOGIN)
 //    Observable<Response<List<LoginResponseModel>>> userLogin(@Field("username") String userId, @Field("password") String password);
-    Observable<Response<LoginApiModel>> userLogin(@Field("email") String userId, @Field("password") String password, @Field("fcm_id") String gcm_id);
+    Observable<Response<LoginApiModel>> userLogin(@Field("username") String userId, @Field("password") String password, @Field("fcm_id") String gcm_id);
 
     @FormUrlEncoded
     @POST(URLHelper.URL_PROFILE)

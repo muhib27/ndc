@@ -150,28 +150,57 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_15_sp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ListView
+        android:layout_weight="5"
         android:id="@+id/attachmentList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp" />
 
-    <Button
-        android:id="@+id/btnAttach"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/size_10dp"
-        android:layout_marginBottom="@dimen/size_10dp"
-        android:background="@drawable/round_shape_background_done"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:text="@string/attach"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_15_sp" />
+    <!--<Button-->
+        <!--android:id="@+id/btnAttach"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="@dimen/size_10dp"-->
+        <!--android:layout_marginBottom="@dimen/size_10dp"-->
+        <!--android:background="@drawable/round_shape_background_done"-->
+        <!--android:clickable="true"-->
+        <!--android:foreground="?attr/selectableItemBackgroundBorderless"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/attach"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="@dimen/text_size_15_sp" />-->
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btnAttach"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:layout_marginBottom="@dimen/size_10dp"
+            android:background="@drawable/round_shape_background_done"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="@string/attach"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_15_sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

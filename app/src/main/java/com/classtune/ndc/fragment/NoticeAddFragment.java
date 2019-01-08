@@ -33,6 +33,8 @@ import com.classtune.ndc.activity.MainActivity;
 import com.classtune.ndc.adapter.AttachmentAdapter;
 import com.classtune.ndc.adapter.AttachmentAdapterMain;
 import com.classtune.ndc.adapter.TaskAssignAdapter;
+import com.classtune.ndc.adapter.TaskAssignAttachmentConfirmAdapter;
+import com.classtune.ndc.adapter.TaskAssignConfirmAdapter;
 import com.classtune.ndc.apiresponse.Attachment;
 import com.classtune.ndc.apiresponse.Course;
 import com.classtune.ndc.apiresponse.NoticeApi.Notice;
@@ -187,7 +189,6 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 //        });
 
 
-
         Bundle b = getArguments();
         if (getArguments() != null) {
             if (b.getString("id", "") != null)
@@ -271,10 +272,10 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 //                callPigeonholeGetCourseApi();
 //                break;
             case R.id.assignBtn:
-                if(assignBtn.getText().toString().equalsIgnoreCase("Update"))
+                if (assignBtn.getText().toString().equalsIgnoreCase("Update"))
                     initTaskEditApi();
                 else
-                initTaskAssignApi();
+                    initTaskAssignApi();
                 break;
             case R.id.btnBrowse:
                 browseFile(SELECTED_TYPE);
@@ -305,7 +306,8 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 
 //        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
 
-        callTaskAddApi();
+        // callTaskAddApi();
+        confirmDialog("new");
 
     }
 
@@ -447,8 +449,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
                 attachmentAdapterMain.setData(attachmentModelList);
                 attachmentAdapterMain.notifyDataSetChanged();
 
-                if(!id.isEmpty() && attachmentModelsEdit!=null && attachmentModelsEdit.size()>0)
-                {
+                if (!id.isEmpty() && attachmentModelsEdit != null && attachmentModelsEdit.size() > 0) {
                     attachmentAdapterMain.AddData(attachmentModelsEdit);
                 }
                 fileAttachDialog.dismiss();
@@ -669,7 +670,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(userTaskAssignAdapter);
 
-        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList!=null) {
+        if (editSelectedList != null && editSelectedList.size() > 0 && afwcStList != null) {
             for (int i = 0; i < afwcStList.size(); i++) {
                 if (editSelectedList.contains(afwcStList.get(i).getId()))
                     afwcStList.get(i).setSelected(true);
@@ -677,6 +678,77 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
         }
         userTaskAssignAdapter.addAllData(ndcStList);
     }
+
+    AlertDialog confirmViewDialog;
+    TextView dialogTitle, dialogDescription;
+    CheckBox dialogIsImportant;
+    TaskAssignConfirmAdapter taskAssignConfirmAdapter;
+    TaskAssignAttachmentConfirmAdapter taskAssignAttachmentConfirmAdapter;
+    RecyclerView selectedUserRv, attachmentConfirmRv;
+    public static ArrayList<Student> confirmList = new ArrayList<>();
+
+    public void confirmDialog(String st) {
+//        if(selectedList!=null && selectedList.size()>0) {
+//            for (int i = 0; i < selectedList.size(); i++)
+//            {
+//                if(ndcStList.contains())
+//            }
+//        }
+
+        String txt = "";
+        int Count = 0;
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View confirmView = factory.inflate(R.layout.dialog_notice_assign_confirm, null);
+        dialogTitle = confirmView.findViewById(R.id.dialogTitle);
+        dialogDescription = confirmView.findViewById(R.id.dialogDescription);
+        dialogIsImportant = confirmView.findViewById(R.id.dialogIsImportant);
+
+
+        attachmentConfirmRv = confirmView.findViewById(R.id.attachment_confirm_rv);
+
+
+        if (st.equalsIgnoreCase("new"))
+            taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelList);
+        else
+            taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelsEdit);
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        attachmentConfirmRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));
+        attachmentConfirmRv.setLayoutManager(linearLayoutManager);
+        attachmentConfirmRv.setItemAnimator(new DefaultItemAnimator());
+        attachmentConfirmRv.setAdapter(taskAssignAttachmentConfirmAdapter);
+        taskAssignAttachmentConfirmAdapter.notifyDataSetChanged();
+
+        dialogTitle.setText(title.getText().toString());
+        dialogDescription.setText(description.getText().toString());
+        dialogIsImportant.setChecked(isImportant.isChecked());
+
+//        text.setText(st);
+        confirmViewDialog = new AlertDialog.Builder(getActivity()).create();
+        confirmViewDialog.setCancelable(false);
+        confirmViewDialog.setView(confirmView);
+        confirmView.findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (assignBtn.getText().toString().equalsIgnoreCase("Update"))
+                    callTaskEditApi();
+                else
+                    callTaskAddApi();
+
+                confirmViewDialog.dismiss();
+            }
+        });
+        confirmView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                confirmViewDialog.dismiss();
+            }
+        });
+
+        confirmViewDialog.show();
+
+    }
+
 
     private void getCMData() {
         CMModel cmModel = new CMModel("11", "nnn", "0");
@@ -882,10 +954,9 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 //        MultipartBody attachments = builder.build();
 
 
-
         List<String> filePaths = new ArrayList<>();
         String is_important = "0";
-        if(isImportant.isChecked())
+        if (isImportant.isChecked())
             is_important = "1";
         else
             is_important = "0";
@@ -1085,7 +1156,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 //                        MenuApiResponse menuApiResponse = value.body();
 
 //                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
-                        if(singleNoticeResponseModel!=null && singleNoticeResponseModel.getCode()!=null) {
+                        if (singleNoticeResponseModel != null && singleNoticeResponseModel.getCode() != null) {
                             if (singleNoticeResponseModel.getCode() == 200) {
                                 Log.v("singleNotice", value.message());
 
@@ -1093,8 +1164,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
                                 //setPageData(phTaskViewData);
                                 populateData(notice);
                             }
-                        }
-                        else {
+                        } else {
 
                         }
 
@@ -1124,7 +1194,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
     List<Course> editCourseList = new ArrayList<>();
     ArrayList<String> editSelectedList = new ArrayList<>();
     ArrayList<String> editCourseListSt = new ArrayList<>();
-    ArrayList<AttachmentModel> attachmentModelsEdit = new ArrayList<>();
+    List<AttachmentModel> attachmentModelsEdit = new ArrayList<>();
     private static String SELECTED_TAB = "";
 
     private void populateData(Notice notice) {
@@ -1134,17 +1204,19 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
         if (notice.getDescription() != null)
             description.setText(notice.getDescription());
 
-        if(notice.getIsImportant().equals("1"))
+        if (notice.getIsImportant().equals("1"))
             isImportant.setChecked(true);
         else
             isImportant.setChecked(false);
 
         List<Attachment> attachmentEditList;
-        AttachmentModel attachmentModel = new AttachmentModel();
+        attachmentModelsEdit = new ArrayList<>();
+        AttachmentModel attachmentModel;
         if (notice.getAttachments() != null) {
             attachmentEditList = notice.getAttachments();
-            attachmentModelsEdit = new ArrayList<>();
+            attachmentModelsEdit.clear();
             for (int i = 0; i < attachmentEditList.size(); i++) {
+                attachmentModel = new AttachmentModel();
                 attachmentModel.setFileName(attachmentEditList.get(i).getName());
                 attachmentModelsEdit.add(attachmentModel);
             }
@@ -1361,13 +1433,15 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 
 //        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
 
-        callTaskEditApi();
+        //callTaskEditApi();
+        confirmDialog("edit");
 
     }
+
     private void callTaskEditApi() {
 
 
-        int m =0;
+        int m = 0;
 
 //        MultipartBody.Builder builder = new MultipartBody.Builder();
 //        builder.setType(MultipartBody.FORM);
@@ -1389,7 +1463,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
         List<String> filePaths = new ArrayList<>();
 
         String is_important = "0";
-        if(isImportant.isChecked())
+        if (isImportant.isChecked())
             is_important = "1";
         else
             is_important = "0";
@@ -1411,7 +1485,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
 //        for (int k = 0; k < courseList.size(); k++) {
 //            builder.addFormDataPart("course[" + k + "]", courseList.get(k));
 //        }
-        if(attachmentModelList!=null && attachmentModelList.size()>0) {
+        if (attachmentModelList != null && attachmentModelList.size() > 0) {
             for (int i = 0; i < attachmentModelList.size(); i++) {
                 if (attachmentModelList.get(i).getFilePath() != null) {
                     File file = new File(attachmentModelList.get(i).getFilePath());
@@ -1421,8 +1495,7 @@ public class NoticeAddFragment extends Fragment implements View.OnClickListener,
                     m++;
                 }
             }
-        }
-        else if(attachmentModelsEdit!=null && attachmentModelsEdit.size()>0 ) {
+        } else if (attachmentModelsEdit != null && attachmentModelsEdit.size() > 0) {
             for (int p = 0; p < attachmentModelsEdit.size(); p++) {
                 builder.addFormDataPart("attachments_edit[" + p + "]", attachmentModelsEdit.get(p).getFileName());
             }

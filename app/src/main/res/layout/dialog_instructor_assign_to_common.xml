@@ -56,7 +56,7 @@
             android:layout_margin="@dimen/size_10dp"
             android:layout_weight="1"
             android:checked="true"
-            android:text="Select Institute"
+            android:text="Select Course"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@color/ndc_color"

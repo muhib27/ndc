@@ -68,6 +68,18 @@
             <!--card_view:cardElevation="3dp"-->
             <!--card_view:cardUseCompatPadding="true">-->
             <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:background="@drawable/round_shape_background_task_assign"
+                android:gravity="top"
+                android:hint="Title"
+                android:textColorHint="@color/black_off"
+                android:inputType="textMultiLine"
+                android:padding="@dimen/size_10dp" />
+            <EditText
+                android:layout_below="@+id/title"
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

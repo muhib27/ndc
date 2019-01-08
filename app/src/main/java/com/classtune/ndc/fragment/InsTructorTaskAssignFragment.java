@@ -387,7 +387,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 
 //        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
-        confirmDialog();
+        confirmDialog("new");
 //        callTaskAddApi();
 
     }
@@ -937,7 +937,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         });
 
         batchDialog.show();
-        batchDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, 800);
+        // batchDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, 800);
 
     }
 
@@ -1377,6 +1377,16 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             if (courses.get(i).getName().equalsIgnoreCase("ND COURSE")) {
 
                 ndcStList = courses.get(i).getStudents();
+
+//                Student student = new Student("dd", "dd", false);
+//                ndcStList.add(student);
+//                student = new Student("dd", "dd", false);
+//                ndcStList.add(student);
+//                student = new Student("dd", "dd", false);
+//                ndcStList.add(student);
+
+
+
                 userCourses.setNdc(true);
             } else if (courses.get(i).getName().equalsIgnoreCase("AFW COURSE")) {
                 afwcStList = courses.get(i).getStudents();
@@ -1470,11 +1480,12 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             }
         }
         List<Attachment> attachmentEditList;
-        AttachmentModel attachmentModel = new AttachmentModel();
+        AttachmentModel attachmentModel;
         if (phSingleTask.getAttachments() != null) {
             attachmentEditList = phSingleTask.getAttachments();
             attachmentModelsEdit = new ArrayList<>();
             for (int i = 0; i < attachmentEditList.size(); i++) {
+                attachmentModel = new AttachmentModel();
                 attachmentModel.setFileName(attachmentEditList.get(i).getName());
                 attachmentModelsEdit.add(attachmentModel);
             }
@@ -1502,6 +1513,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
             if (total != null) {
                 if (Integer.parseInt(total) == totalSt) {
                     SELECTED_TAB = "common";
+
+
                 } else {
                     SELECTED_TAB = "custom";
                 }
@@ -1717,8 +1730,8 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
 
 //        Toast.makeText(getActivity(), ""+courseList.size() , Toast.LENGTH_LONG).show();
 
-        ///callTaskEditApi();
-        confirmDialog();
+        callTaskEditApi();
+        //confirmDialog("edit");
 
     }
 
@@ -1859,7 +1872,7 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
     LinearLayout llCommon;
     TextView commonList;
 
-    public void confirmDialog() {
+    public void confirmDialog(String st) {
 //        if(selectedList!=null && selectedList.size()>0) {
 //            for (int i = 0; i < selectedList.size(); i++)
 //            {
@@ -1913,7 +1926,10 @@ public class InsTructorTaskAssignFragment extends Fragment implements View.OnCli
         }
 
 
-        taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelList);
+        if (st.equalsIgnoreCase("new"))
+            taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelList);
+        else
+            taskAssignAttachmentConfirmAdapter = new TaskAssignAttachmentConfirmAdapter(getActivity(), attachmentModelsEdit);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        attachmentConfirmRv.addItemDecoration(new SmallVerticalSpaceItemDecoration(getResources()));

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/size_10dp"
             android:layout_weight="1"
-            android:text="Select Institute and Student"
+            android:text="Select Course and Student"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@color/ndc_color"
@@ -63,19 +63,25 @@
 
 
     </RadioGroup>
+    <LinearLayout
+        android:layout_below="@+id/instituteGroup"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/instituteGroup"
+        android:layout_weight="5"
         android:layout_above="@+id/ll"
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp" />
 
     <LinearLayout
+        android:layout_weight="1"
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:gravity="center">
 
@@ -95,6 +101,7 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_15_sp" />
+    </LinearLayout>
     </LinearLayout>
 
 

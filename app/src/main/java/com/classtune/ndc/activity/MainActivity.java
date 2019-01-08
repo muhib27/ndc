@@ -48,6 +48,7 @@ import com.classtune.ndc.fragment.ReadingPackageFragment;
 import com.classtune.ndc.fragment.ResearchListFragment;
 import com.classtune.ndc.fragment.ResearchTopicListFragment;
 import com.classtune.ndc.fragment.RoutineWhiteFragment;
+import com.classtune.ndc.fragment.SubmissionTrayFragment;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.DrawerLocker;
@@ -98,13 +99,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        viewPager = (ViewPager) findViewById(R.id.viewPager);
 //        mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
 //        viewPager.setAdapter(mainViewPagerAdapter);
+
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.pigeon_hole_tab_).setTag("pigeonhole"));
+        if (userPermission.isUserTasksSubmitTask())
+            tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.submission_tray_tab).setTag("submission_tray"));
+        else
+            hideItem();
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box).setTag("cm_box"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cc_tab_).setTag("course_calendar"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab_).setTag("notice"));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.social_event).setTag("events"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package).setTag("reading_package"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab_).setTag("notice"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cc_tab_).setTag("course_calendar"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.social_event).setTag("events"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.research_tab_).setTag("research_icon"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.profile_tab_).setTag("profile"));
 //        tabLayout.addTab(tabLayout.newTab().setTag("tab"));
@@ -120,33 +128,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+
                 if (tab.getTag().equals("pigeonhole")) {
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     gotoPigeonholeFragment();
+                } else if (userPermission.isUserTasksSubmitTask() && tab.getTag().equals("submission_tray")) {
+                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
+                    gotoSubmissionTrayFragment();
                 } else if (tab.getTag().equals("cm_box")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoCMBoxFragment();
-                } else if (tab.getTag().equals("course_calendar")) {
-                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
-                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                    gotoClassScheduleFragment();
-                } else if (tab.getTag().equals("notice")) {
-                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                    gotoNoticeFragment("");
                 } else if (tab.getTag().equals("reading_package")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoReadingPackageFragment();
+                } else if (tab.getTag().equals("notice")) {
+                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    gotoNoticeFragment("");
+                } else if (tab.getTag().equals("course_calendar")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
+                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    gotoClassScheduleFragment();
                 } else if (tab.getTag().equals("events")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoEventsFragment();
-                } else if (tab.getTag().equals("profile")) {
-                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
-                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                    gotoProfileFragment();
                 } else if (tab.getTag().equals("research_icon")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
@@ -155,6 +165,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         gotoResearchTopicFragment();
                     else
                         gotoResearchListFragment();
+                } else if (tab.getTag().equals("profile")) {
+                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
+                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                    gotoProfileFragment();
                 }
             }
 
@@ -529,41 +543,84 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TabLayout.Tab tab = tabLayout.getTabAt(0);
             tab.select();
 
-        } else if (id == R.id.nav_cm_box) {
+        } else if (id == R.id.nav_submission_tray) {
 
-            //gotoCMBoxFragment();
+            //gotoPigeonholeFragment();
             TabLayout.Tab tab = tabLayout.getTabAt(1);
             tab.select();
 
-        } else if (id == R.id.nav_notice) {
+        } else if (id == R.id.nav_cm_box) {
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 2;
+            else
+                index = 1;
+
+            //gotoCMBoxFragment();
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
+            tab.select();
+
+        }
+        else if (id == R.id.nav_reading_package) {
+            //gotoReadingPackageFragment();
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 3;
+            else
+                index = 2;
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
+            tab.select();
+
+        }
+        else if (id == R.id.nav_notice) {
             //gotoNoticeFragment("");
-            TabLayout.Tab tab = tabLayout.getTabAt(3);
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 4;
+            else
+                index = 3;
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
         } else if (id == R.id.nav_course_calendar) {
             //gotoClassScheduleFragment();
-            TabLayout.Tab tab = tabLayout.getTabAt(2);
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 5;
+            else
+                index = 4;
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
         } else if (id == R.id.nav_events) {
             //gotoEventsFragment();
-            TabLayout.Tab tab = tabLayout.getTabAt(4);
-            tab.select();
-
-        } else if (id == R.id.nav_reading_package) {
-            //gotoReadingPackageFragment();
-            TabLayout.Tab tab = tabLayout.getTabAt(5);
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 6;
+            else
+                index = 5;
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
         } else if (id == R.id.nav_research) {
             //gotoResearchListFragment();
-            TabLayout.Tab tab = tabLayout.getTabAt(6);
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 7;
+            else
+                index = 6;
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
         } else if (id == R.id.nav_profile) {
             //tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"));
             //gotoProfileFragment();
-            TabLayout.Tab tab = tabLayout.getTabAt(7);
+            int index;
+            if (userPermission.isUserTasksSubmitTask())
+                index = 8;
+            else
+                index = 7;
+            TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
         } else if (id == R.id.nav_logout) {
             callLogOutApi();
@@ -717,7 +774,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        if (userPermission.isUserTasksSubmitTask())
         transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment");
+//        else
+//            transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void gotoSubmissionTrayFragment() {
+//        TabLayout.Tab tab = tabLayout.getTabAt(0);
+//        tab.select();
+        setUpBackStackCountToZero();
+        SubmissionTrayFragment submissionTrayFragment = new SubmissionTrayFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, submissionTrayFragment, "submissionTrayFragment").addToBackStack(null);
         transaction.commit();
     }
 
@@ -795,10 +866,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.setDrawerIndicatorEnabled(enabled);
     }
 
-//    private void hideItem()
-//    {
-//        navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        Menu nav_Menu = navigationView.getMenu();
-//        nav_Menu.findItem(R.id.nav_settings).setVisible(false);
-//    }
+    private void hideItem()
+    {
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_submission_tray).setVisible(false);
+    }
 }

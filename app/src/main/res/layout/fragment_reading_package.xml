@@ -12,7 +12,7 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_10dp"
+        android:layout_marginTop="@dimen/size_5dp"
         app:cardCornerRadius="@dimen/margin_0dp"
         card_view:cardElevation="0dp"
         card_view:cardUseCompatPadding="true">
@@ -36,7 +36,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="8"
                 android:paddingLeft="@dimen/size_15dp"
-                android:text="Reading Package"
+                android:text="Reading Materials"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18_sp"
                 android:textStyle="bold" />
