@@ -11,25 +11,34 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.classtune.ndc.R;
+import com.classtune.ndc.adapter.TaskAssignAttachmentConfirmAdapter;
+import com.classtune.ndc.adapter.TaskAssignConfirmAdapter;
 import com.classtune.ndc.apiresponse.LoginApiModel;
 import com.classtune.ndc.apiresponse.menu_api.MenuApiResponse;
 import com.classtune.ndc.apiresponse.menu_api.User;
 import com.classtune.ndc.apiresponse.menu_api.UserMenu;
 import com.classtune.ndc.apiresponse.menu_api.UserPermission;
+import com.classtune.ndc.apiresponse.pigeonhole_api.Student;
 import com.classtune.ndc.model.LoginResponseModel;
 import com.classtune.ndc.model.Wrapper;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
@@ -40,6 +49,7 @@ import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.viewhelpers.UIHelper;
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -219,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onNext(Response<LoginApiModel> value) {
-                       // uiHelper.dismissLoadingDialog();
+                        uiHelper.dismissLoadingDialog();
                         LoginApiModel loginApiModel = value.body();
 
 
@@ -228,6 +238,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                                value.body());
 
                         if (loginApiModel.getCode()!= null && loginApiModel.getCode() == 200) {
+                            //passwordChangeDialog();
+
                             AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey(), rememberMe.isChecked());
                             callMenuApi();
                         }
@@ -267,6 +279,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    AlertDialog confirmViewDialog;
+    EditText dialogPassword, dialogConfirmPassword;
+   // TextView dialogTitle;
+
+
+    public void passwordChangeDialog() {
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View confirmView = factory.inflate(R.layout.dialog_password_change, null);
+        dialogPassword = confirmView.findViewById(R.id.password);
+        dialogConfirmPassword = confirmView.findViewById(R.id.confirm_password);
+
+        confirmViewDialog = new AlertDialog.Builder(this).create();
+        confirmViewDialog.setCancelable(false);
+        confirmViewDialog.setView(confirmView);
+        confirmView.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialogPassword.equals(dialogConfirmPassword))
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+
+                confirmViewDialog.dismiss();
+            }
+        });
+        confirmView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                confirmViewDialog.dismiss();
+            }
+        });
+
+        confirmViewDialog.show();
+
+    }
     private void callMenuApi() {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {

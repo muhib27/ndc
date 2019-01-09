@@ -42,6 +42,7 @@ import com.classtune.ndc.fragment.HomeFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
+import com.classtune.ndc.fragment.PigeonHoleParentFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.ProfileFragment;
 import com.classtune.ndc.fragment.ReadingPackageFragment;
@@ -419,6 +420,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     toggle.setToolbarNavigationClickListener(originalToolbarListener);
                     toggle.syncState();
                 }
+
+//                InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
+//                if(instructorDetailsFragment !=null && instructorDetailsFragment.isVisible() && getSupportFragmentManager().getBackStackEntryCount()==1)
+//                {
+//                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                    toggle.setDrawerIndicatorEnabled(false);
+//                    setDrawerEnabled(false);
+//                    toggle.setToolbarNavigationClickListener(originalToolbarListener);
+//                    toggle.syncState();
+//                }
+//                else {
+//                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//                    toggle.setDrawerIndicatorEnabled(true);
+//                    setDrawerEnabled(true);
+//                    toggle.setToolbarNavigationClickListener(originalToolbarListener);
+//                    toggle.syncState();
+//                }
+//
+//
+//                getSupportActionBar().setTitle("");
+////                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+//                toggle.setToolbarNavigationClickListener(originalToolbarListener);
+//                toggle.syncState();
             }
         });
     }
@@ -429,14 +453,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //super.onBackPressed();
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 TabLayout.Tab tab = tabLayout.getTabAt(0);
                 tab.select();
                 tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                 InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
                 CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = (CMSubmitTaskDetailsFragment) getSupportFragmentManager().findFragmentByTag("cmSubmitTaskDetailsFragment");
-                if ((instructorDetailsFragment != null && instructorDetailsFragment.isVisible()) || cmSubmitTaskDetailsFragment != null && cmSubmitTaskDetailsFragment.isVisible()) {
+                PigeonholeFragment pigeonholeFragment = (PigeonholeFragment)getSupportFragmentManager().findFragmentByTag("pigeonholeFragment");
+                if(pigeonholeFragment !=null && pigeonholeFragment.isVisible()) {
+                    getSupportFragmentManager().popBackStack();
+                    finish();
+                }
+
+                else
+                    //if ((instructorDetailsFragment != null && instructorDetailsFragment.isVisible()) || cmSubmitTaskDetailsFragment != null && cmSubmitTaskDetailsFragment.isVisible())
+                    {
                     getSupportFragmentManager().popBackStack();
                     gotoPigeonholeFragment();
                     return;
@@ -771,14 +803,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        TabLayout.Tab tab = tabLayout.getTabAt(0);
 //        tab.select();
         setUpBackStackCountToZero();
-        PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
+//        PigeonholeFragment pigeonholeFragment = new PigeonholeFragment();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+////        if (userPermission.isUserTasksSubmitTask())
+//        transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
+////        else
+////            transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
+//        transaction.commit();
+
+        PigeonHoleParentFragment pigeonHoleParentFragment = new PigeonHoleParentFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        if (userPermission.isUserTasksSubmitTask())
-        transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment");
-//        else
-//            transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
+        transaction.replace(R.id.main_acitivity_container, pigeonHoleParentFragment, "pigeonHoleParentFragment").addToBackStack(null);
         transaction.commit();
+
     }
 
     private void gotoSubmissionTrayFragment() {
@@ -868,6 +907,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void hideItem()
     {
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        if (navigationView != null) {
+//            Menu menu = navigationView.getMenu();
+//            menu.findItem(R.id.nav_profile).setTitle("My Account");
+//            menu.findItem(R.id.nav_mng_task).setTitle("Control Task");
+//            //menu.findItem(R.id.nav_pkg_manage).setVisible(false);//In case you want to remove menu item
+//            navigationView.setNavigationItemSelectedListener(this);
+//        }
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_submission_tray).setVisible(false);

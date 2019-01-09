@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.CourseCalendarParentFragment">
+    <!--<LinearLayout-->
+        <!--android:layout_marginTop="@dimen/size_10dp"-->
+        <!--android:background="@color/top_head"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:padding="@dimen/size_10dp">-->
+
+        <!--<ImageView-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_width="@dimen/margin_0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/cc_w" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="@dimen/margin_0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="8"-->
+            <!--android:paddingLeft="@dimen/size_15dp"-->
+            <!--android:text="Course Calendar"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="@dimen/text_size_20_sp"-->
+            <!--android:textStyle="normal" />-->
+
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_gravity="center"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="@dimen/margin_0dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:src="@drawable/dot_menu_w" />&ndash;&gt;-->
+
+
+    <!--</LinearLayout>-->
+
+    <android.support.design.widget.TabLayout
+        app:tabIndicatorHeight="40dp"
+        android:id="@+id/tabs"
+        app:tabIndicatorColor="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</LinearLayout>

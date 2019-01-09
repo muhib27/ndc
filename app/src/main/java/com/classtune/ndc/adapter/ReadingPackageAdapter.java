@@ -169,25 +169,23 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 int total = strList.size();
                 layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                if(readingLists.get(position).getType().equals("0"))
+                if (readingLists.get(position).getType().equals("0"))
                     itemHolder.batch.setVisibility(View.VISIBLE);
                 else
                     itemHolder.batch.setVisibility(View.INVISIBLE);
 
-                if(readingLists.get(position).getType().equals("1"))
+                if (readingLists.get(position).getType().equals("1"))
                     itemHolder.sub_title.setVisibility(View.VISIBLE);
                 else
                     itemHolder.sub_title.setVisibility(View.INVISIBLE);
-
-
 
 
                 if (readingLists.get(position).getStudy() != null && readingLists.get(position).getStudy().getSessionName() != null && readingLists.get(position).getStudy().getCourseName() != null) {
 
                     itemHolder.batch.setText(readingLists.get(position).getStudy().getSessionName() + "-" + readingLists.get(position).getStudy().getCourseName());
                 }
-                if(readingLists.get(position).getNumItems()!=null)
-                itemHolder.sub_title.setText(readingLists.get(position).getNumItems() + " Items");
+                if (readingLists.get(position).getNumItems() != null)
+                    itemHolder.sub_title.setText(readingLists.get(position).getNumItems() + " Items");
 
                 if (readingLists.get(position).getName() != null)
                     itemHolder.term.setText(readingLists.get(position).getName());
@@ -199,39 +197,47 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         itemHolder.img.setBackgroundResource(R.drawable.folder_one);
                     else
                         itemHolder.img.setBackgroundResource(R.drawable.folder_one_empty);
-                }
-                else if(readingLists.get(position).getType().equals("2"))
-                {
-                    if(readingLists.get(position).getTypeExt().equals("xlsx"))
+                } else if (readingLists.get(position).getType().equals("2")) {
+                    if (readingLists.get(position).getTypeExt().equals("xlsx"))
                         itemHolder.img.setBackgroundResource(R.drawable.xls);
-                    else  if(readingLists.get(position).getTypeExt().equals("txt"))
+                    else if (readingLists.get(position).getTypeExt().equals("txt"))
                         itemHolder.img.setBackgroundResource(R.drawable.txt);
-                    else  if(readingLists.get(position).getTypeExt().equals("pdf"))
+                    else if (readingLists.get(position).getTypeExt().equals("pdf"))
                         itemHolder.img.setBackgroundResource(R.drawable.pdf);
-                    else  if(readingLists.get(position).getTypeExt().equals("doc"))
+                    else if (readingLists.get(position).getTypeExt().equals("doc"))
                         itemHolder.img.setBackgroundResource(R.drawable.doc);
-                    else  if(readingLists.get(position).getTypeExt().equals("docs"))
+                    else if (readingLists.get(position).getTypeExt().equals("docs"))
                         itemHolder.img.setBackgroundResource(R.drawable.docx);
-                    else  if(readingLists.get(position).getTypeExt().equals("file"))
+                    else if (readingLists.get(position).getTypeExt().equals("file"))
                         itemHolder.img.setBackgroundResource(R.drawable.file);
-                    else  if(readingLists.get(position).getTypeExt().equals("gif"))
+                    else if (readingLists.get(position).getTypeExt().equals("gif"))
                         itemHolder.img.setBackgroundResource(R.drawable.gif);
-                    else  if(readingLists.get(position).getTypeExt().equals("mp4"))
+                    else if (readingLists.get(position).getTypeExt().equals("mp4"))
                         itemHolder.img.setBackgroundResource(R.drawable.mp_four);
-                    else  if(readingLists.get(position).getTypeExt().equals("mp3"))
+                    else if (readingLists.get(position).getTypeExt().equals("mp3"))
                         itemHolder.img.setBackgroundResource(R.drawable.mp_three);
-                    else  if(readingLists.get(position).getTypeExt().equals("psd"))
+                    else if (readingLists.get(position).getTypeExt().equals("psd"))
                         itemHolder.img.setBackgroundResource(R.drawable.psd);
-                    else  if(readingLists.get(position).getTypeExt().equals("rar"))
+                    else if (readingLists.get(position).getTypeExt().equals("rar"))
                         itemHolder.img.setBackgroundResource(R.drawable.rar);
-                    else  if(readingLists.get(position).getTypeExt().equals("3gp"))
+                    else if (readingLists.get(position).getTypeExt().equals("3gp"))
                         itemHolder.img.setBackgroundResource(R.drawable.three_gp);
                     else
                         itemHolder.img.setBackgroundResource(R.drawable.no_image);
-                }
-                else if(readingLists.get(position).getType().equals("3"))
-                {
+                } else if (readingLists.get(position).getType().equals("3")) {
                     itemHolder.img.setBackgroundResource(R.drawable.reading_material);
+                } else if (readingLists.get(position).getType().equals("4")) {
+                    if (readingLists.get(position).getTypeExt().equalsIgnoreCase("must")) {
+                        if (readingLists.get(position).getNumItems() > 0)
+                            itemHolder.img.setBackgroundResource(R.drawable.must_read_full);
+                        else
+                            itemHolder.img.setBackgroundResource(R.drawable.must_read_empty);
+                    } else if (readingLists.get(position).getTypeExt().equalsIgnoreCase("should")) {
+                        if (readingLists.get(position).getNumItems() > 0)
+                            itemHolder.img.setBackgroundResource(R.drawable.should_read_full);
+                        else
+                            itemHolder.img.setBackgroundResource(R.drawable.should_read_empty);
+                    }
                 }
 
                 String customerName = "";
@@ -247,19 +253,16 @@ public class ReadingPackageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 //                        bundle.putString("order_id", orderList.get(position).getId());
                         if (readingLists.get(position).getType().equals("0") || readingLists.get(position).getType().equals("1"))
                             gotoReadingPackageFragment(readingLists.get(position).getType(), readingLists.get(position).getId());
-                        else if(readingLists.get(position).getType().equals("3"))
+                        else if (readingLists.get(position).getType().equals("3"))
                             gotoReadingMaterialsFragment(readingLists.get(position).getId());
-                        else if(readingLists.get(position).getType().equals("2"))
-                        {
-                            if(readingLists.get(position).getTypeExt().equals("mp4")) {
+                        else if (readingLists.get(position).getType().equals("2")) {
+                            if (readingLists.get(position).getTypeExt().equals("mp4")) {
                                 Intent intent = new Intent(context, PlayerActivity.class);
-                                intent.putExtra("url", "assets/uploads/reading_file/"+readingLists.get(position).getName());
+                                intent.putExtra("url", "assets/uploads/reading_file/" + readingLists.get(position).getName());
                                 context.startActivity(intent);
-                            }
-                            else if(readingLists.get(position).getTypeExt().equals("png")){
+                            } else if (readingLists.get(position).getTypeExt().equals("png")) {
 
-                            }
-                            else {
+                            } else {
 //                                Intent intentFile = new Intent(Intent.ACTION_VIEW, Uri.parse(URLHelper.BASE_URL + readingLists.get(position).getFileDetails().getFilePath()));
 //                                context.startActivities(intentFile);
                                 String st = URLHelper.BASE_URL + readingLists.get(position).getFileDetails().getFilePath();

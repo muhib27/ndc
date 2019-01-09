@@ -86,6 +86,11 @@ public class InstructorDetailsFragment extends Fragment implements View.OnClickL
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+//            MainActivity.toggle.setDrawerIndicatorEnabled(false);
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
         userPermission = AppSharedPreference.getUserPermission();
 
 
