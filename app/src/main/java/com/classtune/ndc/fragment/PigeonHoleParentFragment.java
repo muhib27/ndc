@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
@@ -69,6 +70,9 @@ public class PigeonHoleParentFragment extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+//        InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getActivity().getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
+//        if(instructorDetailsFragment !=null && instructorDetailsFragment.isVisible())
+//            Toast.makeText(getActivity(), "" + instructorDetailsFragment , Toast.LENGTH_SHORT).show();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

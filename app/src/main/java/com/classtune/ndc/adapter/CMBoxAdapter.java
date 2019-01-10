@@ -545,7 +545,9 @@ public class CMBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         cmBoxDetailsFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, cmBoxDetailsFragment, "cmBoxDetailsFragment").addToBackStack(null);
+        transaction.replace(R.id.main_acitivity_container, cmBoxDetailsFragment, "cmBoxDetailsFragment");
+        ///if viewpager not active
+        // transaction.replace(R.id.main_acitivity_container, cmBoxDetailsFragment, "cmBoxDetailsFragment").addToBackStack(null);
         transaction.commit();
     }
 

@@ -38,7 +38,12 @@ public class UIHelper {
         if (activity != null) {
             activity.runOnUiThread(new Runnable() {
                 public void run() {
-                    loadingDialog = ProgressDialog.show(activity, "", message, true, false);
+                    try {
+                        loadingDialog = ProgressDialog.show(activity, "", message, true, false);
+                    }
+                    catch (Exception e){
+
+                    }
                 }
             });
         }

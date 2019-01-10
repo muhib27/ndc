@@ -120,6 +120,13 @@ public class PigeonholeFragment extends Fragment implements PaginationAdapterCal
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+       int t =  pigeonholeAdapter.getItemCount();
+//       Toast.makeText(getActivity(), "" + t , Toast.LENGTH_SHORT).show();
+        //callTaskListApi();
+    }
 
     private void callTaskListApi() {
 

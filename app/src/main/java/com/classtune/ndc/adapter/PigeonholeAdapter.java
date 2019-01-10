@@ -676,6 +676,8 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         instructorDetailsFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);
+        ///if viewpager not active
+        //transaction.replace(R.id.main_acitivity_container, instructorDetailsFragment, "instructorDetailsFragment").addToBackStack(null);
         transaction.commit();
     }
 

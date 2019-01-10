@@ -10,7 +10,7 @@ import com.classtune.ndc.fragment.RoutineBlueFragment;
 import com.classtune.ndc.fragment.RoutineWhiteFragment;
 import com.classtune.ndc.fragment.RoutineYellowFragment;
 
-public class PigeonholeViewPagerAdapter extends FragmentStatePagerAdapter {
+public class PigeonholeViewPagerAdapter extends  FragmentStatePagerAdapter {
     String tabOne = "";
     String tabTwo = "";
 

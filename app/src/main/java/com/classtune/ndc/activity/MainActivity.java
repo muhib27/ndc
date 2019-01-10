@@ -460,8 +460,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                 InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
                 CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = (CMSubmitTaskDetailsFragment) getSupportFragmentManager().findFragmentByTag("cmSubmitTaskDetailsFragment");
-                PigeonholeFragment pigeonholeFragment = (PigeonholeFragment)getSupportFragmentManager().findFragmentByTag("pigeonholeFragment");
-                if(pigeonholeFragment !=null && pigeonholeFragment.isVisible()) {
+                PigeonHoleParentFragment pigeonHoleParentFragment = (PigeonHoleParentFragment)getSupportFragmentManager().findFragmentByTag("pigeonHoleParentFragment");
+                if(pigeonHoleParentFragment !=null && pigeonHoleParentFragment.isVisible()) {
                     getSupportFragmentManager().popBackStack();
                     finish();
                 }
@@ -500,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        int id = item.getItemId();
 
         switch (item.getItemId()) {
             case android.R.id.home:
