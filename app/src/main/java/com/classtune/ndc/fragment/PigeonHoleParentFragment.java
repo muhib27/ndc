@@ -65,7 +65,7 @@ public class PigeonHoleParentFragment extends Fragment {
             tabOne = "My Assignment";
             tabTwo = "My CM Submission";
         }
-        pigeonholeViewPagerAdapter = new PigeonholeViewPagerAdapter(getActivity().getSupportFragmentManager(), tabOne, tabTwo);
+        pigeonholeViewPagerAdapter = new PigeonholeViewPagerAdapter(getChildFragmentManager(), tabOne, tabTwo);
         viewPager.setAdapter(pigeonholeViewPagerAdapter);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);

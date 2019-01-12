@@ -321,7 +321,7 @@ public class PigeonholeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         //Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
                         callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId(),position);
                         //CommonApiCall commonApiCall = new CommonApiCall(context);
-                        //boolean b = commonApiCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
+                        //boolean b = commonA piCall.callPigeonholeDeleteApi(pigeonholeDataModelList.get(position).getId());
                         break;
                 }
                 return false;
