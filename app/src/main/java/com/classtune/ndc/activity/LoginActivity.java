@@ -238,7 +238,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                                value.body());
 
                         if (loginApiModel.getCode()!= null && loginApiModel.getCode() == 200) {
-                            //passwordChangeDialog();
+                        //    passwordChangeDialog();
 
                             AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey(), rememberMe.isChecked());
                             callMenuApi();

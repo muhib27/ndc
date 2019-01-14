@@ -22,4 +22,6 @@
     <dimen name="user_name_width_margin">10dp</dimen>
     <dimen name="margin_login_60dp">40dp</dimen>
 
+    <dimen name="change_password_30">-20dp</dimen>
+
 </resources>

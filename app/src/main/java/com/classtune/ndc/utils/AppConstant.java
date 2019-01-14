@@ -50,5 +50,8 @@ public class AppConstant {
 
     public static final long BANNER_POPUP_DISMISS_TIME = 5000;
 
+    public final static String NORMAL = "NORMAL";
+    public final static String SELECTED = "SELECTED";
+
 
 }

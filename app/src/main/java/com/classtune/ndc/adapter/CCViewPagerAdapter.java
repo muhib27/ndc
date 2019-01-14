@@ -54,15 +54,15 @@ public class CCViewPagerAdapter extends FragmentStatePagerAdapter {
 //        else
         if (position == 0)
         {
-            title = "White";
+            title = "Weekly Program";
         }
         else if (position == 1)
         {
-            title = "Yellow";
+            title = "Term Program";
         }
         else if (position == 2)
         {
-            title = "Blue";
+            title = "Yearly Program";
         }
         return title;
     }

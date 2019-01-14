@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.CourseCalendarParentFragment">
-    <LinearLayout
-        android:layout_marginTop="@dimen/size_10dp"
-        android:background="@color/top_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/size_10dp">
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/cc_w" />
-
-        <TextView
-            android:layout_width="@dimen/margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="8"
-            android:paddingLeft="@dimen/size_15dp"
-            android:text="Course Calendar"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_20_sp"
-            android:textStyle="normal" />
+    <!--<LinearLayout-->
+        <!--android:layout_marginTop="@dimen/size_10dp"-->
+        <!--android:background="@color/top_head"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:padding="@dimen/size_10dp">-->
 
         <!--<ImageView-->
             <!--android:layout_gravity="center"-->
             <!--android:layout_width="@dimen/margin_0dp"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_weight="1"-->
-            <!--android:src="@drawable/dot_menu_w" />-->
+            <!--android:src="@drawable/cc_w" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="@dimen/margin_0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="8"-->
+            <!--android:paddingLeft="@dimen/size_15dp"-->
+            <!--android:text="Course Calendar"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="@dimen/text_size_20_sp"-->
+            <!--android:textStyle="normal" />-->
+
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_gravity="center"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="@dimen/margin_0dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:src="@drawable/dot_menu_w" />&ndash;&gt;-->
 
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <android.support.design.widget.TabLayout
-        app:tabIndicatorHeight="40dp"
+        android:layout_marginTop="@dimen/size_5dp"
         android:id="@+id/tabs"
-        app:tabIndicatorColor="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:tabGravity="fill"
+        app:tabIndicatorColor="#ffffff"
+        app:tabIndicatorHeight="40dp"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabMode="fixed" />
 
     <android.support.v4.view.ViewPager
@@ -56,5 +59,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dip"-->
+        <!--android:layout_marginRight="10dip"-->
+        <!--android:layout_marginTop="7dip"-->
+        <!--android:orientation="horizontal" >-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1" >-->
+
+            <!--<com.classtune.app.schoolapp.viewhelpers.CustomTabButton-->
+                <!--android:id="@+id/btn_notice_general"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/tab_general_btn"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center"-->
+                <!--custom:iconImageTab="@drawable/eye_gray"-->
+                <!--custom:iconTextTab="Notice" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="1dip"-->
+            <!--android:layout_weight="1" >-->
+
+            <!--<com.classtune.app.schoolapp.viewhelpers.CustomTabButton-->
+                <!--android:id="@+id/btn_notice_circular"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/tab_general_btn"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center"-->
+                <!--custom:iconImageTab="@drawable/circular_gray"-->
+                <!--custom:iconTextTab="Notice" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="1dip"-->
+            <!--android:layout_weight="1" >-->
+
+            <!--<com.classtune.app.schoolapp.viewhelpers.CustomTabButton-->
+                <!--android:id="@+id/btn_notice_announcement"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/tab_general_btn"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center"-->
+                <!--custom:iconImageTab="@drawable/annaouncment_gray"-->
+                <!--custom:iconTextTab="Notice" />-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

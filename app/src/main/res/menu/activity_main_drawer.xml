@@ -24,11 +24,11 @@
             android:id="@+id/nav_submission_tray"
             android:icon="@drawable/submission_tray_tab"
             android:title="Submission Tray" />
-        <item
-            app:itemTextColor="#676767"
-            android:id="@+id/nav_cm_box"
-            android:icon="@drawable/cm_box"
-            android:title="CM Box" />
+        <!--<item-->
+            <!--app:itemTextColor="#676767"-->
+            <!--android:id="@+id/nav_cm_box"-->
+            <!--android:icon="@drawable/cm_box"-->
+            <!--android:title="CM Box" />-->
         <item
             app:itemTextColor="#676767"
             android:id="@+id/nav_reading_package"

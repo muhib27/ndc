@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,9 +57,11 @@ import com.classtune.ndc.utils.DrawerLocker;
 import com.classtune.ndc.utils.NetworkConnection;
 import com.classtune.ndc.utils.URLHelper;
 import com.classtune.ndc.viewhelpers.UIHelper;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonElement;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.fabric.sdk.android.Fabric;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -83,9 +86,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+/*   Delete Crash Reporting:
+FirebaseCrash.setCrashCollectionEnabled(true);
 
+     Add Crashlytics: */
+        Fabric.with(this, new Crashlytics());
         userPermission = AppSharedPreference.getUserPermission();
-
 
         AppSharedPreference.setUsingFirstTime(false);
         showToolbar();
@@ -109,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.submission_tray_tab).setTag("submission_tray"));
         else
             hideItem();
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box).setTag("cm_box"));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cm_box).setTag("cm_box"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.reading_package).setTag("reading_package"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notice_tab_).setTag("notice"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.cc_tab_).setTag("course_calendar"));
@@ -119,10 +125,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        tabLayout.addTab(tabLayout.newTab().setTag("tab"));
 
 
-//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-//            TabLayout.Tab tab = tabLayout.getTabAt(i);
-//            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
-//        }
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) tab.setCustomView(R.layout.view_home_tab);
+        }
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -139,11 +145,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     gotoSubmissionTrayFragment();
-                } else if (tab.getTag().equals("cm_box")) {
-                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
-                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                    gotoCMBoxFragment();
-                } else if (tab.getTag().equals("reading_package")) {
+                }
+//                else if (tab.getTag().equals("cm_box")) {
+//                    tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
+//                    // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+//                    gotoCMBoxFragment();
+//                }
+                else if (tab.getTag().equals("reading_package")) {
                     tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                     // Toast.makeText(MainActivity.this, tab.getTag().toString() + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                     gotoReadingPackageFragment();
@@ -377,8 +385,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "fds", Toast.LENGTH_LONG).show();
 //                DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
-                PigeonholeFragment pigeonholeFragment = (PigeonholeFragment) getSupportFragmentManager().findFragmentByTag("pigeonholeFragment");
-                if (pigeonholeFragment != null && pigeonholeFragment.isVisible())
+                PigeonHoleParentFragment pigeonHoleParentFragment = (PigeonHoleParentFragment) getSupportFragmentManager().findFragmentByTag("pigeonHoleParentFragment");
+                if (pigeonHoleParentFragment != null && pigeonHoleParentFragment.isVisible())
                     return;
                 else {
                     //gotoDashboardFragment();
@@ -581,25 +589,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TabLayout.Tab tab = tabLayout.getTabAt(1);
             tab.select();
 
-        } else if (id == R.id.nav_cm_box) {
+        }
+        //else if (id == R.id.nav_cm_box) {
+//            int index;
+//            if (userPermission.isUserTasksSubmitTask())
+//                index = 2;
+//            else
+//                index = 1;
+//
+//            //gotoCMBoxFragment();
+//            TabLayout.Tab tab = tabLayout.getTabAt(index);
+//            tab.select();
+
+      //  }
+        else if (id == R.id.nav_reading_package) {
+            //gotoReadingPackageFragment();
             int index;
             if (userPermission.isUserTasksSubmitTask())
                 index = 2;
             else
                 index = 1;
-
-            //gotoCMBoxFragment();
-            TabLayout.Tab tab = tabLayout.getTabAt(index);
-            tab.select();
-
-        }
-        else if (id == R.id.nav_reading_package) {
-            //gotoReadingPackageFragment();
-            int index;
-            if (userPermission.isUserTasksSubmitTask())
-                index = 3;
-            else
-                index = 2;
             TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
@@ -608,9 +617,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //gotoNoticeFragment("");
             int index;
             if (userPermission.isUserTasksSubmitTask())
-                index = 4;
-            else
                 index = 3;
+            else
+                index = 2;
             TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
@@ -618,9 +627,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //gotoClassScheduleFragment();
             int index;
             if (userPermission.isUserTasksSubmitTask())
-                index = 5;
-            else
                 index = 4;
+            else
+                index = 3;
             TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
@@ -628,9 +637,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //gotoEventsFragment();
             int index;
             if (userPermission.isUserTasksSubmitTask())
-                index = 6;
-            else
                 index = 5;
+            else
+                index = 4;
             TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
@@ -638,9 +647,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //gotoResearchListFragment();
             int index;
             if (userPermission.isUserTasksSubmitTask())
-                index = 7;
-            else
                 index = 6;
+            else
+                index = 5;
             TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
 
@@ -649,9 +658,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //gotoProfileFragment();
             int index;
             if (userPermission.isUserTasksSubmitTask())
-                index = 8;
-            else
                 index = 7;
+            else
+                index = 6;
             TabLayout.Tab tab = tabLayout.getTabAt(index);
             tab.select();
         } else if (id == R.id.nav_logout) {
@@ -787,16 +796,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        tab.select();
         setUpBackStackCountToZero();
 
-        RoutineWhiteFragment routineWhiteFragment = new RoutineWhiteFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, routineWhiteFragment, "routineWhiteFragment").addToBackStack(null);
-        transaction.commit();
-//        CourseCalendarParentFragment courseCalendarParentFragment = new CourseCalendarParentFragment();
+//        RoutineWhiteFragment routineWhiteFragment = new RoutineWhiteFragment();
 //        FragmentManager fragmentManager = getSupportFragmentManager();
 //        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.replace(R.id.main_acitivity_container, courseCalendarParentFragment, "courseCalendarParentFragment").addToBackStack(null);
+//        transaction.replace(R.id.main_acitivity_container, routineWhiteFragment, "routineWhiteFragment").addToBackStack(null);
 //        transaction.commit();
+        CourseCalendarParentFragment courseCalendarParentFragment = new CourseCalendarParentFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, courseCalendarParentFragment, "courseCalendarParentFragment").addToBackStack(null);
+        transaction.commit();
     }
 
     private void gotoPigeonholeFragment() {
