@@ -20,6 +20,7 @@ public class URLHelper {
 
 	//pigeonHole
     public final static String GET_PIGEONHOLE_TASK_LIST = "tasks/task_list";
+	public final static String GET_MY_ASSIGNMENT_LIST = "mytasks/my_assignment_list";
 	public final static String GET_PIGEONHOLE_TASK_ADD= "tasks/add";
 	public final static String GET_PIGEONHOLE_TASK_EDIT= "tasks/edit";
     public final static String GET_PIGEONHOLE_TASK_DELETE= "tasks/delete";
@@ -30,7 +31,8 @@ public class URLHelper {
 	public final static String GET_INSTRUCTOR_LIST= "tasks/get_course_teacher";
 
 	//cm box
-    public final static String GET_CM_BOX_SUBMITTED_LIST = "mycmbox/submitted_list";
+	public final static String GET_CM_BOX_SUBMITTED_LIST = "cmbox/submitted_list";
+    public final static String GET_MY_CM_BOX_SUBMITTED_LIST = "mycmbox/submitted_list";
     public final static String GET_CM_BOX_DETAILS= "tasks/single_view";
 
     //Notice

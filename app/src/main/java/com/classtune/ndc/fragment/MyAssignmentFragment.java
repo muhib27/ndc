@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
-import com.classtune.ndc.adapter.CMBoxAdapter;
-import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
-import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
+import com.classtune.ndc.adapter.MyAssignmentAdapter;
+import com.classtune.ndc.adapter.PigeonholeAdapter;
+import com.classtune.ndc.apiresponse.menu_api.UserPermission;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
+import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
+import com.classtune.ndc.model.MyAssignment;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
@@ -31,7 +34,6 @@ import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -43,17 +45,17 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CMBoxFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class MyAssignmentFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strList = new ArrayList<>();
-    CMBoxAdapter cmBoxAdapter;
+    MyAssignmentAdapter myAssignmentAdapter;
     FloatingActionButton pigeonholeFab;
     UIHelper uiHelper;
+//    https://stackoverflow.com/questions/34641240/toolbar-inside-cardview-to-create-a-popup-menu-overflow-icon/38929226
 
-
-    public CMBoxFragment() {
+    public MyAssignmentFragment() {
         // Required empty public constructor
     }
 
@@ -62,7 +64,7 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cm_box, container, false);
+        return inflater.inflate(R.layout.fragment_pigeonhole, container, false);
     }
 
     @Override
@@ -89,19 +91,19 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
             }
         });
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
-//        pigeonholeFab = (FloatingActionButton) view.findViewById(R.id.pigeonhole_fab);
-//        pigeonholeFab.setOnClickListener(this);
+        pigeonholeFab = (FloatingActionButton) view.findViewById(R.id.pigeonhole_fab);
+        pigeonholeFab.setOnClickListener(this);
 
-//        UserPermission userPermission = AppSharedPreference.getUserPermission();
-//        if(userPermission.isTasksAdd())
-//            pigeonholeFab.setVisibility(View.VISIBLE);
-//        else
-//            pigeonholeFab.setVisibility(View.INVISIBLE);
+        UserPermission userPermission = AppSharedPreference.getUserPermission();
+        if(userPermission.isTasksAdd())
+            pigeonholeFab.show();
+        else
+            pigeonholeFab.hide();
 
         strList = getStrList();
 
 
-        cmBoxAdapter = new CMBoxAdapter(getContext());
+        myAssignmentAdapter = new MyAssignmentAdapter(getContext());
 
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -111,16 +113,23 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
         rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(cmBoxAdapter);
-        //cmBoxAdapter.addAllData(strList);
+        rv.setAdapter(myAssignmentAdapter);
+        //pigeonholeAdapter.addAllData(strList);
 
-        callCMBoxListApi();
+        callTaskListApi();
 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+       int t =  myAssignmentAdapter.getItemCount();
+//       Toast.makeText(getActivity(), "" + t , Toast.LENGTH_SHORT).show();
+        //callTaskListApi();
+    }
 
-    private void callCMBoxListApi() {
+    private void callTaskListApi() {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -129,30 +138,32 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getMyCMBoxList(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getMyAssignment(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<CMBoxSubmittedTaskResponse>>() {
+                .subscribe(new Observer<Response<PHTaskListResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<CMBoxSubmittedTaskResponse> value) {
+                    public void onNext(Response<PHTaskListResponse> value) {
                         uiHelper.dismissLoadingDialog();
-                        CMBoxSubmittedTaskResponse cmBoxSubmittedTaskResponse = value.body();
+                        PHTaskListResponse phTaskListResponse = value.body();
+//                        MenuApiResponse menuApiResponse = value.body();
 
-                        if(cmBoxSubmittedTaskResponse != null && cmBoxSubmittedTaskResponse.getCode()!=null) {
-                            if (cmBoxSubmittedTaskResponse.getCode() == 200) {
-                                Log.v("cmBoxSubmittedTaskRes", value.message());
-                                List<CMBoxSubmittedTask> cmBoxSubmittedTasks = cmBoxSubmittedTaskResponse.getCmBoxData().getCmBoxSubmittedTasks();
-                                //Collections.reverse(cmBoxSubmittedTasks);
-                                if(cmBoxSubmittedTasks!=null)
-                                cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
-                              //  Log.v("tt", cmBoxSubmittedTasks.toString());
-                            } else if (cmBoxSubmittedTaskResponse.getCode() == 500) {
+//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
+                        if(phTaskListResponse != null && phTaskListResponse.getCode()!=null) {
+                            if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
+                                Log.v("PigeonholeFragment", value.message());
+                                List<MyAssignment> myAssignments = phTaskListResponse.getPhTaskData().getMyAssignments();
+                                //Collections.reverse(phTaskList);
+                                if(myAssignments!=null)
+                                    myAssignmentAdapter.addAllData(myAssignments);
+                                //Log.v("tt", phTaskList.toString());
+                            } else if (phTaskListResponse.getCode() == 500) {
                                 Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -192,9 +203,9 @@ public class CMBoxFragment extends Fragment implements PaginationAdapterCallback
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.pigeonhole_fab:
-//                gotoInstructorTaskAssignFragment();
-//                break;
+            case R.id.pigeonhole_fab:
+                gotoInstructorTaskAssignFragment();
+                break;
         }
     }
 

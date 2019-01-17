@@ -43,6 +43,7 @@ import com.classtune.ndc.fragment.HomeFragment;
 import com.classtune.ndc.fragment.InstructorDetailsFragment;
 import com.classtune.ndc.fragment.NoticeDetailsFragment;
 import com.classtune.ndc.fragment.NoticeFragment;
+import com.classtune.ndc.fragment.PHTabFragment;
 import com.classtune.ndc.fragment.PigeonHoleParentFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
 import com.classtune.ndc.fragment.ProfileFragment;
@@ -89,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 /*   Delete Crash Reporting:
 FirebaseCrash.setCrashCollectionEnabled(true);
 
-     Add Crashlytics: */
-        Fabric.with(this, new Crashlytics());
+     //Add Crashlytics: */
+//        Fabric.with(this, new Crashlytics());
         userPermission = AppSharedPreference.getUserPermission();
 
         AppSharedPreference.setUsingFirstTime(false);
@@ -203,6 +204,7 @@ FirebaseCrash.setCrashCollectionEnabled(true);
         user = AppSharedPreference.getUserBasicInfo();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
         View hView = navigationView.getHeaderView(0);
 
@@ -385,8 +387,10 @@ FirebaseCrash.setCrashCollectionEnabled(true);
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "fds", Toast.LENGTH_LONG).show();
 //                DashBoardFragment dashBoardFragment = (DashBoardFragment) getSupportFragmentManager().findFragmentByTag("dashBoardFragment");
-                PigeonHoleParentFragment pigeonHoleParentFragment = (PigeonHoleParentFragment) getSupportFragmentManager().findFragmentByTag("pigeonHoleParentFragment");
-                if (pigeonHoleParentFragment != null && pigeonHoleParentFragment.isVisible())
+                //PigeonHoleParentFragment pigeonHoleParentFragment = (PigeonHoleParentFragment) getSupportFragmentManager().findFragmentByTag("pigeonHoleParentFragment");
+                PHTabFragment phTabFragment = (PHTabFragment)getSupportFragmentManager().findFragmentByTag("phTabFragment");
+                if(phTabFragment !=null && phTabFragment.isVisible())
+              //  if (pigeonHoleParentFragment != null && pigeonHoleParentFragment.isVisible())
                     return;
                 else {
                     //gotoDashboardFragment();
@@ -468,8 +472,9 @@ FirebaseCrash.setCrashCollectionEnabled(true);
                 tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#74af27"));
                 InstructorDetailsFragment instructorDetailsFragment = (InstructorDetailsFragment) getSupportFragmentManager().findFragmentByTag("instructorDetailsFragment");
                 CMSubmitTaskDetailsFragment cmSubmitTaskDetailsFragment = (CMSubmitTaskDetailsFragment) getSupportFragmentManager().findFragmentByTag("cmSubmitTaskDetailsFragment");
-                PigeonHoleParentFragment pigeonHoleParentFragment = (PigeonHoleParentFragment)getSupportFragmentManager().findFragmentByTag("pigeonHoleParentFragment");
-                if(pigeonHoleParentFragment !=null && pigeonHoleParentFragment.isVisible()) {
+                //PigeonHoleParentFragment pigeonHoleParentFragment = (PigeonHoleParentFragment)getSupportFragmentManager().findFragmentByTag("pigeonHoleParentFragment");
+                PHTabFragment phTabFragment = (PHTabFragment)getSupportFragmentManager().findFragmentByTag("phTabFragment");
+                if(phTabFragment !=null && phTabFragment.isVisible()) {
                     getSupportFragmentManager().popBackStack();
                     finish();
                 }
@@ -821,10 +826,16 @@ FirebaseCrash.setCrashCollectionEnabled(true);
 ////            transaction.replace(R.id.main_acitivity_container, pigeonholeFragment, "pigeonholeFragment").addToBackStack(null);
 //        transaction.commit();
 
-        PigeonHoleParentFragment pigeonHoleParentFragment = new PigeonHoleParentFragment();
+//        PigeonHoleParentFragment pigeonHoleParentFragment = new PigeonHoleParentFragment();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.main_acitivity_container, pigeonHoleParentFragment, "pigeonHoleParentFragment").addToBackStack(null);
+//        transaction.commit();
+
+        PHTabFragment phTabFragment = new PHTabFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_acitivity_container, pigeonHoleParentFragment, "pigeonHoleParentFragment").addToBackStack(null);
+        transaction.replace(R.id.main_acitivity_container, phTabFragment, "phTabFragment").addToBackStack(null);
         transaction.commit();
 
     }

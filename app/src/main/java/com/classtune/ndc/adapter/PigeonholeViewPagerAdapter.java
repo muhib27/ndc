@@ -5,12 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.classtune.ndc.fragment.AllAssignmentFragment;
-import com.classtune.ndc.fragment.AllCMAssignmentFragment;
+import com.classtune.ndc.fragment.AllCMSubmissionFragment;
 import com.classtune.ndc.fragment.CMBoxFragment;
 import com.classtune.ndc.fragment.PigeonholeFragment;
-import com.classtune.ndc.fragment.RoutineBlueFragment;
-import com.classtune.ndc.fragment.RoutineWhiteFragment;
-import com.classtune.ndc.fragment.RoutineYellowFragment;
 
 public class PigeonholeViewPagerAdapter extends  FragmentStatePagerAdapter {
     String tabOne = "";
@@ -49,7 +46,7 @@ public class PigeonholeViewPagerAdapter extends  FragmentStatePagerAdapter {
         }
         else if (position == 3)
         {
-            fragment = new AllCMAssignmentFragment();
+            fragment = new AllCMSubmissionFragment();
         }
         return fragment;
     }

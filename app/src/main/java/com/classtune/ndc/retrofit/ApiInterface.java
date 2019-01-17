@@ -69,6 +69,10 @@ public interface ApiInterface {
     @POST(URLHelper.GET_PIGEONHOLE_TASK_LIST)
     Observable<Response<PHTaskListResponse>> getPigeonholeTaskList(@Field("api_key") String api_key);
 
+    @FormUrlEncoded
+    @POST(URLHelper.GET_MY_ASSIGNMENT_LIST)
+    Observable<Response<PHTaskListResponse>> getMyAssignment(@Field("api_key") String api_key);
+
 
     @POST(URLHelper.GET_PIGEONHOLE_TASK_ADD)
       //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
@@ -99,6 +103,10 @@ public interface ApiInterface {
     @POST(".")
         //Observable<Response<JsonElement>> getTaskAssign(@Body RequestBody file);
     Observable<Response<JsonElement>> getPHTaskSubmitTask(@Body MultipartBody file);
+
+    @FormUrlEncoded
+    @POST(URLHelper.GET_MY_CM_BOX_SUBMITTED_LIST)
+    Observable<Response<CMBoxSubmittedTaskResponse>> getMyCMBoxList(@Field("api_key") String api_key);
 
     @FormUrlEncoded
     @POST(URLHelper.GET_CM_BOX_SUBMITTED_LIST)

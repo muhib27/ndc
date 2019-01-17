@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="1dip"
+    android:layout_weight="1"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--&lt;!&ndash; Tab title &ndash;&gt;-->
-    <TextView
-        android:background="@drawable/tab_item_selector"
-        android:id="@+id/tab_title"
-        android:layout_width="wrap_content"
+    <com.classtune.ndc.viewhelpers.CustomTabButton
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" />
-
-    <!--&lt;!&ndash; Tab divider &ndash;&gt;-->
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/tab_title"
-        android:layout_toRightOf="@+id/tab_title"
-        android:background="@color/ndc_color" />
-</RelativeLayout><!--android:background="@drawable/round_shape_background_transparent"-->
+        android:background="@drawable/tab_general_btn"
+        android:clickable="true"
+        android:gravity="center"
+        custom:iconImageTab="@drawable/circular_gray"
+        custom:iconTextTab="@string/tab_notice_circular" />
+</LinearLayout><!--android:background="@drawable/round_shape_background_transparent"-->

@@ -20,10 +20,9 @@ import android.widget.Toast;
 
 import com.classtune.ndc.R;
 import com.classtune.ndc.activity.MainActivity;
-import com.classtune.ndc.adapter.PigeonholeAdapter;
-import com.classtune.ndc.apiresponse.menu_api.UserPermission;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTask;
-import com.classtune.ndc.apiresponse.pigeonhole_api.PHTaskListResponse;
+import com.classtune.ndc.adapter.CMBoxAdapter;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTask;
+import com.classtune.ndc.apiresponse.CMBox.CMBoxSubmittedTaskResponse;
 import com.classtune.ndc.retrofit.RetrofitApiClient;
 import com.classtune.ndc.utils.AppSharedPreference;
 import com.classtune.ndc.utils.NetworkConnection;
@@ -32,6 +31,7 @@ import com.classtune.ndc.utils.VerticalSpaceItemDecoration;
 import com.classtune.ndc.viewhelpers.UIHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -43,17 +43,17 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllCMAssignmentFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class AllCMSubmissionFragment extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<String> strList = new ArrayList<>();
-    PigeonholeAdapter pigeonholeAdapter;
+    CMBoxAdapter cmBoxAdapter;
     FloatingActionButton pigeonholeFab;
     UIHelper uiHelper;
-//    https://stackoverflow.com/questions/34641240/toolbar-inside-cardview-to-create-a-popup-menu-overflow-icon/38929226
 
-    public AllCMAssignmentFragment() {
+
+    public AllCMSubmissionFragment() {
         // Required empty public constructor
     }
 
@@ -62,7 +62,7 @@ public class AllCMAssignmentFragment extends Fragment implements PaginationAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pigeonhole, container, false);
+        return inflater.inflate(R.layout.fragment_cm_box, container, false);
     }
 
     @Override
@@ -89,19 +89,19 @@ public class AllCMAssignmentFragment extends Fragment implements PaginationAdapt
             }
         });
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
-        pigeonholeFab = (FloatingActionButton) view.findViewById(R.id.pigeonhole_fab);
-        pigeonholeFab.setOnClickListener(this);
+//        pigeonholeFab = (FloatingActionButton) view.findViewById(R.id.pigeonhole_fab);
+//        pigeonholeFab.setOnClickListener(this);
 
-        UserPermission userPermission = AppSharedPreference.getUserPermission();
-        if(userPermission.isTasksAdd())
-            pigeonholeFab.show();
-        else
-            pigeonholeFab.hide();
+//        UserPermission userPermission = AppSharedPreference.getUserPermission();
+//        if(userPermission.isTasksAdd())
+//            pigeonholeFab.setVisibility(View.VISIBLE);
+//        else
+//            pigeonholeFab.setVisibility(View.INVISIBLE);
 
         strList = getStrList();
 
 
-        pigeonholeAdapter = new PigeonholeAdapter(getContext());
+        cmBoxAdapter = new CMBoxAdapter(getContext());
 
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -111,23 +111,16 @@ public class AllCMAssignmentFragment extends Fragment implements PaginationAdapt
         rv.addItemDecoration(new VerticalSpaceItemDecoration(getResources()));
         rv.setLayoutManager(linearLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(pigeonholeAdapter);
-        //pigeonholeAdapter.addAllData(strList);
+        rv.setAdapter(cmBoxAdapter);
+        //cmBoxAdapter.addAllData(strList);
 
-        callTaskListApi();
+        callCMBoxListApi();
 
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-       int t =  pigeonholeAdapter.getItemCount();
-//       Toast.makeText(getActivity(), "" + t , Toast.LENGTH_SHORT).show();
-        //callTaskListApi();
-    }
 
-    private void callTaskListApi() {
+    private void callCMBoxListApi() {
 
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
@@ -136,31 +129,30 @@ public class AllCMAssignmentFragment extends Fragment implements PaginationAdapt
         uiHelper.showLoadingDialog("Please wait...");
 
 
-        RetrofitApiClient.getApiInterface().getPigeonholeTaskList(AppSharedPreference.getApiKey())
+        RetrofitApiClient.getApiInterface().getCMBoxList(AppSharedPreference.getApiKey())
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<PHTaskListResponse>>() {
+                .subscribe(new Observer<Response<CMBoxSubmittedTaskResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Response<PHTaskListResponse> value) {
+                    public void onNext(Response<CMBoxSubmittedTaskResponse> value) {
                         uiHelper.dismissLoadingDialog();
-                        PHTaskListResponse phTaskListResponse = value.body();
-//                        MenuApiResponse menuApiResponse = value.body();
+                        CMBoxSubmittedTaskResponse cmBoxSubmittedTaskResponse = value.body();
 
-//                        AppSharedPreference.setUserNameAndPassword(username, password, loginApiModel.getData().getApiKey());
-                        if(phTaskListResponse != null && phTaskListResponse.getCode()!=null) {
-                            if (phTaskListResponse != null && phTaskListResponse.getCode() == 200) {
-                                Log.v("PigeonholeFragment", value.message());
-                                List<PHTask> phTaskList = phTaskListResponse.getPhTaskData().getPhTasks();
-                                //Collections.reverse(phTaskList);
-                                pigeonholeAdapter.addAllData(phTaskList);
-                                Log.v("tt", phTaskList.toString());
-                            } else if (phTaskListResponse.getCode() == 500) {
+                        if(cmBoxSubmittedTaskResponse != null && cmBoxSubmittedTaskResponse.getCode()!=null) {
+                            if (cmBoxSubmittedTaskResponse.getCode() == 200) {
+                                Log.v("cmBoxSubmittedTaskRespo", value.message());
+                                List<CMBoxSubmittedTask> cmBoxSubmittedTasks = cmBoxSubmittedTaskResponse.getCmBoxData().getCmBoxSubmittedTasks();
+                                //Collections.reverse(cmBoxSubmittedTasks);
+                                if(cmBoxSubmittedTasks!=null)
+                                cmBoxAdapter.addAllData(cmBoxSubmittedTasks);
+                                //Log.v("tt", cmBoxSubmittedTasks.toString());
+                            } else if (cmBoxSubmittedTaskResponse.getCode() == 500) {
                                 Toast.makeText(getActivity(), "500", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -200,9 +192,9 @@ public class AllCMAssignmentFragment extends Fragment implements PaginationAdapt
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pigeonhole_fab:
-                gotoInstructorTaskAssignFragment();
-                break;
+//            case R.id.pigeonhole_fab:
+//                gotoInstructorTaskAssignFragment();
+//                break;
         }
     }
 
